@@ -106,6 +106,9 @@ export class NPCFactory {
         let array = context.arrays.main;
         let actorUpdate = {};
 
+        // Size
+        actorUpdate["data.traits.size"] = context.options.race.size;
+
         // Hands
         if(context.options.race.arms != undefined) {
             actorUpdate["data.attributes.arms"] = context.options.race.arms;
