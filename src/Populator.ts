@@ -37,10 +37,10 @@ export class Populator {
     static async createNPCTapped() {
 
         // Debug
-        let options = { CR: "1/2", race: null };
-        options.race = Races.Races.nonCombatantRaces["kasatha"];
+        //let options = { CR: "1/2", race: null };
+        //options.race = Races.Races.nonCombatantRaces["kasatha"];
 
-        await NPCFactory.makeNPC(options);
+        await NPCFactory.makeNPC();
         ui.notifications.info("NPC created.", { permanent: false });
     }
 }

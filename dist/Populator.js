@@ -1,4 +1,3 @@
-import * as Races from "./data/Races.js";
 import { NPCFactory } from './NPCFactory.js';
 // MARK: Hooks
 /** Ensure the "Parse Statblock" button is visible. */
@@ -28,9 +27,9 @@ export class Populator {
     }
     static async createNPCTapped() {
         // Debug
-        let options = { CR: "1/2", race: null };
-        options.race = Races.Races.nonCombatantRaces["kasatha"];
-        await NPCFactory.makeNPC(options);
+        //let options = { CR: "1/2", race: null };
+        //options.race = Races.Races.nonCombatantRaces["kasatha"];
+        await NPCFactory.makeNPC();
         ui.notifications.info("NPC created.", { permanent: false });
     }
 }
