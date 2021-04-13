@@ -19,6 +19,7 @@ export class Utils {
     }
     /** Will try to find an entry in the specified compendium that matches all the terms, will return the first entry that does. */
     static async fuzzyFindCompendiumAsync(compendiumName, searchString) {
+        var _a;
         if (!compendiumName) {
             Utils.log("No compendium name specified.");
             return null;
@@ -27,18 +28,28 @@ export class Utils {
             Utils.log("No search string specified.");
             return null;
         }
-        let compendium = game.packs.find(element => element.title.includes(compendiumName));
+        let compendium = game.packs.find(element => element.metadata.name.includes(compendiumName));
         if (compendium == undefined) {
-            Utils.log("Could not find compendium named " + compendium + ".");
+            Utils.log("Could not find compendium named " + compendiumName + ".");
             return null;
         }
-        let rawString = this.parseSubtext(searchString)[0];
         // Let the compendium load
         await compendium.getIndex();
+        let rawString = this.parseSubtext(searchString)[0];
         let terms = rawString.toLowerCase().replace("(ex)", "").replace("(su)", "").replace("(sp)", "").trim().replace(/[*,;()\[\]'"]/g, "").split(' ');
         let entryWeWant = null;
         for (let entry of compendium.index) {
-            let rawEntryName = this.parseSubtext(entry.name)[0];
+            var rawEntryName = this.parseSubtext(entry.name)[0];
+            // A translation module is active
+            if ((_a = game.modules.get('babele')) === null || _a === void 0 ? void 0 : _a.active) {
+                for (let key in compendium.translations) {
+                    let translation = compendium.translations[key];
+                    if (translation.name == entry.name) {
+                        rawEntryName = this.parseSubtext(translation.id)[0];
+                        break;
+                    }
+                }
+            }
             let entryName = rawEntryName.toLowerCase().replace("(ex)", "").replace("(su)", "").replace("(sp)", "").trim();
             let entryTerms = entryName.replace(/[*,;()\[\]'"]/g, "").split(' ');
             if (terms.length !== entryTerms.length) {
@@ -90,17 +101,17 @@ export class Utils {
                 itemName += ", standard";
             }
         }
-        return this.fuzzyFindCompendiumAsync("Equipment", itemName);
+        return this.fuzzyFindCompendiumAsync("equipment", itemName);
     }
     static async fuzzyFindRaceAsync(raceName) {
         raceName = raceName.replace("/ ", "/");
         raceName = raceName.replace(" /", "/");
-        return this.fuzzyFindCompendiumAsync("Races", raceName);
+        return this.fuzzyFindCompendiumAsync("races", raceName);
     }
     static async fuzzyFindSpellAsync(spellName) {
         spellName = spellName.replace("/ ", "/");
         spellName = spellName.replace(" /", "/");
-        return this.fuzzyFindCompendiumAsync("Spells", spellName);
+        return this.fuzzyFindCompendiumAsync("spells", spellName);
     }
     static log(message) {
         console.log("POPULATOR | " + message);

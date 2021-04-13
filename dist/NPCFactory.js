@@ -43,10 +43,10 @@ export class NPCFactory {
             context.options.race = Randomizer.randomRace();
         }
         let actorUpdate = {};
-        let itemData = await Utils.fuzzyFindRaceAsync(context.options.race.name);
+        let raceData = await Utils.fuzzyFindRaceAsync(context.options.race.name);
         // Race item
-        await this.clean(itemData);
-        context.itemsToAdd.push(itemData);
+        await this.clean(raceData);
+        context.itemsToAdd.push(raceData);
         // Gender
         let gender = Randomizer.randomGender();
         actorUpdate["data.details.raceAndGrafts"] = gender + " " + context.options.race.name + ", grafts:"; // Grafts will be filled in as applied
@@ -88,6 +88,9 @@ export class NPCFactory {
         if (context.options.race.arms != undefined) {
             actorUpdate["data.attributes.arms"] = context.options.race.arms;
         }
+        // Reach
+        // TODO: Reach should be decided by grafts
+        actorUpdate["data.attributes.reach"] = 5;
         // Set HP
         actorUpdate["data.attributes.hp.value"] = array.HP;
         actorUpdate["data.attributes.hp.max"] = array.HP;

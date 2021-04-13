@@ -32,21 +32,35 @@ export class Utils {
             return null;
         }
 
-        let compendium = game.packs.find(element => element.title.includes(compendiumName));
+        let compendium = game.packs.find(element => element.metadata.name.includes(compendiumName));
         if (compendium == undefined) {
-            Utils.log("Could not find compendium named " + compendium + ".");
+            Utils.log("Could not find compendium named " + compendiumName + ".");
             return null;
         }
-
-        let rawString = this.parseSubtext(searchString)[0];
 
         // Let the compendium load
         await compendium.getIndex();
 
+        let rawString = this.parseSubtext(searchString)[0];
         let terms = rawString.toLowerCase().replace("(ex)","").replace("(su)","").replace("(sp)","").trim().replace(/[*,;()\[\]'"]/g,"").split(' ');
+
         let entryWeWant = null;
         for (let entry of compendium.index) {
-            let rawEntryName = this.parseSubtext(entry.name)[0];
+
+            var rawEntryName = this.parseSubtext(entry.name)[0];
+
+            // A translation module is active
+            if(game.modules.get('babele')?.active) {
+                for (let key in compendium.translations) {
+                    let translation = compendium.translations[key];
+
+                    if (translation.name == entry.name) {
+                        rawEntryName = this.parseSubtext(translation.id)[0];
+                        break;
+                    }
+                }
+            }
+
             let entryName = rawEntryName.toLowerCase().replace("(ex)","").replace("(su)","").replace("(sp)","").trim();
             let entryTerms = entryName.replace(/[*,;()\[\]'"]/g,"").split(' ');
 
@@ -101,19 +115,19 @@ export class Utils {
                 itemName += ", standard";
             }
         }
-        return this.fuzzyFindCompendiumAsync("Equipment", itemName);
+        return this.fuzzyFindCompendiumAsync("equipment", itemName);
     }
 
     static async fuzzyFindRaceAsync(raceName) {
         raceName = raceName.replace("/ ", "/");
         raceName = raceName.replace(" /", "/");
-        return this.fuzzyFindCompendiumAsync("Races", raceName);
+        return this.fuzzyFindCompendiumAsync("races", raceName);
     }
 
     static async fuzzyFindSpellAsync(spellName) {
         spellName = spellName.replace("/ ", "/");
         spellName = spellName.replace(" /", "/");
-        return this.fuzzyFindCompendiumAsync("Spells", spellName);
+        return this.fuzzyFindCompendiumAsync("spells", spellName);
     }
 
     static parseSubtext = (value) => {

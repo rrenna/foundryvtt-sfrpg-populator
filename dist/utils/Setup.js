@@ -18,7 +18,8 @@ Hooks.once('init', async function () {
         choices: {
             "1/3": "CR 1/3",
             "1/2": "CR 1/2",
-            "1": "CR 1"
+            "1": "CR 1",
+            "2": "CR 2"
         }
     });
 });
