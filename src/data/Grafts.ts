@@ -15,6 +15,6 @@ export const Grafts = {
         shirren: "shirren",
         skittermander: "skittermander",
         vesk: "vesk",
-        ysoki: "ysokiz"
+        ysoki: "ysoki"
     }
 };

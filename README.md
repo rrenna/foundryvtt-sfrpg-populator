@@ -14,6 +14,10 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 **A: Android, Dwarf, Gnome, Human, Halfling, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
 
+*Q: So how do you pick attribute and skill modifiers?*
+
+**All values come directly from the process outlined in the Alien Archive (Non-combatant NPCs use the expert array with a creature type and optionally a creature subtype graft applied)**
+
 *Q: Why doesn't populator generate monsters though!?*
 
 **A: Because that's hard and I haven't done it yet**
