@@ -38,7 +38,7 @@ export class Populator {
 
         // Debug
         //let options = { CR: "1/2", race: null };
-        //options.race = Races.Races.nonCombatantRaces["kasatha"];
+        //options.race = Races.Races.nonCombatantRaces["vesk"];
 
         await NPCFactory.makeNPC();
         ui.notifications.info("NPC created.", { permanent: false });

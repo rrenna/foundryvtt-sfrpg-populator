@@ -8,9 +8,9 @@ export const MonsterCreation = {
                 "1": { CR: "1", EAC: 11, KAC: 12, fort: 1, reflex: 1, will: 4, HP: 17, abilityMods: [4, 2, 1], masterSkill: { count: 3, mod: 10 }, goodSkill: { count: 2, mod: 5 } }
             },
             attack: {
-                "1/3": { high: 2, low: 0, energy: "1d4", kinetic: "1d4", standard: "1d4+str" },
-                "1/2": { high: 4, low: 2, energy: "1d4", kinetic: "1d4", standard: "1d4+str" },
-                "1": { high: 6, low: 4, energy: "1d4+1", kinetic: "1d4+1", standard: "1d4+1+str" }
+                "1/3": { high: 2, low: 0, energy: "1d4", kinetic: "1d4", standard: "1d4 + @abilities.str.mod" },
+                "1/2": { high: 4, low: 2, energy: "1d4", kinetic: "1d4", standard: "1d4 + @abilities.str.mod" },
+                "1": { high: 6, low: 4, energy: "1d4+1", kinetic: "1d4+1", standard: "1d4 + 1 + @abilities.str.mod" }
             }
         }
     }

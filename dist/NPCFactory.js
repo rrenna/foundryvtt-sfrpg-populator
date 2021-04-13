@@ -16,8 +16,11 @@ export class NPCFactory {
             options: options,
             itemsToAdd: [],
             arrays: { main: null, attack: null },
+            // Skills
             masterSkill: [],
-            goodSkill: [] // In addition to the array good skills
+            goodSkill: [],
+            // Attacks
+            hasNaturalWeapons: false
         };
         // Look up array
         context.arrays.main = MonsterCreation.arrays.expert.main[options.CR];
@@ -228,7 +231,7 @@ export class NPCFactory {
         else if (graft === Grafts.Grafts.creatureSubtype.vesk) {
             //Senses
             actorUpdate["data.traits.senses"] = "low-light vision";
-            // TODO: add Natural weapons
+            context.hasNaturalWeapons = true;
         }
         else if (graft === Grafts.Grafts.creatureSubtype.ysoki) {
             //Senses
@@ -289,13 +292,29 @@ export class NPCFactory {
         await actor.update(actorUpdate);
     }
     static async setWeapons(actor, context) {
-        let expertArrayAttackRow = MonsterCreation.arrays.expert.attack[context.options.CR];
-        let highAttackBonus = expertArrayAttackRow.high;
-        // All NPCs have unarmed strike unless they are equiped with natural weapons
-        // TODO: Only generate unarmed strike if no natural weapons
-        let unarmedStrike = WeaponFactory.makeUnarmedStrike();
-        unarmedStrike.data.attackBonus = highAttackBonus;
-        context.itemsToAdd.push(unarmedStrike);
+        let attackArray = context.arrays.attack;
+        let highAttackBonus = attackArray.high;
+        // Add natural weapons or generic unarmed strike
+        if (context.hasNaturalWeapons === true) {
+            let naturalWeapons = WeaponFactory.makeNaturalWeapons();
+            naturalWeapons.data.attackBonus = highAttackBonus;
+            naturalWeapons.data.damage = {
+                "parts": [
+                    [
+                        attackArray.standard,
+                        "bludgeoning"
+                    ]
+                ]
+            };
+            // TODO: If CR3+ add 1.5x (rounded down) to damage
+            context.itemsToAdd.push(naturalWeapons);
+        }
+        else {
+            // All NPCs have unarmed strike unless they are equiped with natural weapons
+            let unarmedStrike = WeaponFactory.makeUnarmedStrike();
+            unarmedStrike.data.attackBonus = highAttackBonus;
+            context.itemsToAdd.push(unarmedStrike);
+        }
     }
     static async setInventory(actor, context) {
         let items = ItemFactory.makeItemCollection();
