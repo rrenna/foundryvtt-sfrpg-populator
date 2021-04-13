@@ -6,7 +6,7 @@
     "version": "0.0.1",
     "author": "rrenna",
     "systems": ["sfrpg"],
-    "esmodules": ["dist/Populator.js"],
+    "esmodules": ["dist/Populator.js", "dist/utils/Setup.js"],
     "styles": [],
     "packs": [],
     "url": "https://github.com/rrenna/foundryvtt-sfrpg-populator",

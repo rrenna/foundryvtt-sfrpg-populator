@@ -1,21 +1,10 @@
-import * as PopulatorUtils from "./utils/Uils";
-import * as Races  from "./data/Races.js";
+import { Races }  from "./data/Races.js";
 import { NPCFactory } from './NPCFactory.js'
-
-declare var Hooks;
 declare var game;
-
-// MARK: Hooks
-/** Ensure the "Parse Statblock" button is visible. */
-Hooks.on("renderSidebarTab", async (app, html) => {
-    if (app.options.id == "actors") {
-        Populator.ensureParseStatblockVisible();
-    }
-});
 
 export class Populator {
 
-    static ensureParseStatblockVisible() {
+    static ensurePopulateVisible() {
         if (!game.user.isGM) {
             return;
         }
@@ -36,11 +25,13 @@ export class Populator {
 
     static async createNPCTapped() {
 
+        const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
+        let options = { CR: defaultCR, race: null };
+
         // Debug
-        //let options = { CR: "1/2", race: null };
         //options.race = Races.Races.nonCombatantRaces["vesk"];
 
-        await NPCFactory.makeNPC();
+        await NPCFactory.makeNPC(options);
         ui.notifications.info("NPC created.", { permanent: false });
     }
 }

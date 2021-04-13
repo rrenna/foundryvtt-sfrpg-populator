@@ -1,5 +1,4 @@
 export const Grafts = {
-
     creatureType: {
         humanoid: "humanoid",
         monstrousHumanoid: "monstrous humanoid"
