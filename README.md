@@ -13,7 +13,7 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 *Q: What races does populator currently support?*
 
-**A: Android, Dwarf, Gnome, Human, Halfling, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
+**A: Android, Dwarf, Drow, Gnome, Gnoll, Human, Halfling, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
 
 *Q: So how do you pick attribute and skill modifiers?*
 
