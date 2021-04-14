@@ -4,6 +4,7 @@ export const Races = {
     nonCombatantRaces: {
         "android": { name: "android", size: "medium", creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.android },
         "dwarf": { name: "dwarf", size: "medium", languages: ["dwarven"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.dwarf },
+        "drow": { name: "drow", size: "medium", languages: ["drow"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.elf },
         "gnome": { name: "gnome", size: "small", languages: ["gnome"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.gnome },
         "human": { name: "human", size: "medium", creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.human },
         "halfling": { name: "halfling", size: "small", languages: ["halfling"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.halfling },

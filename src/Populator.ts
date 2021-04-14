@@ -18,6 +18,7 @@ export class Populator {
             populatorButton = document.createElement("button");
             populatorButton.innerHTML = `<i id="populator-button" class="fas fa-user-astronaut"></i>Populate`;
             populatorButton.onclick = ev => Populator.createNPCTapped();
+            populatorButton.oncontextmenu = ev => Populator.createSpecificNPCTapped();
             const createEntityButton = actorFooter.getElementsByClassName("create-entity")[0];
             actorFooter.insertBefore(populatorButton, createEntityButton);
         }
@@ -28,8 +29,18 @@ export class Populator {
         const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
         let options = { CR: defaultCR, race: null };
 
-        // Debug
-        //options.race = Races.nonCombatantRaces["android"];
+        await NPCFactory.makeNPC(options);
+        ui.notifications.info("NPC created.", { permanent: false });
+    }
+    // Currently a convenience for debugging, but will be expanded into a "quick create" option
+    // and the main tap would open an options window
+    static async createSpecificNPCTapped() {
+
+        const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
+        let options = { CR: defaultCR, race: null };
+
+        // Quickly creates a specific race - currently hardcoded to Drow
+        options.race = Races.nonCombatantRaces["drow"];
 
         await NPCFactory.makeNPC(options);
         ui.notifications.info("NPC created.", { permanent: false });

@@ -25,6 +25,7 @@ export const Probabilities = {
         default: [
             { name: "android", percentage: 0.09 },
             { name: "dwarf", percentage: 0.04 },
+            { name: "drow", percentaeg: 0.03 },
             { name: "human", percentage: 0.46 },
             { name: "kasatha", percentage: 0.04 },
             { name: "gnome", percentage: 0.02 },
@@ -32,13 +33,14 @@ export const Probabilities = {
             { name: "lashunta", percentage: 0.07 },
             { name: "nuar", percentage: 0.01 },
             { name: "shirren", percentage: 0.05 },
-            { name: "skittermander", percentage: 0.06 },
+            { name: "skittermander", percentage: 0.03 },
             { name: "ysoki", percentage: 0.09 },
             { name: "vesk", percentage: 0.03 }
         ]
     },
     // NOTE: Extrapolated from 2019 Canadian census: https://www12.statcan.gc.ca/census-recensement/2021/ref/98-20-0002/982000022020002-eng.cfm
     // TODO: Allow customization if your world has a different distribution
+    // NOTE: Should consider gender distributions by race, ie. Drow is a matriarchal society
     genderDistributions: {
         default: [
             { name: "male", percentage: 0.49 },

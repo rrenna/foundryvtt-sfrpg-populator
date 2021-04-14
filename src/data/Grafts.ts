@@ -6,6 +6,7 @@ export const Grafts = {
     , creatureSubtype: {
         android: "android",
         dwarf: "dwarf",
+        elf: "elf",
         gnome: "gnome",
         halfling: "hafling",
         human: "human",

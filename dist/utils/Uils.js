@@ -40,6 +40,7 @@ export class Utils {
         let entryWeWant = null;
         for (let entry of compendium.index) {
             var rawEntryName = this.parseSubtext(entry.name)[0];
+            // TODO: Don't need to do this every iteration in the loop can set state `babeleActive` somewhere above
             // A translation module is active
             if ((_a = game.modules.get('babele')) === null || _a === void 0 ? void 0 : _a.active) {
                 for (let key in compendium.translations) {

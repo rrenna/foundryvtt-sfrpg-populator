@@ -1,5 +1,5 @@
 import { Utils } from "./utils/Uils.js";
-import * as Grafts  from "./data/Grafts.js";
+import { Grafts }  from "./data/Grafts.js";
 import { ItemFactory } from "./ItemFactory.js"
 import { MonsterCreation }  from "./data/MonsterCreation.js";
 import { Races }  from "./data/Races.js";
@@ -183,7 +183,7 @@ export class NPCFactory {
     static async applyCreatureTypeGraft(actor, context, graft) {
         let actorUpdate = {};
 
-        if (graft === Grafts.Grafts.creatureType.humanoid) {
+        if (graft === Grafts.creatureType.humanoid) {
             // Applies a +2 to a random saving throw
             var saves = ["reflex","fort", "will"];
             Utils.shuffleArray(saves);
@@ -192,7 +192,7 @@ export class NPCFactory {
             actorUpdate["data.attributes." + save + ".bonus"] = actor.data.data.attributes[save].value + 2;
 
         }
-        else if (graft === Grafts.Grafts.creatureType.monstrousHumanoid) {
+        else if (graft === Grafts.creatureType.monstrousHumanoid) {
             // Applies a +2 to reflex & will
             // TODO: +1 to all attacks
             actorUpdate["data.attributes.reflex.bonus"] = actor.data.data.attributes.reflex.value + 2;
@@ -225,15 +225,31 @@ export class NPCFactory {
             context.itemsToAdd.push(spell);
         }
 
-        if (graft === Grafts.Grafts.creatureSubtype.android) {
+        if (graft === Grafts.creatureSubtype.android) {
             //Senses
             actorUpdate["data.traits.senses"] = "darkvision 60 ft.; low-light vision";
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.dwarf) {
+        else if (graft === Grafts.creatureSubtype.dwarf) {
             //Senses
             actorUpdate["data.traits.senses"] = "darkvision 60 ft.";
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.gnome) {
+        else if (graft === Grafts.creatureSubtype.elf) {
+            // Elves can be `drow`, `elven` or `half-elven` race
+            // NOTE: Currently assumes `drow`
+            // TODO: Implement traits for elf/half-elf races
+            //Senses
+            actorUpdate["data.traits.senses"] = "darkvision 60 ft.";
+            // Drow magic at will innate spells
+            let dancingLights = await Utils.fuzzyFindSpellAsync("dancing lights");
+            let detectMagic = await Utils.fuzzyFindSpellAsync("detect magic");
+            addAtWillInnateSpell(dancingLights);
+            addAtWillInnateSpell(detectMagic);
+            // Add immunities
+            actorUpdate["data.traits.ci.custom"] = "drow immunities";
+            // Perception as a master skill
+            context.masterSkill.push("per");
+        }
+        else if (graft === Grafts.creatureSubtype.gnome) {
             //Senses
             actorUpdate["data.traits.senses"] = "low-light vision";
             // Gnome magic once per day innate spells
@@ -246,7 +262,7 @@ export class NPCFactory {
             // Culture as a master skill
             context.masterSkill.push("cul");
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.halfling) {
+        else if (graft === Grafts.creatureSubtype.halfling) {
             // Perception and Stealth as master skills
             context.masterSkill.push("ste");
             context.masterSkill.push("per");
@@ -254,17 +270,17 @@ export class NPCFactory {
             context.goodSkill.push("acr");
             context.goodSkill.push("ath");
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.human) {
+        else if (graft === Grafts.creatureSubtype.human) {
             // Nothing applied
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.kasatha) {
+        else if (graft === Grafts.creatureSubtype.kasatha) {
             // Acrobatics and Athletics master skills
             context.masterSkill.push("acr");
             context.masterSkill.push("ath");
             // culture as good skills
             context.goodSkill.push("cul");
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.lashunta) {
+        else if (graft === Grafts.creatureSubtype.lashunta) {
             // Languages
             actorUpdate["data.traits.languages.custom"] = "limited telepathy 30 ft.";
             // Innate spells
@@ -275,22 +291,22 @@ export class NPCFactory {
             addAtWillInnateSpell(daze);
             addAtWillInnateSpell(psychokineticHand);
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.shirren) {
+        else if (graft === Grafts.creatureSubtype.shirren) {
             // Languages
             actorUpdate["data.traits.languages.custom"] = "limited telepathy 30 ft.";
             // Culture and Diplomacy as good skills
             context.goodSkill.push("cul");
             context.goodSkill.push("dip");
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.skittermander) {
+        else if (graft === Grafts.creatureSubtype.skittermander) {
             // Nothing applied
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.vesk) {
+        else if (graft === Grafts.creatureSubtype.vesk) {
             //Senses
             actorUpdate["data.traits.senses"] = "low-light vision";
             context.hasNaturalWeapons = true;
         }
-        else if (graft === Grafts.Grafts.creatureSubtype.ysoki) {
+        else if (graft === Grafts.creatureSubtype.ysoki) {
             //Senses
             actorUpdate["data.traits.senses"] = "darkvision 60 ft.";
             // Engineering and stealth as master skills

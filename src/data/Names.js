@@ -27,6 +27,11 @@ Names.dwarf = { male: {}, female: {} };
 Names.dwarf.male.first = [ "Luldream", "Ginik", "Grolgulir", "Nodrac", "Turgrol", "Yarbud" ];
 Names.dwarf.female.first = [ "Lokhubela", "Hozzida", "Gotribera", "Sarsolda", "Yagraeda", "Yarohilda" ];
 Names.dwarf.last = [ "Barrelshoulder", "Bristleshield", "Bronzemaker", "Coalstone", "Ironcview", "Koboldbow", "Largebrow", "Orebreaker", "Wraithgranite" ];
+Names.drow = { male: {}, female: {} };
+Names.drow.male.first = [ "Arcavato", "Dantrag", "Dresmorlin", "Dro",  "Drovic", "Duagloth", "Durdyn", "Firyin", "Kaelmourn", "Gogloth", "Nyloth", "Merrryn", "Mirrendier", "Naltel", "Pharnox", "Syrendross", "Rizraen", "Zov"];
+Names.drow.female.first = [ "Ahlysaaria", "Belmarniss", "Cylellinth", "Drada", "Dralia", "Drisinil", "Ilvaria", "Johysis", "Jysdra", "Jhaelnitra", "Loscivia", "Ghina", "Neerda" , "Tyvorhan", "Ulumbralya", "Volundeil" ];
+Names.drow.last = [ "Abaeir", "Abbylan", "Argith", "Baenre", "Beltaulur", "Blaerabban", "Blundyth", "Chaulssin", "Coborel", "Coloara", "Cormrael", "Daevion'lyr", "Dalael", "Dhalmass", "Dryaalis", "Dyrr", "Duskryn", "Mizzrarran", "Mizzrear", "T'orgh", "Vrinn", "Zaphresz", "Zauviir", "Zolond" ];
+Names.drow.denominator = [" of House Zeizerer", " of House Arabani", " of House Cyrocaust", " of House Xicton", " of House Blasfamus", "", "", "", "", "", "", "", "", "", "", ""]; // Denominators are appended onto name without a space
 // Halfling
 Names.halfling = { male: {}, female: {} };
 Names.halfling.male.first = ["Balderic", "Drogo", "Filbo", "Samwise", "Sorbo"].concat(Names.default.male.first); //Default first names are appropriate for halflings as well
