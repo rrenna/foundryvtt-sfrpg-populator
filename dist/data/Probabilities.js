@@ -25,7 +25,7 @@ export const Probabilities = {
         default: [
             { name: "android", percentage: 0.09 },
             { name: "dwarf", percentage: 0.04 },
-            { name: "drow", percentaeg: 0.03 },
+            { name: "drow", percentage: 0.03 },
             { name: "human", percentage: 0.46 },
             { name: "kasatha", percentage: 0.04 },
             { name: "gnome", percentage: 0.02 },

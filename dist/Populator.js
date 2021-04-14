@@ -21,16 +21,20 @@ export class Populator {
         }
     }
     static async createNPCTapped() {
+        // Settings
         const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
-        let options = { CR: defaultCR, race: null };
+        const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
+        let options = { CR: defaultCR, dynamicTokenImages: dynamicTokenImages, race: null, gender: null };
         await NPCFactory.makeNPC(options);
         ui.notifications.info("NPC created.", { permanent: false });
     }
     // Currently a convenience for debugging, but will be expanded into a "quick create" option
     // and the main tap would open an options window
     static async createSpecificNPCTapped() {
+        // Settings
         const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
-        let options = { CR: defaultCR, race: null };
+        const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
+        let options = { CR: defaultCR, dynamicTokenImages: dynamicTokenImages, race: null, gender: null };
         // Quickly creates a specific race - currently hardcoded to Drow
         options.race = Races.nonCombatantRaces["drow"];
         await NPCFactory.makeNPC(options);

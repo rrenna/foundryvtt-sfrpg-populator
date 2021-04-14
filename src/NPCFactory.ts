@@ -8,7 +8,7 @@ import { WeaponFactory } from "./WeaponFactory.js";
 
 export class NPCFactory {
 
-    static async makeNPC(options = {CR: "1/3", race: null}) {
+    static async makeNPC(options = {CR: "1/3", dynamicTokenImages: false, race: null, gender: null}) {
 
         let actorData = {name: "Generated Actor", type: "npc"};
         let actor = await Actor.create(actorData);
@@ -40,6 +40,7 @@ export class NPCFactory {
         await this.setSkills(actor, context);
         await this.setWeapons(actor, context);
         await this.setInventory(actor, context);
+        await this.setToken(actor, context);
 
         // Add all items
         let actorUpdate = {};
@@ -53,6 +54,10 @@ export class NPCFactory {
             context.options.race = Randomizer.randomRace();
         }
 
+        if(!context.options.gender) {
+            context.options.gender = Randomizer.randomGender();
+        }
+
         let actorUpdate = {};
         let raceData = await Utils.fuzzyFindRaceAsync(context.options.race.name);
 
@@ -61,11 +66,10 @@ export class NPCFactory {
         context.itemsToAdd.push(raceData);
 
         // Gender
-        let gender = Randomizer.randomGender();
-        actorUpdate["data.details.raceAndGrafts"] = gender + " " + context.options.race.name + ", grafts:"; // Grafts will be filled in as applied
+        actorUpdate["data.details.raceAndGrafts"] = context.options.gender + " " + context.options.race.name + ", grafts:"; // Grafts will be filled in as applied
 
         // Name
-        actorUpdate["name"] = Randomizer.randomName(context.options.race.name, gender);
+        actorUpdate["name"] = Randomizer.randomName(context.options.race.name, context.options.gender);
 
         // Update actor
         await actor.update(actorUpdate);
@@ -408,6 +412,21 @@ export class NPCFactory {
 
         let items = ItemFactory.makeItemCollection();
         context.itemsToAdd.push(...items);
+    }
+
+    static async setToken(actor, context) {
+        let actorUpdate = {};
+        actorUpdate["token.randomImg"] = false;
+        if (context.options.dynamicTokenImages) {
+            actorUpdate["token.img"] = "populator/" + context.options.race.name + "/" + context.options.gender  + "/*";
+            actorUpdate["token.randomImg"] = true;
+        }
+
+        actorUpdate["token.actorLink"] = true;
+        actorUpdate["token.disposition"] = 0; // Neutral by default
+
+        // Update actor
+        await actor.update(actorUpdate);
     }
 
     static async clean(item) {

@@ -18,6 +18,11 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 **All values come directly from the process outlined in the Alien Archive (Non-combatant NPCs use the expert array with a creature type and optionally a creature subtype graft applied)**
 
+*Q: How do I setup my folder structure for dynamic token images?*
+
+**Extract `example folder structure.zip` into your data folder and fill in the appropriate folders with images (Please be aware this feature is experimental and subject to change).**
+
+
 *Q: Why doesn't populator generate monsters though!?*
 
 **A: Because that's hard and I haven't done it yet**

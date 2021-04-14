@@ -26,7 +26,7 @@ export const Probabilities = {
         default: [
             {name: "android", percentage: 0.09},
             {name: "dwarf", percentage: 0.04},
-            {name: "drow", percentaeg: 0.03}, // This and Skittermanders represents the 6% "other" for now
+            {name: "drow", percentage: 0.03}, // This and Skittermanders represents the 6% "other" for now
             {name: "human", percentage: 0.46},
             {name: "kasatha", percentage: 0.04},
             {name: "gnome", percentage: 0.02},
@@ -35,7 +35,7 @@ export const Probabilities = {
             {name: "nuar", percentage: 0.01},
             {name: "shirren", percentage: 0.05},
             {name: "skittermander", percentage: 0.03}, // This and Drow represent the 6% "other" for now
-            {name: "ysoki", percentage: 0.09} ,
+            {name: "ysoki", percentage: 0.09},
             {name: "vesk", percentage: 0.03}
         ]
     },
