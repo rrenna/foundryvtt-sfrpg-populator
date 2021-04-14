@@ -1,4 +1,4 @@
-# Statfinder Populator
+# Starfinder Populator
 Populate your Starfinder world with life of all shapes and sizes.
 
 ## Features:
