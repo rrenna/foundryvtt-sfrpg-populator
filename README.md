@@ -4,6 +4,7 @@ Populate your Starfinder world with life of all shapes and sizes.
 ## Features:
 - Generates non-combatant NPCs for your world
 - Randomizes the name, gender, race, alignment and inventory of the NPC
+- Intelligently randomizes the token image of NPCs when placed in a scene (optional setting, *off* by default)
 
 ## FAQ:
 *Q: Does Populator just pick a random race?*
@@ -21,7 +22,6 @@ Populate your Starfinder world with life of all shapes and sizes.
 *Q: How do I setup my folder structure for dynamic token images?*
 
 **Extract `example folder structure.zip` into your data folder and fill in the appropriate folders with images (Please be aware this feature is experimental and subject to change).**
-
 
 *Q: Why doesn't populator generate monsters though!?*
 
