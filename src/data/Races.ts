@@ -13,7 +13,7 @@ export const Races = {
         "kasatha": {name:"kasatha", size: "medium", arms: 4, languages: ["kasatha"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.kasatha},
         "lashunta": {name:"lashunta", size: "medium", languages: ["castrovelian"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.lashunta},
         "nuar": {name:"nuar", size: "medium", creatureTypeGraft: Grafts.creatureType.monstrousHumanoid},
-        "skittermander": {name: "skittermander", size: "small", arms: 6, creatureTypeGraft: Grafts.creatureType.humanoid},
+        "skittermander": {name: "skittermander", size: "small", arms: 6, creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.skittermander},
         "shirren": {name: "shirren", size: "medium", languages: ["shirren"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.shirren},
         "vesk": {name:"vesk", size: "medium", languages: ["vesk"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.vesk},
         "ysoki": {name:"ysoki", size: "small", languages: ["akiton", "ysoki"], creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.ysoki}
