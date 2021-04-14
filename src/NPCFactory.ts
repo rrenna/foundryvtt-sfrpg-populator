@@ -2,7 +2,7 @@ import { Utils } from "./utils/Uils.js";
 import { Grafts }  from "./data/Grafts.js";
 import { ItemFactory } from "./ItemFactory.js"
 import { MonsterCreation }  from "./data/MonsterCreation.js";
-import { Races }  from "./data/Races.js";
+import { BundledRaces, Races }  from "./data/Races.js";
 import { Randomizer } from "./Randomizer.js";
 import { WeaponFactory } from "./WeaponFactory.js";
 
@@ -59,7 +59,16 @@ export class NPCFactory {
         }
 
         let actorUpdate = {};
-        let raceData = await Utils.fuzzyFindRaceAsync(context.options.race.name);
+        var raceData;
+        // We stub in gnolls until they are included in sfrpg
+        if (context.options.race.name == "gnoll") {
+
+            raceData = BundledRaces.gnoll;
+        }
+        else {
+            raceData = await Utils.fuzzyFindRaceAsync(context.options.race.name);
+        }
+
 
         // Race item
         await this.clean(raceData);
@@ -253,6 +262,14 @@ export class NPCFactory {
             // Perception as a master skill
             context.masterSkill.push("per");
         }
+        else if (graft === Grafts.creatureSubtype.gnoll) {
+            // Senses
+            actorUpdate["data.traits.senses"] = "blindsense (scent) 30 ft.; darvision 60 ft.";
+            // Natural weapons
+            context.hasNaturalWeapons = true;
+            // Survival as a master skill
+            context.masterSkill.push("sur");
+        }
         else if (graft === Grafts.creatureSubtype.gnome) {
             //Senses
             actorUpdate["data.traits.senses"] = "low-light vision";
@@ -308,6 +325,7 @@ export class NPCFactory {
         else if (graft === Grafts.creatureSubtype.vesk) {
             //Senses
             actorUpdate["data.traits.senses"] = "low-light vision";
+            // Natural weapons
             context.hasNaturalWeapons = true;
         }
         else if (graft === Grafts.creatureSubtype.ysoki) {

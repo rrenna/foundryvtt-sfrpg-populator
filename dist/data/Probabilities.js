@@ -25,15 +25,16 @@ export const Probabilities = {
         default: [
             { name: "android", percentage: 0.09 },
             { name: "dwarf", percentage: 0.04 },
-            { name: "drow", percentage: 0.03 },
+            { name: "drow", percentage: 0.02 },
             { name: "human", percentage: 0.46 },
             { name: "kasatha", percentage: 0.04 },
+            { name: "gnoll", percentage: 0.02 },
             { name: "gnome", percentage: 0.02 },
             { name: "halfling", percentage: 0.04 },
             { name: "lashunta", percentage: 0.07 },
             { name: "nuar", percentage: 0.01 },
             { name: "shirren", percentage: 0.05 },
-            { name: "skittermander", percentage: 0.03 },
+            { name: "skittermander", percentage: 0.02 },
             { name: "ysoki", percentage: 0.09 },
             { name: "vesk", percentage: 0.03 }
         ]

@@ -8,6 +8,7 @@ export const Grafts = {
         dwarf: "dwarf",
         elf: "elf",
         gnome: "gnome",
+        gnoll: "gnoll",
         halfling: "hafling",
         human: "human",
         kasatha: "kasatha",

@@ -37,6 +37,12 @@ Names.halfling = { male: {}, female: {} };
 Names.halfling.male.first = ["Balderic", "Drogo", "Filbo", "Samwise", "Sorbo"].concat(Names.default.male.first); //Default first names are appropriate for halflings as well
 Names.halfling.female.first = ["Berenga", "Hilda", "Lalia", "Sherry", "Pamphila"].concat(Names.default.female.first); //Default first names are appropriate for halflings as well
 Names.halfling.last = [ "Biggums", "Boulderhill", "Gardner", "Goodchild", "Langham", "Oakbottom", "Smallburrow", "Thornburrow", "Underhill", "Undertree"];
+// Gnoll
+Names.gnoll = { male: {}, female: {}, other: {} };
+Names.gnoll.other.first = ["Ot", "Sru", "Gnet"];
+Names.gnoll.male.first = ["Gryzat", "Gnekerk", "Triak", "Uk"].concat(Names.gnoll.other.first);
+Names.gnoll.female.first = ["Byz", "Meih", "Nyhn", "Thiar"].concat(Names.gnoll.other.first);
+Names.gnoll.last = [ "" ]; // No last names
 // Gnome
 Names.gnome = { male: {}, female: {}, other: {} };
 Names.gnome.other.first = ["Glakpap", "Gnefipnoc", "Hednibyl", "Mansbikuc", "Mawugbert", "Zulmen"];
