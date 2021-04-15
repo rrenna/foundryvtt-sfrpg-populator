@@ -1,0 +1,36 @@
+<div class="{{cssClass}} flexcol">
+
+    <header class="sheet-header" align="center">
+        <i><u>Left-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC.</i>
+    </header>
+
+    <div class="form-group">
+        <!-- NPCs -->
+        <label for="npcGenerationButton"><b>Non-Combatant</b></label>
+        <div class="form-fields">
+            <select id="npcRaceSelect">
+                {{#each NPCRaces as |race key|}}
+                    <option>{{ race.name }}</option>
+                {{/each}}
+            </select>
+        </div>
+        <br/>
+        <button class="control npcGenerationButton" type="submit" name="submit" title="Generate NPCs">
+            <i class="fas fa-male"></i> Generate NPCs
+        </button>
+        <br/>
+        <br/>
+        <!-- Monsters -->
+        <label for="monsterGenerationButton"><b>Monsters</b></label>
+        <button class="control monsterGenerationButton" disabled type="submit" name="submit" title="Generate Monsters">
+            <i class="fas fa-pastafarianism"></i><i>(COMING SOON)</i>
+        </button>
+
+        <footer class="sheet-footer">
+            <h6 align="center">
+            For the latest development news and FAQ on Populator click <a href="https://github.com/rrenna/foundryvtt-sfrpg-populator">here</a>
+            </h6>
+        </footer>
+    </div>
+
+</div>

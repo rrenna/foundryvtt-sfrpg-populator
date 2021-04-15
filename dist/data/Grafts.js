@@ -1,7 +1,9 @@
+import CreatureTypeGraft from "../models/CreatureTypeGraft.js";
 export const Grafts = {
     creatureType: {
-        humanoid: "humanoid",
-        monstrousHumanoid: "monstrous humanoid"
+        animal: new CreatureTypeGraft("animal"),
+        humanoid: new CreatureTypeGraft("humanoid"),
+        monstrousHumanoid: new CreatureTypeGraft("monstrous humanoid")
     },
     creatureSubtype: {
         android: "android",

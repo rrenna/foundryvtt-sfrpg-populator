@@ -1,7 +1,7 @@
-declare var Hooks;
+import { Populator } from "../Populator.js";
 
 // MARK: Hooks
-import {Populator} from "../Populator.js";
+declare var Hooks;
 
 // Ensure the "Populate" button is visible.
 Hooks.on("renderSidebarTab", async (app) => {

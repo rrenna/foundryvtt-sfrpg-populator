@@ -1,5 +1,8 @@
 import { Races }  from "./data/Races.js";
 import { NPCFactory } from './NPCFactory.js'
+import PopulatorPanelController from "./controllers/PopulatorPanelController.js";
+import MonsterWizardPanel1Controller from "./controllers/MonsterWizardPanel1Controller.js";
+import NPCCreationContext from "./models/NPCCreationContext.js";
 declare var game;
 
 export class Populator {
@@ -16,15 +19,15 @@ export class Populator {
         const actorFooter = actorsPanel.getElementsByClassName("directory-footer")[0];
         if (actorFooter) {
             populatorButton = document.createElement("button");
-            populatorButton.innerHTML = `<i id="populator-button" class="fas fa-user-astronaut"></i>Populate`;
-            populatorButton.onclick = ev => Populator.createNPCTapped();
-            populatorButton.oncontextmenu = ev => Populator.createSpecificNPCTapped();
+            populatorButton.innerHTML = `<i id="populator-button" class="fas fa-user-astronaut"></i>Populator`;
+            populatorButton.onclick = ev => Populator.populateClicked();
+            populatorButton.oncontextmenu = ev => Populator.populateRightClicked();
             const createEntityButton = actorFooter.getElementsByClassName("create-entity")[0];
             actorFooter.insertBefore(populatorButton, createEntityButton);
         }
     }
 
-    static async createNPCTapped() {
+    static async populateClicked() {
 
         // Settings
         const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
@@ -32,23 +35,18 @@ export class Populator {
 
         let options = { CR: defaultCR, dynamicTokenImages: dynamicTokenImages, race: null, gender: null};
 
-        await NPCFactory.makeNPC(options);
+        await NPCFactory.makeNonHostile(options);
         ui.notifications.info("NPC created.", { permanent: false });
     }
-    // Currently a convenience for debugging, but will be expanded into a "quick create" option
-    // and the main tap would open an options window
-    static async createSpecificNPCTapped() {
 
-        // Settings
-        const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
-        const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
+    static async populateRightClicked() {
 
-        let options = { CR: defaultCR, dynamicTokenImages: dynamicTokenImages, race: null, gender: null};
+        // Open monster wizard panel
+        //let monsterWizardPanelController = new MonsterWizardPanel1Controller(new NPCCreationContext());
+        //monsterWizardPanelController.render(true);
 
-        // Quickly creates a specific race - currently hardcoded to Drow
-        options.race = Races.nonCombatantRaces["drow"];
-
-        await NPCFactory.makeNPC(options);
-        ui.notifications.info("NPC created.", { permanent: false });
+        // Open populator panel
+        let populatorPanel = new PopulatorPanelController();
+        populatorPanel.render(true);
     }
 }

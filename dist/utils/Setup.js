@@ -1,4 +1,3 @@
-// MARK: Hooks
 import { Populator } from "../Populator.js";
 // Ensure the "Populate" button is visible.
 Hooks.on("renderSidebarTab", async (app) => {

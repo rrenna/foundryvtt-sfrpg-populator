@@ -1,0 +1,43 @@
+<div class="{{cssClass}} flexcol">
+
+    <header class="sheet-header">
+        <i>Choose the <b>Array</b>, <b>Type</b> and <b>Subtype</b>.</i>
+    </header>
+
+    <div class="form-group">
+        <!-- Array -->
+        <label for="arraySelect"><b>Array</b></label>
+        <div class="form-fields">
+            <select name="selectedArray">
+            {{#select selectedArray}}
+                {{#each arrays as |array key|}}
+                    <option value="{{array.name}}">{{ array.name }}</option>
+                {{/each}}
+            {{/select}}
+            </select>
+        </div>
+        <br/>
+        <!-- CR -->
+        <label for="crSelect"><b>CR</b></label>
+        <div class="form-fields">
+            <select name="selectedCR">
+                {{#each CRs as |CR key|}}
+                    <option value="CR">{{ CR }}</option>
+                {{/each}}
+            </select>
+        </div>
+        <br/>
+        <!-- Creature Type -->
+        <label for="crSelect"><b>CR</b></label>
+        <div class="form-fields">
+            <select name="selectedCreatureType">
+                {{#each creatureTypes as |creatureType key|}}
+                    <option value="key">{{ creatureType.name }}</option>
+                {{/each}}
+            </select>
+        </div>
+        <br/>
+    </div>
+
+    <button class="nextButton">Next</button>
+</div>

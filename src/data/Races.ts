@@ -1,7 +1,6 @@
-import {Grafts} from "./Grafts.js";
+import { Grafts } from "./Grafts.js";
 
 export const Races = {
-
     // A list of humanoid type races which will randomly be generated (generally for non-combat NPCs)
     nonCombatantRaces: {
         "android": {name:"android", size: "medium", creatureTypeGraft: Grafts.creatureType.humanoid, creatureSubtypeGraft: Grafts.creatureSubtype.android},

@@ -5,10 +5,12 @@ import { MonsterCreation }  from "./data/MonsterCreation.js";
 import { BundledRaces, Races }  from "./data/Races.js";
 import { Randomizer } from "./Randomizer.js";
 import { WeaponFactory } from "./WeaponFactory.js";
+import CreatureTypeGraft from "./models/CreatureTypeGraft.js";
 
 export class NPCFactory {
 
-    static async makeNPC(options = {CR: "1/3", dynamicTokenImages: false, race: null, gender: null}) {
+    // Produces a non-hostile NPC from a subset of races
+    static async makeNonHostile(options = {CR: "1/3", dynamicTokenImages: false, race: null, gender: null}) {
 
         let actorData = {name: "Generated Actor", type: "npc"};
         let actor = await Actor.create(actorData);
@@ -182,18 +184,18 @@ export class NPCFactory {
         if(race.creatureSubtypeGraft) {
             await this.applyCreatureSubtypeGraft(actor, context, race.creatureSubtypeGraft);
             // Apply type in "<creature type>(<creature subtype>)" format
-            actorUpdate["data.details.type"] = race.creatureTypeGraft + " (" + race.creatureSubtypeGraft + ")";
+            actorUpdate["data.details.type"] = race.creatureTypeGraft.name + " (" + race.creatureSubtypeGraft + ")";
         }
         else {
             // Apply type in "<creature type>" format
-            actorUpdate["data.details.type"] = race.creatureTypeGraft;
+            actorUpdate["data.details.type"] = race.creatureTypeGraft.name;
         }
 
         // Update actor
         await actor.update(actorUpdate);
     }
 
-    static async applyCreatureTypeGraft(actor, context, graft) {
+    static async applyCreatureTypeGraft(actor, context, graft: CreatureTypeGraft) {
         let actorUpdate = {};
 
         if (graft === Grafts.creatureType.humanoid) {
@@ -215,7 +217,7 @@ export class NPCFactory {
             actorUpdate["data.traits.senses"] = "darkvision 60 ft.";
         }
 
-        actorUpdate["data.details.raceAndGrafts"] = actor.data.data.details.raceAndGrafts + " " + graft;
+        actorUpdate["data.details.raceAndGrafts"] = actor.data.data.details.raceAndGrafts + " " + graft.name;
 
         // Update actor
         await actor.update(actorUpdate);
