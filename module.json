@@ -1,10 +1,19 @@
 {
+    "manifestPlusVersion": "1.1.0",
     "name": "foundryvtt-sfrpg-populator",
     "title": "Starfinder Populator",
     "type": "module",
     "description": "A module to create aliens of all shapes and sizes.",
     "version": "0.0.1",
     "author": "rrenna",
+    "authors": [
+        {
+            "name": "rrenna",
+            "discord": "rrenna#0889",
+            "twitter": "@rrenna",
+            "ko-fi": "rrenna"
+        }
+    ],
     "systems": ["sfrpg"],
     "esmodules": ["dist/Populator.js", "dist/utils/Setup.js"],
     "styles": [],
