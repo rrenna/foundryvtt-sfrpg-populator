@@ -18,22 +18,32 @@ export class Randomizer {
         return alignmentDistribution.name;
     }
     // NOTE: For now we assume male if no gender provided
-    static randomName(forRace = null, gender = "male") {
+    static randomName(context) {
+        var _a, _b;
+        let race = context.race;
+        let creatureType = (_a = context.creatureTypeGraft) === null || _a === void 0 ? void 0 : _a.name;
+        let gender = (_b = context.gender) !== null && _b !== void 0 ? _b : "male";
         var format = Names.default.format;
         var names = Names.default; // Default is human sounding names
         // If a race is specified and we have special names for that race
-        if (forRace && Names[forRace] != undefined) {
-            names = Names[forRace];
+        if (race && Names[race] != undefined) {
+            names = Names[race];
+        }
+        // Otherwise use creature type to generate name
+        else if (Names[creatureType] != undefined) {
+            names = Names[creatureType];
         }
         //
         var first = names.male.first; // Default is male sounding names
         var last = names.last;
         // Gender specific first names
-        if (gender == "male") { } // do nothing
+        if (gender == "male") {
+        } // do nothing
         else if (gender == "female" && names.female != undefined) {
             first = names.female.first;
         }
-        else if (names.other != undefined) { // If any other gender, and we have `other` defined for the race
+        else if (names.other != undefined) {
+            // If any other gender, and we have `other` defined for the race
             first = names.other.first;
         }
         let firstName = first[Math.floor(Math.random() * first.length)];

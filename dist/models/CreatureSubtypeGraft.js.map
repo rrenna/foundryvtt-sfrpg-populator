@@ -1,0 +1,1 @@
+{"version":3,"file":"CreatureSubtypeGraft.js","sourceRoot":"","sources":["../../src/models/CreatureSubtypeGraft.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,oBAAoB;IAGrC,YAAY,IAAY,EAAE,WAAmB;QACzC,IAAI,CAAC,IAAI,GAAG,IAAI,CAAA;QAChB,IAAI,CAAC,WAAW,GAAG,WAAW,CAAA;IAClC,CAAC;CACJ"}

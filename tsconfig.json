@@ -9,7 +9,8 @@
         "allowJs": true,
         "checkJs":  true,
         /* Strict Type-Checking Options */
-        "strict": false /* Enable all strict type-checking options. */
+        "strict": true, /* Enable all strict type-checking options. */
+        "noImplicitAny": false /* https://www.typescriptlang.org/tsconfig#noImplicitThis */
     },
     "include": ["src/**/*"],
     "exclude": [

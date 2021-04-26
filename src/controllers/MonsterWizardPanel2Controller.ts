@@ -1,21 +1,22 @@
-import NPCCreationContext from "../models/NPCCreationContext.js";
+import NPCCreationContext from "../models/NPCCreationContext.js"
 
 export default class MonsterWizardPanel2Controller extends FormApplication {
-
     constructor(context: NPCCreationContext) {
-        super();
+        super()
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions,  {
+        return mergeObject(super.defaultOptions, {
             id: "populator-panel",
-            template: "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_2.html",
+            classes: ["sfrpg"],
+            template:
+                "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_2.html",
             width: 300,
             height: 300,
             minimizable: true,
             resizable: true,
             title: "Create Monster (2/2)"
-        });
+        })
     }
 
     /**
@@ -35,7 +36,6 @@ export default class MonsterWizardPanel2Controller extends FormApplication {
         return mergeObject(super.getData(), {
             options: options,
             isGM: game.user.isGM
-        });
+        })
     }
-
 }

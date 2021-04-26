@@ -1,6 +1,35 @@
+import { CR, MonsterReferenceSymbol } from "../data/MonsterCreation.js";
 export default class NPCCreationContext {
     constructor() {
-        this.creatureTypeGraft = null;
+        this.CR = CR[0]; // defaults to lowest CR
+        this.monsterReferenceSymbol = MonsterReferenceSymbol.combatant; // defaults to combatant
+        this.tokenOptions = new TokenOptions(false);
+        // Skills - in addition to the array master/good skills
+        this.masterSkills = [];
+        this.goodSkills = [];
+        // Abilities - locked ability modifiers from grafts/special abilities
+        this.abilities = []; // `null` refers to no ability ie. mindless (not yet implemented in SFRPG)
+        // Senses
+        this.senses = [];
+        // Immunities
+        this.damageImmunities = [];
+        this.conditionImmunities = [];
+        // Special abilities
+        this.universalCreatureRules = [];
+        // Item generation
+        this.naturalWeapons = { enabled: false, racial: false };
+        this.rangedWeapon = { enabled: false }; // NOTE: This will be fleshed out and expanded over time
+        this.itemsToAdd = [];
+        this.generateAdditionalItems = true; // Generates "junk" and character appropriate items
+        // Biography
+        this.generatePersonality = true; // Will try to generate a biography for the creature, generally only used for non-combat NPCs
+        // Debugging / auditing
+        this.log = []; // We record each mutation applied
+    }
+}
+export class TokenOptions {
+    constructor(dynamicImage) {
+        this.dynamicImage = dynamicImage;
     }
 }
 //# sourceMappingURL=NPCCreationContext.js.map

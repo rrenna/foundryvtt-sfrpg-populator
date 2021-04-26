@@ -1,0 +1,1 @@
+{"version":3,"file":"IApplyable.js","sourceRoot":"","sources":["../../../src/models/Interfaces/IApplyable.ts"],"names":[],"mappings":"AAMA,MAAM,CAAC,KAAK,UAAU,KAAK,CACvB,KAAK,EACL,OAA2B,EAC3B,GAAG,UAAwB;IAE3B,KAAK,IAAI,SAAS,IAAI,UAAU,EAAE;QAC9B,MAAM,SAAS,CAAC,KAAK,CAAC,KAAK,EAAE,OAAO,CAAC,CAAA;KACxC;IAED,uBAAuB;IACvB,OAAO,CAAC,EAAE,EAAE,EAAE,CAAC,CAAA;AACnB,CAAC"}

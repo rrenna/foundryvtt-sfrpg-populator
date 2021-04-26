@@ -1,26 +1,28 @@
-import {CR, MonsterCreation} from "../data/MonsterCreation.js";
-import { Grafts } from "../data/Grafts.js";
+import { CR, MonsterCreation } from "../data/MonsterCreation.js"
+import { Grafts } from "../data/Grafts.js"
 import NPCCreationContext from "../models/NPCCreationContext.js"
-import MonsterWizardPanel2Controller from "./MonsterWizardPanel2Controller.js";
+import MonsterWizardPanel2Controller from "./MonsterWizardPanel2Controller.js"
 
 export default class MonsterWizardPanel1Controller extends FormApplication {
+    private context: NPCCreationContext
 
-    private context: NPCCreationContext;
     constructor(context: NPCCreationContext) {
-        super();
-        this.context = context;
+        super()
+        this.context = context
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions,  {
+        return mergeObject(super.defaultOptions, {
             id: "populator-panel",
-            template: "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_1.html",
+            classes: ["sfrpg"],
+            template:
+                "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_1.html",
             width: 300,
             height: 300,
             minimizable: true,
             resizable: true,
             title: "Create Monster (1/2)"
-        });
+        })
     }
 
     /**
@@ -30,7 +32,9 @@ export default class MonsterWizardPanel1Controller extends FormApplication {
      */
     public activateListeners(html: JQuery<HTMLElement>) {
         // Listener for when a day is clicked
-        (<JQuery>html).find(".nextButton").on('click', this.onNextButtonClicked.bind(this));
+        ;(<JQuery>html)
+            .find(".nextButton")
+            .on("click", this.onNextButtonClicked.bind(this))
         //html.find('select[name="selectedArray"]').change(this.onSelectedArrayChanged.bind(this));
     }
 
@@ -47,14 +51,14 @@ export default class MonsterWizardPanel1Controller extends FormApplication {
             arrays: MonsterCreation.arrays,
             CRs: CR,
             creatureTypes: Grafts.creatureType
-        });
+        })
     }
 
     onNextButtonClicked(e: Event) {
-
-        let monsterWizardPanelController = new MonsterWizardPanel2Controller(this.context);
-        monsterWizardPanelController.render(true);
-
+        let monsterWizardPanelController = new MonsterWizardPanel2Controller(
+            this.context
+        )
+        monsterWizardPanelController.render(true)
     }
     async onSelectedArrayChanged(e: Event) {
         //e.target.value

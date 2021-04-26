@@ -9,6 +9,7 @@ export default class MonsterWizardPanel1Controller extends FormApplication {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: "populator-panel",
+            classes: ["sfrpg"],
             template: "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_1.html",
             width: 300,
             height: 300,
@@ -24,7 +25,10 @@ export default class MonsterWizardPanel1Controller extends FormApplication {
      */
     activateListeners(html) {
         // Listener for when a day is clicked
-        html.find(".nextButton").on('click', this.onNextButtonClicked.bind(this));
+        ;
+        html
+            .find(".nextButton")
+            .on("click", this.onNextButtonClicked.bind(this));
         //html.find('select[name="selectedArray"]').change(this.onSelectedArrayChanged.bind(this));
     }
     /**

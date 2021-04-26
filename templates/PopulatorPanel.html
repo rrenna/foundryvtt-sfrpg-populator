@@ -1,29 +1,39 @@
 <div class="{{cssClass}} flexcol">
 
     <header class="sheet-header" align="center">
-        <i><u>Left-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC.</i>
+        <i><u>Right-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC.</i>
     </header>
 
     <div class="form-group">
         <!-- NPCs -->
-        <label for="npcGenerationButton"><b>Non-Combatant</b></label>
+        <label for="npcGenerationButton"><b>NPC</b></label>
+        <i class="far fa-question-circle" title="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>
         <div class="form-fields">
             <select id="npcRaceSelect">
                 {{#each NPCRaces as |race key|}}
-                    <option>{{ race.name }}</option>
+                    <option value={{ key }} >{{ race.name }}</option>
                 {{/each}}
             </select>
         </div>
         <br/>
-        <button class="control npcGenerationButton" type="submit" name="submit" title="Generate NPCs">
+        <button id="npcGenerationButton" class="control dialog-button npcGenerationButton" type="submit" name="submit" title="Generate NPC">
             <i class="fas fa-male"></i> Generate NPCs
         </button>
         <br/>
         <br/>
         <!-- Monsters -->
         <label for="monsterGenerationButton"><b>Monsters</b></label>
-        <button class="control monsterGenerationButton" disabled type="submit" name="submit" title="Generate Monsters">
-            <i class="fas fa-pastafarianism"></i><i>(COMING SOON)</i>
+        <i class="far fa-question-circle" title="Generates a 'monster' NPC which is generally non-humanoid. Generally used for roaming monsters."></i>
+        <div class="form-fields">
+            <select id="monsterTypeSelect">
+                {{#each supportedCreatureTypes as |generatorTypeOption key|}}
+                <option value={{ key }} >{{ key }}</option>
+                {{/each}}
+            </select>
+        </div>
+        <br/>
+        <button id="monsterGenerationButton" class="control monsterGenerationButton" type="submit" name="submit" title="Generate Monsters">
+            <i class="fas fa-pastafarianism"></i>Generate Monster
         </button>
 
         <footer class="sheet-footer">

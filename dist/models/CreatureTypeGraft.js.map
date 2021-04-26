@@ -1,1 +1,1 @@
-{"version":3,"file":"CreatureTypeGraft.js","sourceRoot":"","sources":["../../src/models/CreatureTypeGraft.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,iBAAiB;IAElC,YAAY,IAAY;QACpB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACrB,CAAC;CACJ"}
+{"version":3,"file":"CreatureTypeGraft.js","sourceRoot":"","sources":["../../src/models/CreatureTypeGraft.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,iBAAiB;IAMlC,YACI,IAAY,EACZ,WAAmB,EACnB,sBAA+B,IAAI;QAEnC,IAAI,CAAC,IAAI,GAAG,IAAI,CAAA;QAChB,IAAI,CAAC,WAAW,GAAG,WAAW,CAAA;QAC9B,IAAI,CAAC,mBAAmB,GAAG,mBAAmB,CAAA;IAClD,CAAC;CACJ"}

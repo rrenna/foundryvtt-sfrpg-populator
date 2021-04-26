@@ -7,13 +7,13 @@ Populate your Starfinder world with life of all shapes and sizes.
 - Intelligently randomizes the token image of NPCs when placed in a scene (optional setting, *off* by default)
 
 ## FAQ:
-*Q: Does Populator just pick a random race?*
+*Q: Does Populator just pick a random race when quickly making an NPC?*
 
-**A: No I follow the distribution of races found on Absalom Station. This is also why I am focusing on a subset of races for now. This will soon be customizable.**
+**A: No I follow the distribution of races found on Absalom Station.  As of `0.1.X` you can create an NPC of your specific desired race.
 
 *Q: What races does populator currently support?*
 
-**A: Android, Dwarf, Drow, Gnome, Gnoll, Human, Halfling, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
+**A: Android, Dwarf, Drow, Gnome, Gnoll, Half-Elf, Half-Orc, Halfling, Human, Hobgoblin, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
 
 *Q: So how do you pick attribute and skill modifiers?*
 
@@ -25,7 +25,7 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 *Q: Why doesn't populator generate monsters though!?*
 
-**A: Because that's hard and I haven't done it yet**
+**A: ~~Because that's hard and I haven't done it yet~~ Work is underway, you can experiment with what's currently live to create basic monsters starting in  release `0.1.X` **
 
 *Q: This would be way better if it did this other specific thing!*
 

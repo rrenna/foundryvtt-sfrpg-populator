@@ -28,7 +28,7 @@ export class Utils {
             Utils.log("No search string specified.");
             return null;
         }
-        let compendium = game.packs.find(element => element.metadata.name.includes(compendiumName));
+        let compendium = game.packs.find((element) => element.metadata.name.includes(compendiumName));
         if (compendium == undefined) {
             Utils.log("Could not find compendium named " + compendiumName + ".");
             return null;
@@ -36,13 +36,20 @@ export class Utils {
         // Let the compendium load
         await compendium.getIndex();
         let rawString = this.parseSubtext(searchString)[0];
-        let terms = rawString.toLowerCase().replace("(ex)", "").replace("(su)", "").replace("(sp)", "").trim().replace(/[*,;()\[\]'"]/g, "").split(' ');
+        let terms = rawString
+            .toLowerCase()
+            .replace("(ex)", "")
+            .replace("(su)", "")
+            .replace("(sp)", "")
+            .trim()
+            .replace(/[*,;()\[\]'"]/g, "")
+            .split(" ");
         let entryWeWant = null;
         for (let entry of compendium.index) {
             var rawEntryName = this.parseSubtext(entry.name)[0];
             // TODO: Don't need to do this every iteration in the loop can set state `babeleActive` somewhere above
             // A translation module is active
-            if ((_a = game.modules.get('babele')) === null || _a === void 0 ? void 0 : _a.active) {
+            if ((_a = game.modules.get("babele")) === null || _a === void 0 ? void 0 : _a.active) {
                 for (let key in compendium.translations) {
                     let translation = compendium.translations[key];
                     if (translation.name == entry.name) {
@@ -51,8 +58,13 @@ export class Utils {
                     }
                 }
             }
-            let entryName = rawEntryName.toLowerCase().replace("(ex)", "").replace("(su)", "").replace("(sp)", "").trim();
-            let entryTerms = entryName.replace(/[*,;()\[\]'"]/g, "").split(' ');
+            let entryName = rawEntryName
+                .toLowerCase()
+                .replace("(ex)", "")
+                .replace("(su)", "")
+                .replace("(sp)", "")
+                .trim();
+            let entryTerms = entryName.replace(/[*,;()\[\]'"]/g, "").split(" ");
             if (terms.length !== entryTerms.length) {
                 continue;
             }
@@ -109,6 +121,9 @@ export class Utils {
         raceName = raceName.replace(" /", "/");
         return this.fuzzyFindCompendiumAsync("races", raceName);
     }
+    static async fuzzyFindUniversalCreatureRule(universalCreatureRuleName) {
+        return await this.fuzzyFindCompendiumAsync("universal-creature-rules", universalCreatureRuleName);
+    }
     static async fuzzyFindSpellAsync(spellName) {
         spellName = spellName.replace("/ ", "/");
         spellName = spellName.replace(" /", "/");
@@ -119,11 +134,13 @@ export class Utils {
     }
 }
 Utils.parseSubtext = (value) => {
-    let startSubtextIndex = value.indexOf('(');
-    let endSubtextIndex = value.indexOf(')');
+    let startSubtextIndex = value.indexOf("(");
+    let endSubtextIndex = value.indexOf(")");
     if (startSubtextIndex > -1 && endSubtextIndex > startSubtextIndex) {
         let baseValue = value.substring(0, startSubtextIndex).trim();
-        let subValue = value.substring(startSubtextIndex + 1, endSubtextIndex).trim();
+        let subValue = value
+            .substring(startSubtextIndex + 1, endSubtextIndex)
+            .trim();
         return [baseValue, subValue];
     }
     else {
