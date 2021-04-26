@@ -37,7 +37,7 @@ export class Populator {
             CR: defaultCR,
             dynamicTokenImages: dynamicTokenImages,
             race: null,
-            gender: null,
+            gender: null
         };
         let context = new NPCCreationContext();
         context.CR = defaultCR;

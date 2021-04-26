@@ -2,7 +2,7 @@ import { NPCFactory } from "./factories/NPCFactory.js"
 import PopulatorPanelController from "./controllers/PopulatorPanelController.js"
 import MonsterWizardPanel1Controller from "./controllers/MonsterWizardPanel1Controller.js"
 import NPCCreationContext, {
-    TokenOptions,
+    TokenOptions
 } from "./models/NPCCreationContext.js"
 declare var game
 
@@ -57,7 +57,7 @@ export class Populator {
             CR: defaultCR,
             dynamicTokenImages: dynamicTokenImages,
             race: null,
-            gender: null,
+            gender: null
         }
 
         let context = new NPCCreationContext()
