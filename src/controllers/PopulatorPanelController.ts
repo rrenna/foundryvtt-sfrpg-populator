@@ -11,6 +11,14 @@ import { CreatureTypeGenerationOptions } from "../data/Generator.js"
 import { Subtype, Type } from "../data/Types.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 
+// Options provided to the Populator panel - adds folderId to default options
+export class PopulatorPanelOptions implements Application.Options {
+    folderId: string | undefined
+    constructor(folderId: string | undefined) {
+        this.folderId = folderId
+    }
+}
+
 export default class PopulatorPanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -88,7 +96,13 @@ export default class PopulatorPanelController extends Application {
 
         // Context
         let context = new NPCCreationContext()
+
+        // CR
         context.CR = defaultCR
+
+        // Location
+        context.folderId = this.options["folderId"]
+
         // Validates selected race name
         if (Races.nonCombatantRaces[selectedRace]) {
             context.race = selectedRace
@@ -121,6 +135,11 @@ export default class PopulatorPanelController extends Application {
 
         // Context
         let context = new NPCCreationContext()
+
+        // Location
+        context.folderId = this.options["folderId"]
+
+        // CR
         context.CR = defaultCR
 
         // Validates selected type

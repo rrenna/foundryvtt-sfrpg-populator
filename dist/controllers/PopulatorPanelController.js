@@ -4,6 +4,12 @@ import NPCCreationContext from "../models/NPCCreationContext.js";
 import { Grafts } from "../data/Grafts.js";
 import { CreatureTypeGenerationOptions } from "../data/Generator.js";
 import { Subtype, Type } from "../data/Types.js";
+// Options provided to the Populator panel - adds folderId to default options
+export class PopulatorPanelOptions {
+    constructor(folderId) {
+        this.folderId = folderId;
+    }
+}
 export default class PopulatorPanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -70,7 +76,10 @@ export default class PopulatorPanelController extends Application {
         const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
         // Context
         let context = new NPCCreationContext();
+        // CR
         context.CR = defaultCR;
+        // Location
+        context.folderId = this.options["folderId"];
         // Validates selected race name
         if (Races.nonCombatantRaces[selectedRace]) {
             context.race = selectedRace;
@@ -95,6 +104,9 @@ export default class PopulatorPanelController extends Application {
         const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
         // Context
         let context = new NPCCreationContext();
+        // Location
+        context.folderId = this.options["folderId"];
+        // CR
         context.CR = defaultCR;
         // Validates selected type
         if (Grafts.creatureType[selectedType]) {

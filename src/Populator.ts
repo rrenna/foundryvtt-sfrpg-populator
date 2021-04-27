@@ -1,5 +1,7 @@
 import { NPCFactory } from "./factories/NPCFactory.js"
-import PopulatorPanelController from "./controllers/PopulatorPanelController.js"
+import PopulatorPanelController, {
+    PopulatorPanelOptions
+} from "./controllers/PopulatorPanelController.js"
 import MonsterWizardPanel1Controller from "./controllers/MonsterWizardPanel1Controller.js"
 import NPCCreationContext, {
     TokenOptions

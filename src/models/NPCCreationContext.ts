@@ -3,6 +3,9 @@ import CreatureSubtypeGraft from "./CreatureSubtypeGraft.js"
 import { CR, Gender, MonsterReferenceSymbol } from "../data/MonsterCreation.js"
 
 export default class NPCCreationContext {
+    // Locations
+    public folderId: string | undefined
+    //
     public race: string | undefined
     public gender: Gender | undefined
     public CR: string = CR[0] // defaults to lowest CR

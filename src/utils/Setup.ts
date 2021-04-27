@@ -1,4 +1,7 @@
 import { Populator } from "../Populator.js"
+import PopulatorPanelController, {
+    PopulatorPanelOptions
+} from "../controllers/PopulatorPanelController.js"
 
 // MARK: Hooks
 declare var Hooks
@@ -8,6 +11,25 @@ Hooks.on("renderSidebarTab", async (app) => {
     if (app.options.id == "actors") {
         Populator.ensurePopulateVisible()
     }
+})
+
+//
+Hooks.on("getActorDirectoryFolderContext", async (html, folderOptions) => {
+    folderOptions = folderOptions.push({
+        name: "Populator",
+        icon: '<i class="fas fa-user-astronaut"></i>',
+        condition: game.user.isGM,
+        callback: (header) => {
+            const li = header.parent()
+            let folderId = li.data("folderId")
+
+            // Open populator panel
+            let populatorPanel = new PopulatorPanelController(
+                new PopulatorPanelOptions(folderId)
+            )
+            populatorPanel.render(true)
+        }
+    })
 })
 
 // Adds options

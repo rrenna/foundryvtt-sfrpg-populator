@@ -19,7 +19,11 @@ import { AbilityScore } from "../data/AbilityScores.js";
 export class NPCFactory {
     // Produces a non-hostile NPC from a subset of races
     static async makeNonHostile(context) {
-        let actorData = { name: "Generated Actor", type: "npc" };
+        let actorData = {
+            name: "Generated Actor",
+            type: "npc",
+            folder: context.folderId
+        };
         let actor = await Actor.create(actorData);
         // Non-combatants are always experts
         context.monsterReferenceSymbol = MonsterReferenceSymbol.expert;
@@ -27,7 +31,11 @@ export class NPCFactory {
         await this.makeNPC(actor, context);
     }
     static async makeHostile(context) {
-        let actorData = { name: "Generated Actor", type: "npc" };
+        let actorData = {
+            name: "Generated Actor",
+            type: "npc",
+            folder: context.folderId
+        };
         let actor = await Actor.create(actorData);
         // If no type set we randomly generate
         if (!context.creatureTypeGraft) {
