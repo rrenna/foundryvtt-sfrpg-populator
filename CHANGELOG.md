@@ -1,3 +1,7 @@
+## 0.1.8
+### Added
+- Folder support
+
 ## 0.1.7
 ### Added
 - Tippy tooltips
