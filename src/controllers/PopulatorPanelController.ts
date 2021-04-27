@@ -11,8 +11,6 @@ import { CreatureTypeGenerationOptions } from "../data/Generator.js"
 import { Subtype, Type } from "../data/Types.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 
-declare var tippy
-
 export default class PopulatorPanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
