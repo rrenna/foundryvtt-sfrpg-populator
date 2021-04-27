@@ -7,7 +7,7 @@
     <div class="form-group">
         <!-- NPCs -->
         <label for="npcGenerationButton"><b>NPC</b></label>
-        <i class="far fa-question-circle" title="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>
         <div class="form-fields">
             <select id="npcRaceSelect">
                 {{#each NPCRaces as |race key|}}
@@ -16,14 +16,14 @@
             </select>
         </div>
         <br/>
-        <button id="npcGenerationButton" class="control dialog-button npcGenerationButton" type="submit" name="submit" title="Generate NPC">
+        <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC (expert Array)">
             <i class="fas fa-male"></i> Generate NPCs
         </button>
         <br/>
         <br/>
         <!-- Monsters -->
         <label for="monsterGenerationButton"><b>Monsters</b></label>
-        <i class="far fa-question-circle" title="Generates a 'monster' NPC which is generally non-humanoid. Generally used for roaming monsters."></i>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates a 'monster' NPC which is generally non-humanoid. Generally used for roaming monsters."></i>
         <div class="form-fields">
             <select id="monsterTypeSelect">
                 {{#each supportedCreatureTypes as |generatorTypeOption key|}}
@@ -32,7 +32,7 @@
             </select>
         </div>
         <br/>
-        <button id="monsterGenerationButton" class="control monsterGenerationButton" type="submit" name="submit" title="Generate Monsters">
+        <button id="monsterGenerationButton" class="populatorButton control monsterGenerationButton" type="submit" name="submit" data-tippy-content="Generate a Monsters (combatant array)">
             <i class="fas fa-pastafarianism"></i>Generate Monster
         </button>
 

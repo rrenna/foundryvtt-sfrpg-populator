@@ -52,6 +52,8 @@ export default class PopulatorPanelController extends Application {
         html
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this));
+        tippy(".populatorInfo");
+        tippy(".populatorButton");
     }
     /**
      * Click event when a users clicks on the NPC button

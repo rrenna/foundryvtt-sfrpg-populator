@@ -11,6 +11,8 @@ import { CreatureTypeGenerationOptions } from "../data/Generator.js"
 import { Subtype, Type } from "../data/Types.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 
+declare var tippy
+
 export default class PopulatorPanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -61,6 +63,9 @@ export default class PopulatorPanelController extends Application {
         ;(<JQuery>html)
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this))
+
+        tippy(".populatorInfo")
+        tippy(".populatorButton")
     }
     /**
      * Click event when a users clicks on the NPC button
