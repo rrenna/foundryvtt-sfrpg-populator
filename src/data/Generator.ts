@@ -1,11 +1,10 @@
-import { Grafts } from "./Grafts.js"
-import CreatureTypeGraft from "../models/CreatureTypeGraft.js"
-import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 import { Subtype, Type } from "./Types.js"
 import UniversalCreatureRule from "../models/UniversalCreatureRule.js"
 import { MonsterCreation } from "./MonsterCreation.js"
 
-/// Used to store mapping between
+/// Used to represent an option available to the player on the Populator npc generation UI.
+// Will have associated special abilities & traits which should be used to help the generator make informed
+// decisions on how to construct the NPC.
 export class CreatureTypeGenerationOption {
     type: Type
     subtypes: Subtype[] | undefined

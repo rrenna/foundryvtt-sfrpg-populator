@@ -1,3 +1,4 @@
+// Collection of items used to generate random inventory of NPCs
 export const Items = {
     junk: [
         { name: "Old ticket to see Strawberry Machine Cake", description: "" },

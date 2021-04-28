@@ -1,11 +1,12 @@
 import { ApplyOutput } from "../Interfaces/IApplyable.js"
 import NPCCreationContext from "../NPCCreationContext.js"
-import Adjuster from "./Adjuster.js"
+import CreationAdjuster from "./CreationAdjuster.js"
 import { AbilityScore } from "../../data/AbilityScores.js"
+import { INPCData } from "../Interfaces/actors/INPCData.js"
 
 type SetAbilityScore = [abilityScore: AbilityScore, amount: number]
 
-export default class AbilityScoreAdjuster extends Adjuster {
+export default class AbilityScoreAdjuster extends CreationAdjuster {
     setAbilityScore: SetAbilityScore | undefined
 
     // Set ability score value
@@ -14,14 +15,28 @@ export default class AbilityScoreAdjuster extends Adjuster {
         Object.assign(this, abilityScoreAdjuster)
     }
 
-    async apply(actor, context: NPCCreationContext): Promise<ApplyOutput> {
+    async apply(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ): Promise<ApplyOutput> {
+        let output: ApplyOutput = []
+
         if (this.setAbilityScore) {
             context.abilities.push([
                 this.setAbilityScore[0],
                 this.setAbilityScore[1]
             ])
+
+            output.push([
+                "Set <u>" +
+                    this.setAbilityScore[0] +
+                    "</u> to " +
+                    this.setAbilityScore[1] +
+                    ".",
+                ""
+            ])
         }
-        // TODO: Construct log from individual adjustors
-        return ["", ""]
+
+        return output
     }
 }

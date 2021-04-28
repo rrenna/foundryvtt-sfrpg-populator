@@ -1,8 +1,10 @@
 export async function apply(actor, context, ...applyables) {
+    let output = [];
     for (let applyable of applyables) {
-        await applyable.apply(actor, context);
+        let applyableOutput = await applyable.apply(actor, context);
+        output.push(...applyableOutput);
     }
-    // TODO: Collect output
-    return ["", ""];
+    // Return all output
+    return output;
 }
 //# sourceMappingURL=IApplyable.js.map

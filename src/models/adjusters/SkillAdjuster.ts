@@ -1,8 +1,9 @@
 import { ApplyOutput } from "../Interfaces/IApplyable.js"
 import NPCCreationContext from "../NPCCreationContext.js"
-import Adjuster from "./Adjuster.js"
+import CreationAdjuster from "./CreationAdjuster.js"
 import { MonsterSkillType } from "../../data/MonsterCreation.js"
 import { Skill } from "../../data/Skills.js"
+import { INPCData } from "../Interfaces/actors/INPCData.js"
 
 // Set total amount of good/master skills (usually used when setting to zero)
 type SetMonsterSkillCount = [skillType: MonsterSkillType, amount: number]
@@ -13,7 +14,7 @@ type MutateSkillValue = [skill: Skill, mutation: number]
 // Set specific skill as good/master skill
 type SetSkillAsMonsterSkill = [skill: Skill | Skill[], type: MonsterSkillType]
 
-export default class SkillAdjuster extends Adjuster {
+export default class SkillAdjuster extends CreationAdjuster {
     setMonsterSkillCount: SetMonsterSkillCount | undefined
     mutateMonsterSkill: MutateMonsterSkill | undefined
     mutateSkillValue: MutateSkillValue | undefined
@@ -25,7 +26,10 @@ export default class SkillAdjuster extends Adjuster {
         Object.assign(this, skillAdjuster)
     }
 
-    async apply(actor, context: NPCCreationContext): Promise<ApplyOutput> {
+    async apply(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ): Promise<ApplyOutput> {
         // Set number of good / master skills
         if (this.setMonsterSkillCount) {
             if (this.setMonsterSkillCount[0] == MonsterSkillType.good) {
@@ -67,7 +71,6 @@ export default class SkillAdjuster extends Adjuster {
 
         // TODO: MutateSkillValue logic
 
-        // TODO: Construct log from individual adjustors
-        return ["", ""]
+        return []
     }
 }

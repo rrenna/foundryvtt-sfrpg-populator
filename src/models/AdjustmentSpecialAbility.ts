@@ -14,6 +14,6 @@ export default class AdjustmentSpecialAbility implements ISpecialAbility {
 
     async apply(actor, context: NPCCreationContext): Promise<ApplyOutput> {
         // Stub
-        return ["", ""]
+        return []
     }
 }

@@ -1,7 +1,7 @@
 import SenseAdjuster from "../../models/adjusters/SenseAdjuster.js";
 import ImmunityAdjuster from "../../models/adjusters/ImmunityAdjuster.js";
 import SaveAdjuster from "../../models/adjusters/SaveAdjuster.js";
-import { Save } from "../MonsterCreation.js";
+import { Save } from "../Saves.js";
 export const SharedAdjusters = {
     Immunities: {
         constructImmunities: new ImmunityAdjuster({

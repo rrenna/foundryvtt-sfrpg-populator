@@ -1,6 +1,6 @@
 import { Grafts } from "./Grafts.js";
 import Race from "../models/Race.js";
-import { Size } from "./MonsterCreation.js";
+import { Size } from "./Sizes.js";
 export const Races = {
     // A list of humanoid type races which will randomly be generated (generally for non-combat NPCs)
     nonCombatantRaces: {

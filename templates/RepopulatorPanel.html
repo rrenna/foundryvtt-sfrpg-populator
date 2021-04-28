@@ -1,0 +1,24 @@
+<div class="{{cssClass}} flexcol">
+
+    <header class="sheet-header" align="center">
+        <i>NPC: {{ actor.data.name }}</i>
+    </header>
+
+    <div class="form-group">
+        <!-- NPCs -->
+        <label for="npcMutateButton"><b>Mutate an existing NPC</b></label>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="Upgrades an existing NPC by increasing it's CR (Experimental)."></i>
+        <div class="form-fields">
+            <select id="crSelect">
+                {{#each NPCRaces as |race key|}}
+                    <option value={{ key }} >{{ race.name }}</option>
+                {{/each}}
+            </select>
+        </div>
+        <br/>
+        <button id="npcMutateButton" class="populatorButton control dialog-button npcMutateButton" type="submit" name="submit" data-tippy-content="Mutates an existing NPC to increase it's power to match an intended CR.">
+            <i class="fas fa-male"></i> Mutate
+        </button>
+        <br/>
+    </div>
+</div>

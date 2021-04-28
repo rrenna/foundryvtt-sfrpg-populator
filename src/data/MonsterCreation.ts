@@ -1,43 +1,9 @@
 import UniversalCreatureRule from "../models/UniversalCreatureRule.js"
 import { UniversalCreatureRules } from "./universal creature rules/UniversalCreatureRules.js"
 import AdjustmentSpecialAbility from "../models/AdjustmentSpecialAbility.js"
+import { CR } from "./CRs.js"
 
-/// List of creature combat ratings
-export const CR = [
-    "1/3",
-    "1/2",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10"
-]
-
-// List of creature save types
-export enum Save {
-    fortitude = "fort",
-    reflex = "reflex",
-    willpower = "will"
-}
-
-/// List of creature gender identities
-export enum Gender {
-    male = "male",
-    female = "female",
-    nonBinary = "non-binary"
-}
-
-/// List of creature sizes
-export enum Size {
-    small,
-    medium,
-    large
-}
+/// Monster Creation rules (Arrays, Special abilities) and some common monster/npc types
 
 /// List of Monster Reference Symbols
 export enum MonsterReferenceSymbol {
@@ -157,63 +123,63 @@ export const MonsterCreation = {
                     energy: "1d4",
                     kinetic: "1d4",
                     standard: "1d4 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "1/2": {
                     high: 4,
                     low: 2,
                     energy: "1d4",
                     kinetic: "1d4",
                     standard: "1d4 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "1": {
                     high: 6,
                     low: 4,
                     energy: "1d4+1",
                     kinetic: "1d4+1",
                     standard: "1d4 + 1 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "2": {
                     high: 8,
                     low: 6,
                     energy: "1d4+2",
                     kinetic: "1d4+2",
                     standard: "1d4 + 2 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "3": {
                     high: 9,
                     low: 7,
                     energy: "1d4+3",
                     kinetic: "1d4+3",
                     standard: "1d4 + 3 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "4": {
                     high: 10,
                     low: 8,
                     energy: "1d4+4",
                     kinetic: "1d4+4",
                     standard: "1d4 + 4 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "5": {
                     high: 12,
                     low: 10,
                     energy: "1d4+5",
                     kinetic: "1d6+5",
                     standard: "1d4 + 5 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "6": {
                     high: 14,
                     low: 12,
                     energy: "1d6+6",
                     kinetic: "1d8+6",
                     standard: "1d6 + 6 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "7": {
                     high: 15,
                     low: 13,
                     energy: "1d8+7",
                     kinetic: "1d12+7",
                     standard: "1d8 + 7 + @abilities.str.mod"
-                } as IMainArrayRow
+                } as IAttackArrayRow
             }
         },
         combatant: {
@@ -318,63 +284,63 @@ export const MonsterCreation = {
                     energy: "1d4",
                     kinetic: "1d4",
                     standard: "1d6 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "1/2": {
                     high: 6,
                     low: 3,
                     energy: "1d4",
                     kinetic: "1d6",
                     standard: "1d6 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "1": {
                     high: 8,
                     low: 5,
                     energy: "1d4+1",
                     kinetic: "1d6+1",
                     standard: "1d6 + 1 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "2": {
                     high: 10,
                     low: 7,
                     energy: "1d4+2",
                     kinetic: "1d6+2",
                     standard: "1d6 + 2 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "3": {
                     high: 11,
                     low: 8,
                     energy: "1d4+3",
                     kinetic: "1d6+3",
                     standard: "1d6 + 3 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "4": {
                     high: 12,
                     low: 9,
                     energy: "1d4+4",
                     kinetic: "1d6+4",
                     standard: "1d6 + 4 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "5": {
                     high: 14,
                     low: 11,
                     energy: "1d6+5",
                     kinetic: "1d8+5",
                     standard: "1d6 + 5 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "6": {
                     high: 16,
                     low: 13,
                     energy: "1d10+6",
                     kinetic: "2d6+6",
                     standard: "1d8 + 6 + @abilities.str.mod"
-                } as IMainArrayRow,
+                } as IAttackArrayRow,
                 "7": {
                     high: 17,
                     low: 14,
                     energy: "2d6+7",
                     kinetic: "2d8+7",
                     standard: "2d6 + 7 + @abilities.str.mod"
-                } as IMainArrayRow
+                } as IAttackArrayRow
             }
         }
     },

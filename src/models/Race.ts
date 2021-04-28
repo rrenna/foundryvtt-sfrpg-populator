@@ -1,4 +1,4 @@
-import { Size } from "../data/MonsterCreation.js"
+import { Size } from "../data/Sizes.js"
 import CreatureTypeGraft from "./CreatureTypeGraft.js"
 import CreatureSubtypeGraft from "./CreatureSubtypeGraft.js"
 

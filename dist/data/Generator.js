@@ -1,6 +1,8 @@
 import { Subtype, Type } from "./Types.js";
 import { MonsterCreation } from "./MonsterCreation.js";
-/// Used to store mapping between
+/// Used to represent an option available to the player on the Populator npc generation UI.
+// Will have associated special abilities & traits which should be used to help the generator make informed
+// decisions on how to construct the NPC.
 export class CreatureTypeGenerationOption {
     constructor(type, subtypes, 
     // We've hard coded the first creature rule to be natural weapons

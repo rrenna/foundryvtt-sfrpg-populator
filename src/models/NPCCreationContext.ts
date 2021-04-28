@@ -1,8 +1,17 @@
 import CreatureTypeGraft from "./CreatureTypeGraft.js"
 import CreatureSubtypeGraft from "./CreatureSubtypeGraft.js"
-import { CR, Gender, MonsterReferenceSymbol } from "../data/MonsterCreation.js"
+import { MonsterReferenceSymbol } from "../data/MonsterCreation.js"
+import { IContext } from "./Interfaces/IContext.js"
+import { Gender } from "../data/Genders.js"
+import { CR } from "../data/CRs.js"
 
-export default class NPCCreationContext {
+export function isNPCCreationContext(
+    pet: NPCCreationContext | IContext
+): pet is NPCCreationContext {
+    return (pet as NPCCreationContext).generatePersonality !== undefined
+}
+
+export default class NPCCreationContext implements IContext {
     // Locations
     public folderId: string | undefined
     //
@@ -39,7 +48,9 @@ export default class NPCCreationContext {
     // Debugging / auditing
     public log: [string, string][] = [] // We record each mutation applied
 
-    constructor() {}
+    constructor(npcCreationContext: Partial<NPCCreationContext> = {}) {
+        Object.assign(this, npcCreationContext)
+    }
 }
 
 export class TokenOptions {

@@ -1,6 +1,6 @@
-import Adjuster from "./Adjuster.js";
+import CreationAdjuster from "./CreationAdjuster.js";
 import { MonsterSkillType } from "../../data/MonsterCreation.js";
-export default class SkillAdjuster extends Adjuster {
+export default class SkillAdjuster extends CreationAdjuster {
     // Set number of good / master skills
     constructor(skillAdjuster = {}) {
         super();
@@ -50,8 +50,7 @@ export default class SkillAdjuster extends Adjuster {
             }
         }
         // TODO: MutateSkillValue logic
-        // TODO: Construct log from individual adjustors
-        return ["", ""];
+        return [];
     }
 }
 //# sourceMappingURL=SkillAdjuster.js.map

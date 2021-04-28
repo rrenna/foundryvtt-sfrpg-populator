@@ -1,10 +1,11 @@
 import { Utils } from "../utils/Uils.js";
 import { Grafts } from "../data/Grafts.js";
 import { ItemFactory } from "./ItemFactory.js";
-import { CR, MonsterCreation, MonsterReferenceSymbol, MonsterSkillType, Save, Size } from "../data/MonsterCreation.js";
+import { MonsterCreation, MonsterReferenceSymbol, MonsterSkillType } from "../data/MonsterCreation.js";
 import { BundledRaces, Races } from "../data/Races.js";
 import { Randomizer } from "../Randomizer.js";
 import { WeaponFactory } from "./WeaponFactory.js";
+import { isNPCCreationContext } from "../models/NPCCreationContext.js";
 import { BiographyFactory } from "./BiographyFactory.js";
 import { CreatureTypeGenerationOptions } from "../data/Generator.js";
 import { UniversalCreatureRules } from "../data/universal creature rules/UniversalCreatureRules.js";
@@ -16,6 +17,10 @@ import { SharedAdjusters } from "../data/adjusters/SharedAdjusters.js";
 import SaveAdjuster from "../models/adjusters/SaveAdjuster.js";
 import AbilityScoreAdjuster from "../models/adjusters/AbilityScoreAdjuster.js";
 import { AbilityScore } from "../data/AbilityScores.js";
+import MutationAdjuster from "../models/adjusters/MutationAdjuster.js";
+import { Size } from "../data/Sizes.js";
+import { Save } from "../data/Saves.js";
+import { CR } from "../data/CRs.js";
 export class NPCFactory {
     // Produces a non-hostile NPC from a subset of races
     static async makeNonHostile(context) {
@@ -24,19 +29,20 @@ export class NPCFactory {
             type: "npc",
             folder: context.folderId
         };
-        let actor = await Actor.create(actorData);
+        let actor = (await Actor.create(actorData));
         // Non-combatants are always experts
         context.monsterReferenceSymbol = MonsterReferenceSymbol.expert;
         await this.setRace(actor, context);
         await this.makeNPC(actor, context);
     }
+    // Produces a hostile NPC from a subset of creature types / subtypes
     static async makeHostile(context) {
         let actorData = {
             name: "Generated Actor",
             type: "npc",
             folder: context.folderId
         };
-        let actor = await Actor.create(actorData);
+        let actor = (await Actor.create(actorData));
         // If no type set we randomly generate
         if (!context.creatureTypeGraft) {
             // Randomizes creature type
@@ -50,6 +56,13 @@ export class NPCFactory {
         // Monsters generally don't have personalities
         context.generatePersonality = false;
         await this.makeNPC(actor, context);
+    }
+    // Attempts to increase the CR of an existing NPC by applying the net new abilities and stats unlocked
+    // between it's current CR and target CR
+    static async mutate(actor, context) {
+        const output = await apply(actor, context, new MutationAdjuster());
+        context.log.push(...output);
+        await this.setAbout(actor, context);
     }
     // Private
     static async makeNPC(actor, context) {
@@ -549,9 +562,12 @@ export class NPCFactory {
     }
     static async setAbout(actor, context) {
         let actorUpdate = {};
-        // biography
-        var biography = BiographyFactory.makeBiography(actor, context);
-        actorUpdate["data.details.biography.value"] = biography;
+        // For creation flow we are creating a new NPC and need to generate a bio
+        if (isNPCCreationContext(context)) {
+            // biography
+            var biography = BiographyFactory.makeBiography(actor, context);
+            actorUpdate["data.details.biography.value"] = biography;
+        }
         // gm notes
         var gmNotes = "";
         for (let entry of context.log) {
@@ -571,56 +587,61 @@ export class NPCFactory {
             // Applies either a -4 or -5 (randomly) as intelligence score
             let intelligenceMods = [-4, -5];
             Utils.shuffleArray(intelligenceMods);
-            await apply(actor, context, 
+            let output = await apply(actor, context, 
             //Senses
             SharedAdjusters.Senses.lowLightVision, 
             // Applies a +2 to reflex & fortitude
-            SharedAdjusters.Saves.reflexPlus2, SharedAdjusters.Saves.fortitudePlus2, new AbilityScoreAdjuster({
+            SharedAdjusters.Saves.reflexPlus2, SharedAdjusters.Saves.fortitudePlus2, 
+            // TODO: This has a chance of overwriting one of the randomly boosted ability scores, we should reassign the overwritten value to another stat
+            new AbilityScoreAdjuster({
                 setAbilityScore: [
                     AbilityScore.intelligence,
                     intelligenceMods[0]
                 ]
             }));
-            // TODO: This has a chance of overwriting one of the randomly boosted ability scores, we should reassign the overwritten value to another stat
             logEntries.push([
-                "Applied <u>animal</u> type graft. Added low-light vision, +2 to reflex/fort save, set " +
-                    intelligenceMods[0] +
-                    " to intelligence (chosen at random between -4 and -5).",
+                "Applied <u>animal</u> type graft.",
                 Grafts.creatureType.animal.description
             ]);
+            logEntries.push(...output);
         }
         else if (graft === Grafts.creatureType.construct) {
-            await apply(actor, context, 
+            const output = await apply(actor, context, 
             //Senses
             SharedAdjusters.Senses.darkVision60ft, SharedAdjusters.Senses.lowLightVision, 
             // Immunities
             SharedAdjusters.Immunities.constructImmunities, 
             // Saves (-2 to all)
-            SharedAdjusters.Saves.reflexMinus2, SharedAdjusters.Saves.willpowerMinus2, SharedAdjusters.Saves.fortitudeMinus2);
-            // Constitution
-            context.abilities.push(["con", 0]); // NOTE: Should be no constitution but sfrpg doesn't yet support
+            SharedAdjusters.Saves.reflexMinus2, SharedAdjusters.Saves.willpowerMinus2, SharedAdjusters.Saves.fortitudeMinus2, 
+            // Abilities
+            // NOTE: Should be no constitution but sfrpg doesn't yet support
+            new AbilityScoreAdjuster({
+                setAbilityScore: [AbilityScore.constituion, 0]
+            }));
             // Unliving
             await this.applyUniversalCreatureRule(actor, context, UniversalCreatureRules.unliving);
             // Attacks
             context.attackArrayRow.high += 1;
             context.attackArrayRow.low += 1;
             logEntries.push([
-                "Applied <u>construct</u> type graft. Added darkvision 60 ft. and low-light vision, -2 to all saves, +1 to all attacks, added unliving universal creature rule.",
+                "Applied <u>construct</u> type graft. +1 to all attacks, added unliving universal creature rule.",
                 Grafts.creatureType.construct.description
             ]);
+            logEntries.push(...output);
         }
         else if (graft === Grafts.creatureType.humanoid) {
             // Applies a +2 to a random saving throw
-            var saves = [Save.reflex, Save.fortitude, Save.willpower];
+            const saves = [Save.reflex, Save.fortitude, Save.willpower];
             Utils.shuffleArray(saves);
             let save = saves[0]; // random save
-            await new SaveAdjuster({ mutateSave: [save, 2] }).apply(actor, context);
+            let output = await apply(actor, context, 
+            // Saves
+            new SaveAdjuster({ mutateSave: [save, 2] }));
             logEntries.push([
-                "Applied <u>humanoid</u> type graft. Added +2 to " +
-                    saves[0] +
-                    " save (chosen at random).",
+                "Applied <u>humanoid</u> type graft.",
                 Grafts.creatureType.humanoid.description
             ]);
+            logEntries.push(...output);
         }
         else if (graft === Grafts.creatureType.monstrousHumanoid) {
             await apply(actor, context, 
@@ -1032,9 +1053,9 @@ export class NPCFactory {
         }
         else if (universalCreatureRule == UniversalCreatureRules.sightless) {
             // Uses default implementation
-            // TODO: Reumove one all UCR can depend on default/subclass implementation
+            // TODO: Remove once all UCR can depend on default/subclass implementation
             let output = await universalCreatureRule.apply(actor, context);
-            context.log.push(output);
+            context.log.push(...output);
         }
         else if (universalCreatureRule == UniversalCreatureRules.unliving) {
             await apply(actor, context, 
@@ -1080,7 +1101,7 @@ export class NPCFactory {
             var randomChoice = Math.random() < 0.5;
             if (randomChoice) {
                 // Applies a +1 to all saves
-                apply(actor, context, new SaveAdjuster({ mutateSave: [Save.reflex, 1] }), new SaveAdjuster({ mutateSave: [Save.willpower, 1] }), new SaveAdjuster({ mutateSave: [Save.fortitude, 1] }));
+                await apply(actor, context, new SaveAdjuster({ mutateSave: [Save.reflex, 1] }), new SaveAdjuster({ mutateSave: [Save.willpower, 1] }), new SaveAdjuster({ mutateSave: [Save.fortitude, 1] }));
                 logEntries.push([
                     "Applied <U>save boost</U> adjustment special ability. +1 to all saves (chose this option at random).",
                     MonsterCreation.specialAbilities.adjustment.saveBoost
@@ -1091,7 +1112,9 @@ export class NPCFactory {
                 // Apply +3 to one save
                 let saves = [Save.reflex, Save.willpower, Save.fortitude];
                 Utils.shuffleArray(saves);
-                await new SaveAdjuster({ mutateSave: [saves[0], 3] }).apply(actor, context);
+                await apply(actor, context, 
+                // Saves
+                new SaveAdjuster({ mutateSave: [saves[0], 3] }));
                 logEntries.push([
                     "Applied <U>save boost</U> adjustment special ability. +3 to " +
                         saves[0] +

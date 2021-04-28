@@ -1,5 +1,5 @@
-import Adjuster from "./Adjuster.js";
-export default class ImmunityAdjuster extends Adjuster {
+import CreationAdjuster from "./CreationAdjuster.js";
+export default class ImmunityAdjuster extends CreationAdjuster {
     // Set number of good / master skills
     constructor(immunityAdjuster = {}) {
         super();
@@ -15,7 +15,7 @@ export default class ImmunityAdjuster extends Adjuster {
             }
         }
         // TODO: Construct log from individual adjustors
-        return ["", ""];
+        return [];
     }
 }
 //# sourceMappingURL=ImmunityAdjuster.js.map

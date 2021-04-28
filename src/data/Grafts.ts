@@ -2,7 +2,9 @@ import CreatureTypeGraft from "../models/CreatureTypeGraft.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 import { Subtype, Type } from "./Types.js"
 
+// List of all supported grafts
 export const Grafts = {
+    // List of all creature type grafts
     creatureType: {
         animal: new CreatureTypeGraft(
             Type[Type.animal],
@@ -44,6 +46,7 @@ export const Grafts = {
             false
         )
     },
+    // List of all creature subtype grafts
     creatureSubtype: {
         android: new CreatureSubtypeGraft(
             Subtype[Subtype.android],

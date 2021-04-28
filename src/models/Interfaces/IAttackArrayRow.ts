@@ -1,4 +1,4 @@
-interface IMainArrayRow {
+interface IAttackArrayRow {
     high: number
     low: number
     energy: string

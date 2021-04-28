@@ -5,7 +5,7 @@ export default class AdjustmentSpecialAbility {
     }
     async apply(actor, context) {
         // Stub
-        return ["", ""];
+        return [];
     }
 }
 //# sourceMappingURL=AdjustmentSpecialAbility.js.map

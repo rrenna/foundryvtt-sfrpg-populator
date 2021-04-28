@@ -1,4 +1,4 @@
-import { Gender } from "./MonsterCreation.js";
+import { Gender } from "./Genders.js";
 export const Probabilities = {
     // This distribution is based on my assumption that 50% of characters are good, 40% are bad and 10% are evil.
     // TODO: Allow customization of these values

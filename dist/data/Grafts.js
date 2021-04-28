@@ -1,7 +1,9 @@
 import CreatureTypeGraft from "../models/CreatureTypeGraft.js";
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js";
 import { Subtype, Type } from "./Types.js";
+// List of all supported grafts
 export const Grafts = {
+    // List of all creature type grafts
     creatureType: {
         animal: new CreatureTypeGraft(Type[Type.animal], "An animal is a living, nonhumanoid creature, usually a vertebrate with no magical abilities and no innate capacity for language or culture.\n" +
             "<br/><b>Traits:</b> Low-light vision; set Intelligence modifier to –4 or –5.\n" +
@@ -22,6 +24,7 @@ export const Grafts = {
             "<br/><b>Traits:</b> Darkvision 60 ft., mindless; set Intelligence modifier to —.\n" +
             "<br/><b>Adjustments:</b> +2 to Fortitude saving throws.", false)
     },
+    // List of all creature subtype grafts
     creatureSubtype: {
         android: new CreatureSubtypeGraft(Subtype[Subtype.android], "This subtype is applied to androids and creatures related to androids.\n" +
             "<br/><b>Traits:</b> Most creatures with this subtype gain darkvision 60 ft. and low-light vision; if the NPC is of the android race (Starfinder Core Rulebook 42), it also gains the constructed, flat affect, and upgrade slot racial traits."),

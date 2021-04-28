@@ -1,6 +1,7 @@
-import { CR, MonsterCreation } from "../data/MonsterCreation.js";
+import { MonsterCreation } from "../data/MonsterCreation.js";
 import { Grafts } from "../data/Grafts.js";
 import MonsterWizardPanel2Controller from "./MonsterWizardPanel2Controller.js";
+import { CR } from "../data/CRs.js";
 export default class MonsterWizardPanel1Controller extends FormApplication {
     constructor(context) {
         super();

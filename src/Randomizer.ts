@@ -3,8 +3,8 @@ import { Probabilities } from "./data/Probabilities.js"
 import { Names } from "./data/Names.js"
 import { StringFormat } from "./utils/StringFormat.js"
 import Race from "./models/Race.js"
-import { Gender } from "./data/MonsterCreation.js"
 import NPCCreationContext from "./models/NPCCreationContext.js"
+import { Gender } from "./data/Genders.js"
 
 export class Randomizer {
     static randomRace(): Race {

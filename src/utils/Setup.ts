@@ -2,6 +2,13 @@ import { Populator } from "../Populator.js"
 import PopulatorPanelController, {
     PopulatorPanelOptions
 } from "../controllers/PopulatorPanelController.js"
+import RepopulatorPanelController, {
+    RepopulatorPanelOptions
+} from "../controllers/RepopulatorPanelController.js"
+import NPCMutationContext from "../models/NPCMutationContext.js"
+import { MonsterReferenceSymbol } from "../data/MonsterCreation.js"
+import { NPCFactory } from "../factories/NPCFactory.js"
+import { INPCData } from "../models/Interfaces/actors/INPCData.js"
 
 // MARK: Hooks
 declare var Hooks
@@ -13,7 +20,46 @@ Hooks.on("renderSidebarTab", async (app) => {
     }
 })
 
-//
+// Settup right-click option for NPCs
+Hooks.on("getActorDirectoryEntryContext", (az, items) => {
+    items.push({
+        name: "Populator",
+        icon: '<i class="fas fa-user-astronaut"></i>',
+        condition: game.user.isGM,
+        callback: (target) => {
+            const actorId = target.attr("data-entity-id")
+            const actor = game.actors.get(actorId) as Actor<INPCData>
+
+            // We only allow populator operations on npcs
+            if (actor.data.type == "npc") {
+                // Open populator panel
+                /*
+                let repopulatorPanel = new RepopulatorPanelController(
+                    new RepopulatorPanelOptions(actorId)
+                )
+                repopulatorPanel.render(true)*/
+
+                // NOTE: For now we upgrade the NPC to CR 5 for faster development/debugging
+                const context = new NPCMutationContext({
+                    CR: "5",
+                    monsterReferenceSymbol: MonsterReferenceSymbol.combatant
+                })
+
+                NPCFactory.mutate(actor, context)
+                ui.notifications.info("NPC upgraded.", { permanent: false })
+            } else {
+                ui.notifications.warn("NPC not selected", { permanent: false })
+            }
+        }
+    })
+})
+
+Hooks.on("renderActorDirectory", (a, b, c) => {
+    return // Do nothing for now
+    // TODO: Attempt to filter out populator from non-npcs
+})
+
+// Setup right-click option for folders
 Hooks.on("getActorDirectoryFolderContext", async (html, folderOptions) => {
     folderOptions = folderOptions.push({
         name: "Populator",

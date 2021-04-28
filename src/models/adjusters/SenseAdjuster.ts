@@ -1,10 +1,11 @@
 import { ApplyOutput } from "../Interfaces/IApplyable.js"
 import NPCCreationContext from "../NPCCreationContext.js"
-import Adjuster from "./Adjuster.js"
+import CreationAdjuster from "./CreationAdjuster.js"
+import { INPCData } from "../Interfaces/actors/INPCData.js"
 
 type AddSense = [sense: string] | string
 
-export default class SenseAdjuster extends Adjuster {
+export default class SenseAdjuster extends CreationAdjuster {
     addSense: AddSense | undefined
 
     // Set number of good / master skills
@@ -13,16 +14,25 @@ export default class SenseAdjuster extends Adjuster {
         Object.assign(this, senseAdjuster)
     }
 
-    async apply(actor, context: NPCCreationContext): Promise<ApplyOutput> {
+    async apply(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ): Promise<ApplyOutput> {
+        let output: ApplyOutput = []
+
         if (this.addSense) {
+            let senseToAdd: string = ""
             if (Array.isArray(this.addSense)) {
-                context.senses.push(this.addSense[0])
+                senseToAdd = this.addSense[0]
             } else {
-                context.senses.push(this.addSense)
+                senseToAdd = this.addSense
             }
+
+            context.senses.push(senseToAdd)
+
+            output.push(["Added " + senseToAdd + ".", ""])
         }
 
-        // TODO: Construct log from individual adjustors
-        return ["", ""]
+        return output
     }
 }

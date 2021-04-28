@@ -2,19 +2,18 @@ import { Utils } from "../utils/Uils.js"
 import { Grafts } from "../data/Grafts.js"
 import { ItemFactory } from "./ItemFactory.js"
 import {
-    CR,
     MonsterCreation,
     MonsterReferenceSymbol,
-    MonsterSkillType,
-    Save,
-    Size
+    MonsterSkillType
 } from "../data/MonsterCreation.js"
 import { BundledRaces, Races } from "../data/Races.js"
 import { Randomizer } from "../Randomizer.js"
 import { WeaponFactory } from "./WeaponFactory.js"
 import CreatureTypeGraft from "../models/CreatureTypeGraft.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
-import NPCCreationContext from "../models/NPCCreationContext.js"
+import NPCCreationContext, {
+    isNPCCreationContext
+} from "../models/NPCCreationContext.js"
 import Race from "../models/Race.js"
 import { BiographyFactory } from "./BiographyFactory.js"
 import UniversalCreatureRule from "../models/UniversalCreatureRule.js"
@@ -23,11 +22,18 @@ import { UniversalCreatureRules } from "../data/universal creature rules/Univers
 import SkillAdjuster from "../models/adjusters/SkillAdjuster.js"
 import { Skill } from "../data/Skills.js"
 import SenseAdjuster from "../models/adjusters/SenseAdjuster.js"
-import { apply } from "../models/Interfaces/IApplyable.js"
+import { apply, ApplyOutput } from "../models/Interfaces/IApplyable.js"
 import { SharedAdjusters } from "../data/adjusters/SharedAdjusters.js"
 import SaveAdjuster from "../models/adjusters/SaveAdjuster.js"
 import AbilityScoreAdjuster from "../models/adjusters/AbilityScoreAdjuster.js"
 import { AbilityScore } from "../data/AbilityScores.js"
+import NPCMutationContext from "../models/NPCMutationContext.js"
+import MutationAdjuster from "../models/adjusters/MutationAdjuster.js"
+import { INPCData } from "../models/Interfaces/actors/INPCData.js"
+import { IContext } from "../models/Interfaces/IContext.js"
+import { Size } from "../data/Sizes.js"
+import { Save } from "../data/Saves.js"
+import { CR } from "../data/CRs.js"
 
 export class NPCFactory {
     // Produces a non-hostile NPC from a subset of races
@@ -37,7 +43,7 @@ export class NPCFactory {
             type: "npc",
             folder: context.folderId
         }
-        let actor = await Actor.create(actorData)
+        let actor = (await Actor.create(actorData)) as Actor<INPCData>
 
         // Non-combatants are always experts
         context.monsterReferenceSymbol = MonsterReferenceSymbol.expert
@@ -46,13 +52,14 @@ export class NPCFactory {
         await this.makeNPC(actor, context)
     }
 
+    // Produces a hostile NPC from a subset of creature types / subtypes
     public static async makeHostile(context: NPCCreationContext) {
         let actorData = {
             name: "Generated Actor",
             type: "npc",
             folder: context.folderId
         }
-        let actor = await Actor.create(actorData)
+        let actor = (await Actor.create(actorData)) as Actor<INPCData>
 
         // If no type set we randomly generate
         if (!context.creatureTypeGraft) {
@@ -72,8 +79,27 @@ export class NPCFactory {
         await this.makeNPC(actor, context)
     }
 
+    // Attempts to increase the CR of an existing NPC by applying the net new abilities and stats unlocked
+    // between it's current CR and target CR
+    public static async mutate(
+        actor: Actor<INPCData>,
+        context: NPCMutationContext
+    ) {
+        const output: ApplyOutput = await apply(
+            actor,
+            context,
+            new MutationAdjuster()
+        )
+
+        context.log.push(...output)
+        await this.setAbout(actor, context)
+    }
+
     // Private
-    private static async makeNPC(actor, context: NPCCreationContext) {
+    private static async makeNPC(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         // Grab appropriate array rows
         let monsterReferenceSymbol =
             MonsterReferenceSymbol[context.monsterReferenceSymbol]
@@ -105,7 +131,10 @@ export class NPCFactory {
         await this.setAbout(actor, context)
     }
 
-    private static async setRace(actor, context: NPCCreationContext) {
+    private static async setRace(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let actorUpdate = {}
         let logEntries: [string, string][] = []
 
@@ -144,7 +173,10 @@ export class NPCFactory {
         context.log.push(...logEntries)
     }
 
-    private static async setGenderAndName(actor, context: NPCCreationContext) {
+    private static async setGenderAndName(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let actorUpdate = {}
         let logEntries: [string, string][] = []
 
@@ -179,7 +211,10 @@ export class NPCFactory {
         context.log.push(...logEntries)
     }
 
-    private static async setDetails(actor, context: NPCCreationContext) {
+    private static async setDetails(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let logEntries: [string, string][] = []
         var race: Race | undefined
         if (context.race) race = Races.nonCombatantRaces[context.race]
@@ -225,7 +260,10 @@ export class NPCFactory {
         context.log.push(...logEntries)
     }
 
-    private static async setGrafts(actor, context: NPCCreationContext) {
+    private static async setGrafts(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         if (!context.creatureTypeGraft) return
         let logEntries: [string, string][] = []
         let actorUpdate = {}
@@ -291,7 +329,7 @@ export class NPCFactory {
     }
 
     private static async setSpecialAbilities(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext
     ) {
         // Update log
@@ -374,7 +412,10 @@ export class NPCFactory {
         }
     }
 
-    private static async setAttributes(actor, context: NPCCreationContext) {
+    private static async setAttributes(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let logEntries: [string, string][] = []
         var race: Race | undefined
         if (context.race) race = Races.nonCombatantRaces[context.race]
@@ -496,7 +537,7 @@ export class NPCFactory {
     }
 
     private static async setVulnerabilitiesAndImmunities(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext
     ) {
         let logEntries: [string, string][] = []
@@ -513,7 +554,10 @@ export class NPCFactory {
         context.log.push(...logEntries)
     }
 
-    private static async setSkills(actor, context: NPCCreationContext) {
+    private static async setSkills(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let array = context.mainArrayRow
         let actorUpdate = {}
 
@@ -589,7 +633,10 @@ export class NPCFactory {
         await actor.update(actorUpdate)
     }
 
-    private static async setWeapons(actor, context: NPCCreationContext) {
+    private static async setWeapons(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let attackArray = MonsterCreation.arrays.expert.attack[context.CR]
         let highAttackBonus = attackArray.high
         let lowAttackBonus = attackArray.low
@@ -635,7 +682,10 @@ export class NPCFactory {
         }
     }
 
-    private static async setInventory(actor, context: NPCCreationContext) {
+    private static async setInventory(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         if (context.generateAdditionalItems) {
             let items = ItemFactory.makeItemCollection()
             context.itemsToAdd.push(...items)
@@ -647,7 +697,10 @@ export class NPCFactory {
         await actor.update(actorUpdate)
     }
 
-    private static async setToken(actor, context: NPCCreationContext) {
+    private static async setToken(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let actorUpdate = {}
         actorUpdate["token.randomImg"] = false
 
@@ -673,7 +726,10 @@ export class NPCFactory {
         await actor.update(actorUpdate)
     }
 
-    private static async setSenses(actor, context: NPCCreationContext) {
+    private static async setSenses(
+        actor: Actor<INPCData>,
+        context: NPCCreationContext
+    ) {
         let actorUpdate = {}
 
         if (context.senses.length > 0) {
@@ -683,12 +739,15 @@ export class NPCFactory {
         await actor.update(actorUpdate)
     }
 
-    private static async setAbout(actor, context: NPCCreationContext) {
+    private static async setAbout(actor: Actor<INPCData>, context: IContext) {
         let actorUpdate = {}
 
-        // biography
-        var biography = BiographyFactory.makeBiography(actor, context)
-        actorUpdate["data.details.biography.value"] = biography
+        // For creation flow we are creating a new NPC and need to generate a bio
+        if (isNPCCreationContext(context)) {
+            // biography
+            var biography = BiographyFactory.makeBiography(actor, context)
+            actorUpdate["data.details.biography.value"] = biography
+        }
 
         // gm notes
         var gmNotes = ""
@@ -707,7 +766,7 @@ export class NPCFactory {
     }
 
     private static async applyCreatureTypeGraft(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext,
         graft: CreatureTypeGraft
     ) {
@@ -719,7 +778,7 @@ export class NPCFactory {
             let intelligenceMods = [-4, -5]
             Utils.shuffleArray(intelligenceMods)
 
-            await apply(
+            let output = await apply(
                 actor,
                 context,
                 //Senses
@@ -727,6 +786,7 @@ export class NPCFactory {
                 // Applies a +2 to reflex & fortitude
                 SharedAdjusters.Saves.reflexPlus2,
                 SharedAdjusters.Saves.fortitudePlus2,
+                // TODO: This has a chance of overwriting one of the randomly boosted ability scores, we should reassign the overwritten value to another stat
                 new AbilityScoreAdjuster({
                     setAbilityScore: [
                         AbilityScore.intelligence,
@@ -735,15 +795,13 @@ export class NPCFactory {
                 })
             )
 
-            // TODO: This has a chance of overwriting one of the randomly boosted ability scores, we should reassign the overwritten value to another stat
             logEntries.push([
-                "Applied <u>animal</u> type graft. Added low-light vision, +2 to reflex/fort save, set " +
-                    intelligenceMods[0] +
-                    " to intelligence (chosen at random between -4 and -5).",
+                "Applied <u>animal</u> type graft.",
                 Grafts.creatureType.animal.description
             ])
+            logEntries.push(...output)
         } else if (graft === Grafts.creatureType.construct) {
-            await apply(
+            const output: ApplyOutput = await apply(
                 actor,
                 context,
                 //Senses
@@ -754,11 +812,14 @@ export class NPCFactory {
                 // Saves (-2 to all)
                 SharedAdjusters.Saves.reflexMinus2,
                 SharedAdjusters.Saves.willpowerMinus2,
-                SharedAdjusters.Saves.fortitudeMinus2
+                SharedAdjusters.Saves.fortitudeMinus2,
+                // Abilities
+                // NOTE: Should be no constitution but sfrpg doesn't yet support
+                new AbilityScoreAdjuster({
+                    setAbilityScore: [AbilityScore.constituion, 0]
+                })
             )
 
-            // Constitution
-            context.abilities.push(["con", 0]) // NOTE: Should be no constitution but sfrpg doesn't yet support
             // Unliving
             await this.applyUniversalCreatureRule(
                 actor,
@@ -771,26 +832,28 @@ export class NPCFactory {
             context.attackArrayRow.low += 1
 
             logEntries.push([
-                "Applied <u>construct</u> type graft. Added darkvision 60 ft. and low-light vision, -2 to all saves, +1 to all attacks, added unliving universal creature rule.",
+                "Applied <u>construct</u> type graft. +1 to all attacks, added unliving universal creature rule.",
                 Grafts.creatureType.construct.description
             ])
+            logEntries.push(...output)
         } else if (graft === Grafts.creatureType.humanoid) {
             // Applies a +2 to a random saving throw
-            var saves = [Save.reflex, Save.fortitude, Save.willpower]
+            const saves = [Save.reflex, Save.fortitude, Save.willpower]
             Utils.shuffleArray(saves)
             let save = saves[0] // random save
 
-            await new SaveAdjuster({ mutateSave: [save, 2] }).apply(
+            let output = await apply(
                 actor,
-                context
+                context,
+                // Saves
+                new SaveAdjuster({ mutateSave: [save, 2] })
             )
 
             logEntries.push([
-                "Applied <u>humanoid</u> type graft. Added +2 to " +
-                    saves[0] +
-                    " save (chosen at random).",
+                "Applied <u>humanoid</u> type graft.",
                 Grafts.creatureType.humanoid.description
             ])
+            logEntries.push(...output)
         } else if (graft === Grafts.creatureType.monstrousHumanoid) {
             await apply(
                 actor,
@@ -887,7 +950,7 @@ export class NPCFactory {
     }
 
     private static async applyCreatureSubtypeGraft(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext,
         graft: CreatureSubtypeGraft
     ) {
@@ -1282,7 +1345,7 @@ export class NPCFactory {
     }
 
     private static async applyUniversalCreatureRule(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext,
         universalCreatureRule: UniversalCreatureRule
     ) {
@@ -1314,9 +1377,9 @@ export class NPCFactory {
             ])
         } else if (universalCreatureRule == UniversalCreatureRules.sightless) {
             // Uses default implementation
-            // TODO: Reumove one all UCR can depend on default/subclass implementation
+            // TODO: Remove once all UCR can depend on default/subclass implementation
             let output = await universalCreatureRule.apply(actor, context)
-            context.log.push(output)
+            context.log.push(...output)
         } else if (universalCreatureRule == UniversalCreatureRules.unliving) {
             await apply(
                 actor,
@@ -1338,7 +1401,7 @@ export class NPCFactory {
     }
 
     private static async applyAdjustmentSpecialAbility(
-        actor,
+        actor: Actor<INPCData>,
         context: NPCCreationContext,
         adjustmentSpecialAbility
     ) {
@@ -1381,7 +1444,7 @@ export class NPCFactory {
             var randomChoice = Math.random() < 0.5
             if (randomChoice) {
                 // Applies a +1 to all saves
-                apply(
+                await apply(
                     actor,
                     context,
                     new SaveAdjuster({ mutateSave: [Save.reflex, 1] }),
@@ -1399,9 +1462,11 @@ export class NPCFactory {
                 let saves = [Save.reflex, Save.willpower, Save.fortitude]
                 Utils.shuffleArray(saves)
 
-                await new SaveAdjuster({ mutateSave: [saves[0], 3] }).apply(
+                await apply(
                     actor,
-                    context
+                    context,
+                    // Saves
+                    new SaveAdjuster({ mutateSave: [saves[0], 3] })
                 )
 
                 logEntries.push([

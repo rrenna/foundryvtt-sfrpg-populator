@@ -1,41 +1,7 @@
 import { UniversalCreatureRules } from "./universal creature rules/UniversalCreatureRules.js";
 import AdjustmentSpecialAbility from "../models/AdjustmentSpecialAbility.js";
-/// List of creature combat ratings
-export const CR = [
-    "1/3",
-    "1/2",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10"
-];
-// List of creature save types
-export var Save;
-(function (Save) {
-    Save["fortitude"] = "fort";
-    Save["reflex"] = "reflex";
-    Save["willpower"] = "will";
-})(Save || (Save = {}));
-/// List of creature gender identities
-export var Gender;
-(function (Gender) {
-    Gender["male"] = "male";
-    Gender["female"] = "female";
-    Gender["nonBinary"] = "non-binary";
-})(Gender || (Gender = {}));
-/// List of creature sizes
-export var Size;
-(function (Size) {
-    Size[Size["small"] = 0] = "small";
-    Size[Size["medium"] = 1] = "medium";
-    Size[Size["large"] = 2] = "large";
-})(Size || (Size = {}));
+import { CR } from "./CRs.js";
+/// Monster Creation rules (Arrays, Special abilities) and some common monster/npc types
 /// List of Monster Reference Symbols
 export var MonsterReferenceSymbol;
 (function (MonsterReferenceSymbol) {

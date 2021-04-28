@@ -11,10 +11,12 @@ export default class UniversalCreatureRule {
             context.itemsToAdd.push(feature);
         // Default is just a basic log indicating no modifications
         return [
-            "Applied <u>" +
-                this.name +
-                "</u> universal creature rule (no modifications).",
-            this.description
+            [
+                "Applied <u>" +
+                    this.name +
+                    "</u> universal creature rule (no modifications).",
+                this.description
+            ]
         ];
     }
 }
