@@ -3,10 +3,21 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 ## Features:
 - Generates non-combatant NPCs for your world
-- Randomizes the name, gender, race, alignment and inventory of the NPC
-- Intelligently randomizes the token image of NPCs when placed in a scene (optional setting, *off* by default)
+   - Randomizes the name, gender, race, alignment, personality trait and inventory of the NPC
+   - Intelligently randomizes the token image of NPCs when placed in a scene (optional setting, *off* by default)
+- **experimental** Generates monsters 
+- **experimental** monster mutation
+   - Increase or decrease the CR of an existing monster or NPC
 
 ## FAQ:
+*Q: What kind of monsters can you currently generate?*
+
+**A: Currently you are limited to Animal, Oooze, Vermin or Construct. `CR 1/3 - 5` all melee focused combatants (except constructs which are equipped with ranged weapons).
+
+*Q: How do mutations work?*
+
+**A: We look up where the monster should be on the appropriate array (based on it's current CR) then calcualte the difference between each stat in that row and the target row, then apply that difference (either positive or negative). Currently we are only touching the basic stats - but this will be expanded to things like adding additional special abilities.**
+
 *Q: Does Populator just pick a random race when quickly making an NPC?*
 
 **A: No I follow the distribution of races found on Absalom Station.  As of `0.1.X` you can create an NPC of your specific desired race.
@@ -22,10 +33,6 @@ Populate your Starfinder world with life of all shapes and sizes.
 *Q: How do I setup my folder structure for dynamic token images?*
 
 **Extract `example folder structure.zip` into your data folder and fill in the appropriate folders with images (Please be aware this feature is experimental and subject to change).**
-
-*Q: Why doesn't populator generate monsters though!?*
-
-**A: ~~Because that's hard and I haven't done it yet~~ Work is underway, you can experiment with what's currently live to create basic monsters starting in  release `0.1.X` **
 
 *Q: This would be way better if it did this other specific thing!*
 

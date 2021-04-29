@@ -4,14 +4,22 @@
         <i>NPC: {{ actor.data.name }}</i>
     </header>
 
+    <header class="sheet-header" align="center">
+        How this works: the mutation panel can be used to upgrade (experimental) or downgrade (very experimental) an NPC.
+        <br/><br/>
+        Be aware this is experimental and only adjusts <u class="populatorInfo" data-tippy-content="HP,KAC,EAC,fortitude,reflex,willpower">basic stats</u> for now.
+        This is still <u class="populatorInfo" data-tippy-content="In progress: Attacks, Skills, Ability Score, Special abilities">under construction</u>.
+    </header>
+    <br/>
+    <br/>
     <div class="form-group">
         <!-- NPCs -->
-        <label for="npcMutateButton"><b>Mutate an existing NPC</b></label>
+        <label for="npcMutateButton"><b>Target CR</b></label>
         <i class="populatorInfo far fa-question-circle" data-tippy-content="Upgrades an existing NPC by increasing it's CR (Experimental)."></i>
         <div class="form-fields">
             <select id="crSelect">
-                {{#each NPCRaces as |race key|}}
-                    <option value={{ key }} >{{ race.name }}</option>
+                {{#each CRs as |race key|}}
+                    <option value={{ key }} >{{ race }}</option>
                 {{/each}}
             </select>
         </div>

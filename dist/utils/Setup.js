@@ -1,8 +1,6 @@
 import { Populator } from "../Populator.js";
 import PopulatorPanelController, { PopulatorPanelOptions } from "../controllers/PopulatorPanelController.js";
-import NPCMutationContext from "../models/NPCMutationContext.js";
-import { MonsterReferenceSymbol } from "../data/MonsterCreation.js";
-import { NPCFactory } from "../factories/NPCFactory.js";
+import MutatePanelController, { MutatePanelOptions } from "../controllers/MutatePanelController.js";
 // Ensure the "Populate" button is visible.
 Hooks.on("renderSidebarTab", async (app) => {
     if (app.options.id == "actors") {
@@ -21,18 +19,8 @@ Hooks.on("getActorDirectoryEntryContext", (az, items) => {
             // We only allow populator operations on npcs
             if (actor.data.type == "npc") {
                 // Open populator panel
-                /*
-                let repopulatorPanel = new RepopulatorPanelController(
-                    new RepopulatorPanelOptions(actorId)
-                )
-                repopulatorPanel.render(true)*/
-                // NOTE: For now we upgrade the NPC to CR 5 for faster development/debugging
-                const context = new NPCMutationContext({
-                    CR: "5",
-                    monsterReferenceSymbol: MonsterReferenceSymbol.combatant
-                });
-                NPCFactory.mutate(actor, context);
-                ui.notifications.info("NPC upgraded.", { permanent: false });
+                let repopulatorPanel = new MutatePanelController(new MutatePanelOptions(actorId));
+                repopulatorPanel.render(true);
             }
             else {
                 ui.notifications.warn("NPC not selected", { permanent: false });

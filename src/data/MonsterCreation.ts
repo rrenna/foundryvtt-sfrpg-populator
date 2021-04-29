@@ -275,6 +275,71 @@ export const MonsterCreation = {
                     specialAbilities: 2,
                     masterSkill: { count: 1, mod: 16 },
                     goodSkill: { count: 2, mod: 11 }
+                } as IMainArrayRow,
+                "6": {
+                    CR: CR[7],
+                    EAC: 18,
+                    KAC: 20,
+                    fort: 8,
+                    reflex: 8,
+                    will: 5,
+                    HP: 90,
+                    abilityMods: [5, 3, 2],
+                    specialAbilities: 2,
+                    masterSkill: { count: 1, mod: 18 },
+                    goodSkill: { count: 2, mod: 13 }
+                } as IMainArrayRow,
+                "7": {
+                    CR: CR[8],
+                    EAC: 19,
+                    KAC: 21,
+                    fort: 9,
+                    reflex: 9,
+                    will: 6,
+                    HP: 105,
+                    abilityMods: [5, 4, 2],
+                    specialAbilities: 2,
+                    masterSkill: { count: 1, mod: 19 },
+                    goodSkill: { count: 2, mod: 14 }
+                } as IMainArrayRow,
+                "8": {
+                    CR: CR[9],
+                    EAC: 20,
+                    KAC: 22,
+                    fort: 10,
+                    reflex: 10,
+                    will: 7,
+                    HP: 125,
+                    abilityMods: [6, 4, 2],
+                    specialAbilities: 2,
+                    masterSkill: { count: 1, mod: 21 },
+                    goodSkill: { count: 2, mod: 16 }
+                } as IMainArrayRow,
+                "9": {
+                    CR: CR[10],
+                    EAC: 22,
+                    KAC: 24,
+                    fort: 11,
+                    reflex: 11,
+                    will: 8,
+                    HP: 145,
+                    abilityMods: [6, 4, 3],
+                    specialAbilities: 2,
+                    masterSkill: { count: 1, mod: 22 },
+                    goodSkill: { count: 2, mod: 17 }
+                } as IMainArrayRow,
+                "10": {
+                    CR: CR[11],
+                    EAC: 23,
+                    KAC: 25,
+                    fort: 12,
+                    reflex: 12,
+                    will: 9,
+                    HP: 165,
+                    abilityMods: [8, 5, 3],
+                    specialAbilities: 2,
+                    masterSkill: { count: 1, mod: 24 },
+                    goodSkill: { count: 2, mod: 19 }
                 } as IMainArrayRow
             },
             attack: {

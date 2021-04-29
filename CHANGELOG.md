@@ -1,5 +1,6 @@
-## 0.1.8
+### 0.2.0
 ### Added
+- (Experimental) Mutator screen, up or downscale an existing NPC
 - Folder support
 
 ## 0.1.7

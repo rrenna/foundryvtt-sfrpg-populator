@@ -85,14 +85,18 @@ export class NPCFactory {
         actor: Actor<INPCData>,
         context: NPCMutationContext
     ) {
+        // Clone existing monster
+        var newActor = await actor.clone()
+        //let newActor = (await Actor.create(actor)) as Actor<INPCData>
+
         const output: ApplyOutput = await apply(
-            actor,
+            newActor,
             context,
             new MutationAdjuster()
         )
 
         context.log.push(...output)
-        await this.setAbout(actor, context)
+        await this.setAbout(newActor, context)
     }
 
     // Private

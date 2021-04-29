@@ -2,34 +2,28 @@ import { NPCFactory } from "../factories/NPCFactory.js"
 import { MonsterReferenceSymbol } from "../data/MonsterCreation.js"
 import NPCMutationContext from "../models/NPCMutationContext.js"
 import { INPCData } from "../models/Interfaces/actors/INPCData.js"
+import { CR } from "../data/CRs.js"
 
-// Options provided to the Repopulator panel - adds actorId to default options
-export class RepopulatorPanelOptions implements Application.Options {
+// Options provided to the Mutate panel - adds actorId to default options
+export class MutatePanelOptions implements Application.Options {
     actorId: string | undefined
     constructor(actorId: string | undefined) {
         this.actorId = actorId
     }
 }
 
-export default class RepopulatorPanelController extends Application {
+export default class MutatePanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: "repopulator-panel",
             classes: ["sfrpg"],
             template:
-                "modules/foundryvtt-sfrpg-populator/templates/RepopulatorPanel.html",
+                "modules/foundryvtt-sfrpg-populator/templates/MutatePanel.html",
             width: 300,
-            height: 350,
+            height: 300,
             minimizable: true,
             resizable: true,
-            title: "Populator - Mutate existing NPC",
-            tabs: [
-                {
-                    navSelector: ".sheet-tabs",
-                    contentSelector: ".sheet-body",
-                    initial: "description"
-                }
-            ]
+            title: "Populator - Mutate existing NPC"
         })
     }
 
@@ -45,7 +39,8 @@ export default class RepopulatorPanelController extends Application {
         return mergeObject(super.getData(), {
             options: options,
             actor: actor,
-            isGM: game.user.isGM
+            isGM: game.user.isGM,
+            CRs: CR
         })
     }
 
@@ -59,6 +54,9 @@ export default class RepopulatorPanelController extends Application {
         ;(<JQuery>html)
             .find(".npcMutateButton")
             .on("click", this.npcMutateButtonClicked.bind(this))
+
+        tippy(".populatorInfo")
+        tippy(".populatorButton")
     }
 
     /**
@@ -70,17 +68,20 @@ export default class RepopulatorPanelController extends Application {
             .find("#crSelect")
             .find(":selected")
             .val()
-        let selectedCR: string = crRaceSelectValue as string
-        // TODO: Get selected CR
+
+        let selectedCRIndex: number = Number(crRaceSelectValue)
+        let selectedCR = CR[selectedCRIndex]
         let actor = game.actors.get(this.options["actorId"]) as Actor<INPCData>
 
         const context = new NPCMutationContext({
-            CR: "5",
+            CR: selectedCR,
             monsterReferenceSymbol: MonsterReferenceSymbol.combatant
         })
 
         await NPCFactory.mutate(actor, context)
 
         ui.notifications.info("NPC upgraded.", { permanent: false })
+
+        //await this.close()
     }
 }

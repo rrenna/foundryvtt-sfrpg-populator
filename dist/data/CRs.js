@@ -27,4 +27,13 @@ Utils.CRforNumber = (number) => {
     }
     return cr;
 };
+Utils.numberForCR = (CR) => {
+    if (CR === "1/3") {
+        return 1 / 3;
+    }
+    else if (CR === "1/2") {
+        return 1 / 2;
+    }
+    return Number(CR);
+};
 //# sourceMappingURL=CRs.js.map

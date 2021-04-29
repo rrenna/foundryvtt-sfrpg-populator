@@ -14,8 +14,10 @@ export default class MutationAdjuster {
         const approximateCurrentMainRow = MonsterCreation.arrays[monsterReferenceSymbol].main[currentCR];
         const targetMainRow = MonsterCreation.arrays[monsterReferenceSymbol]
             .main[targetCR];
+        // Set new name
+        actorUpdate["name"] = "Mutated " + actor.name;
         // Set new CR
-        actorUpdate["data.details.cr"] = context.CR;
+        actorUpdate["data.details.cr"] = Utils.numberForCR(context.CR);
         output.push(["Set CR to " + context.CR, ""]);
         // Set new HP
         const hpDiff = this.diffOf("HP", approximateCurrentMainRow, targetMainRow);
@@ -55,7 +57,7 @@ export default class MutationAdjuster {
             "Set fort to " +
                 newFortValue +
                 " (from " +
-                actor.data.data.attributes.fort.value +
+                actor.data.data.attributes.fort.bonus +
                 ")",
             ""
         ]);
@@ -67,7 +69,7 @@ export default class MutationAdjuster {
             "Set reflex to " +
                 newReflexValue +
                 " (from " +
-                actor.data.data.attributes.reflex.value +
+                actor.data.data.attributes.reflex.bonus +
                 ")",
             ""
         ]);
@@ -79,7 +81,7 @@ export default class MutationAdjuster {
             "Set will to " +
                 newWillValue +
                 " (from " +
-                actor.data.data.attributes.will.value +
+                actor.data.data.attributes.will.bonus +
                 ")",
             ""
         ]);

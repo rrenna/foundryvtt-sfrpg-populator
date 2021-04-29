@@ -20,6 +20,7 @@ export const CR = [
 declare module "../utils/uils" {
     namespace Utils {
         function CRforNumber(number: number): string
+        function numberForCR(CR: string): number
     }
 }
 
@@ -33,4 +34,14 @@ Utils.CRforNumber = (number: number): string => {
         cr = number.toString()
     }
     return cr
+}
+
+Utils.numberForCR = (CR: string): number => {
+    if (CR === "1/3") {
+        return 1 / 3
+    } else if (CR === "1/2") {
+        return 1 / 2
+    }
+
+    return Number(CR)
 }

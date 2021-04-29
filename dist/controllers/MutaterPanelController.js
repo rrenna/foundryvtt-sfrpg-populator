@@ -2,13 +2,13 @@ import { NPCFactory } from "../factories/NPCFactory.js";
 import { MonsterReferenceSymbol } from "../data/MonsterCreation.js";
 import NPCMutationContext from "../models/NPCMutationContext.js";
 import { CR } from "../data/CRs.js";
-// Options provided to the Repopulator panel - adds actorId to default options
-export class RepopulatorPanelOptions {
+// Options provided to the Mutate panel - adds actorId to default options
+export class MutatePanelOptions {
     constructor(actorId) {
         this.actorId = actorId;
     }
 }
-export default class RepopulatorPanelController extends Application {
+export default class MutaterPanelController extends Application {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: "repopulator-panel",
@@ -71,4 +71,4 @@ export default class RepopulatorPanelController extends Application {
         //await this.close()
     }
 }
-//# sourceMappingURL=RepopulatorPanelController.js.map
+//# sourceMappingURL=MutaterPanelController.js.map

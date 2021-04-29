@@ -15,7 +15,6 @@ export default class MutationAdjuster implements IApplyable {
         context: NPCMutationContext
     ): Promise<ApplyOutput> {
         let output: ApplyOutput = []
-
         let actorUpdate = {}
         const monsterReferenceSymbol =
             MonsterReferenceSymbol[context.monsterReferenceSymbol]
@@ -30,8 +29,11 @@ export default class MutationAdjuster implements IApplyable {
         const targetMainRow = MonsterCreation.arrays[monsterReferenceSymbol]
             .main[targetCR] as IMainArrayRow
 
+        // Set new name
+        actorUpdate["name"] = "Mutated " + actor.name
+
         // Set new CR
-        actorUpdate["data.details.cr"] = context.CR
+        actorUpdate["data.details.cr"] = Utils.numberForCR(context.CR)
         output.push(["Set CR to " + context.CR, ""])
 
         // Set new HP
@@ -91,7 +93,7 @@ export default class MutationAdjuster implements IApplyable {
             "Set fort to " +
                 newFortValue +
                 " (from " +
-                actor.data.data.attributes.fort.value +
+                actor.data.data.attributes.fort.bonus +
                 ")",
             ""
         ])
@@ -109,7 +111,7 @@ export default class MutationAdjuster implements IApplyable {
             "Set reflex to " +
                 newReflexValue +
                 " (from " +
-                actor.data.data.attributes.reflex.value +
+                actor.data.data.attributes.reflex.bonus +
                 ")",
             ""
         ])
@@ -126,7 +128,7 @@ export default class MutationAdjuster implements IApplyable {
             "Set will to " +
                 newWillValue +
                 " (from " +
-                actor.data.data.attributes.will.value +
+                actor.data.data.attributes.will.bonus +
                 ")",
             ""
         ])
