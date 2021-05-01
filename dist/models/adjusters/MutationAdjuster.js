@@ -1,5 +1,6 @@
 import { Utils } from "../../utils/Uils.js";
 import { MonsterCreation, MonsterReferenceSymbol } from "../../data/MonsterCreation.js";
+import { AbilityScore } from "../../data/AbilityScores.js";
 /// Used to mutate an actor by increasing or decreasing it's CR by
 // intelligently adjusting it's object (changing values, adding items)
 export default class MutationAdjuster {
@@ -36,7 +37,7 @@ export default class MutationAdjuster {
         // Will
         this.applyDiffForKey("will", actor.data.data.attributes.will.bonus, "data.attributes.will.bonus", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Ability Scores
-        this.applyAbilityScoreDiff(actor, approximateCurrentMainRow, targetMainRow, actorUpdate, output);
+        this.applyAbilityScoreDiffAndInit(actor, approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Update actor
         await actor.update(actorUpdate);
         return output;
@@ -57,14 +58,60 @@ export default class MutationAdjuster {
             ""
         ]);
     }
-    applyAbilityScoreDiff(actor, currrentRow, targetRow, actorUpdate, output) {
+    applyAbilityScoreDiffAndInit(actor, currrentRow, targetRow, actorUpdate, output) {
         // Find diffs
-        let firstAbilityDiff = targetRow.abilityMods[0] - currrentRow.abilityMods[0];
-        let secondAbilityDiff = targetRow.abilityMods[1] - currrentRow.abilityMods[1];
-        let thirdAbilityDiff = targetRow.abilityMods[2] - currrentRow.abilityMods[2];
+        let abilityDiffs = [
+            targetRow.abilityMods[0] - currrentRow.abilityMods[0],
+            targetRow.abilityMods[1] - currrentRow.abilityMods[1],
+            targetRow.abilityMods[2] - currrentRow.abilityMods[2]
+        ];
         // Apply diffs to top three ability scores
-        //actor.data.
-        console.log("");
+        let abilityTuples = [];
+        for (const abilityScore in AbilityScore) {
+            let abilityScoreKey = AbilityScore[abilityScore];
+            abilityTuples.push([
+                abilityScoreKey,
+                actor.data.data.abilities[abilityScoreKey].mod
+            ]);
+        }
+        // Sort ability scores
+        abilityTuples.sort((first, second) => {
+            if (first[1] < second[1])
+                return 1;
+            return -1;
+        });
+        // Applied to top three abilities
+        for (let i = 0; i < 3; i++) {
+            const abilityKey = abilityTuples[i][0];
+            const existingMod = actor.data.data.abilities[abilityKey].mod;
+            const newAbilityMod = existingMod + abilityDiffs[i];
+            // Apply new initiative
+            // If we've touched dex mod, set init to match
+            if (abilityKey === AbilityScore.dexterity) {
+                const currentInitiative = actor.data.data.attributes.init.total;
+                const newInititatve = currentInitiative + abilityDiffs[i];
+                actorUpdate["data.attributes.init.total"] = newInititatve;
+                output.push([
+                    "Set initiative to " +
+                        newInititatve +
+                        " (to match increase or decrease of the dexterity modifier)",
+                    "Unless you increase it with the Improved Initiative feat, a graft, or an ad hoc adjustment, the NPC’s\n" +
+                        "initiative bonus is equal to its Dexterity modifier."
+                ]);
+            }
+            // New values applied
+            actorUpdate["data.abilities." + abilityKey + ".mod"] = newAbilityMod;
+            output.push([
+                "Set " +
+                    abilityKey +
+                    " mod to " +
+                    newAbilityMod +
+                    " (from " +
+                    existingMod +
+                    ")",
+                ""
+            ]);
+        }
     }
 }
 //# sourceMappingURL=MutationAdjuster.js.map

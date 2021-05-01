@@ -3,20 +3,18 @@ export interface INPCDataDetails {
     raceAndGrafts: string
 }
 
-export interface INPCDataAttributesHP {
-    max: number
-    value: number
-}
 export interface INPCDataAttributes {
-    hp: INPCDataAttributesHP
+    hp: { max: number; value: number }
     kac: any
     eac: any
     fort: any
     reflex: any
     will: any
+    init: any
 }
 
 export interface INPCData {
     details: INPCDataDetails
+    abilities: { cha: any; con: any; dex: any; int: any; str: any; wis: any }
     attributes: INPCDataAttributes
 }
