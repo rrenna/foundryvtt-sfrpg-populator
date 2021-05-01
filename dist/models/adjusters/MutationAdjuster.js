@@ -26,65 +26,17 @@ export default class MutationAdjuster {
         actorUpdate["data.attributes.hp.value"] = newHPValue;
         output.push(["Set HP to " + newHPValue, ""]);
         // Set new KAC
-        const kacDiff = this.diffOf("KAC", approximateCurrentMainRow, targetMainRow);
-        const newKACValue = actor.data.data.attributes.kac.value + kacDiff;
-        actorUpdate["data.attributes.kac.value"] = newKACValue;
-        output.push([
-            "Set KAC to " +
-                newKACValue +
-                " (from " +
-                actor.data.data.attributes.kac.value +
-                ")",
-            ""
-        ]);
+        this.applyDiffForKey("KAC", actor.data.data.attributes.kac.value, "data.attributes.kac.value", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Set new EAC
-        const eacDiff = this.diffOf("EAC", approximateCurrentMainRow, targetMainRow);
-        const newEACValue = actor.data.data.attributes.eac.value + eacDiff;
-        actorUpdate["data.attributes.eac.value"] = newEACValue;
-        output.push([
-            "Set EAC to " +
-                newEACValue +
-                " (from " +
-                actor.data.data.attributes.eac.value +
-                ")",
-            ""
-        ]);
+        this.applyDiffForKey("EAC", actor.data.data.attributes.eac.value, "data.attributes.eac.value", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Fort
-        const fortDiff = this.diffOf("fort", approximateCurrentMainRow, targetMainRow);
-        const newFortValue = actor.data.data.attributes.fort.bonus + fortDiff;
-        actorUpdate["data.attributes.fort.bonus"] = newFortValue;
-        output.push([
-            "Set fort to " +
-                newFortValue +
-                " (from " +
-                actor.data.data.attributes.fort.bonus +
-                ")",
-            ""
-        ]);
+        this.applyDiffForKey("fort", actor.data.data.attributes.fort.bonus, "data.attributes.fort.bonus", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Reflex
-        const reflexDiff = this.diffOf("reflex", approximateCurrentMainRow, targetMainRow);
-        const newReflexValue = actor.data.data.attributes.reflex.bonus + reflexDiff;
-        actorUpdate["data.attributes.reflex.bonus"] = newReflexValue;
-        output.push([
-            "Set reflex to " +
-                newReflexValue +
-                " (from " +
-                actor.data.data.attributes.reflex.bonus +
-                ")",
-            ""
-        ]);
+        this.applyDiffForKey("reflex", actor.data.data.attributes.reflex.bonus, "data.attributes.reflex.bonus", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Will
-        const willDiff = this.diffOf("will", approximateCurrentMainRow, targetMainRow);
-        const newWillValue = actor.data.data.attributes.will.bonus + willDiff;
-        actorUpdate["data.attributes.will.bonus"] = newWillValue;
-        output.push([
-            "Set will to " +
-                newWillValue +
-                " (from " +
-                actor.data.data.attributes.will.bonus +
-                ")",
-            ""
-        ]);
+        this.applyDiffForKey("will", actor.data.data.attributes.will.bonus, "data.attributes.will.bonus", approximateCurrentMainRow, targetMainRow, actorUpdate, output);
+        // Ability Scores
+        this.applyAbilityScoreDiff(actor, approximateCurrentMainRow, targetMainRow, actorUpdate, output);
         // Update actor
         await actor.update(actorUpdate);
         return output;
@@ -95,6 +47,24 @@ export default class MutationAdjuster {
         const toValue = to[key];
         const fromValue = from[key];
         return toValue - fromValue;
+    }
+    applyDiffForKey(key, existingValue, saveKeyPath, currrentRow, targetRow, actorUpdate, output) {
+        const diff = this.diffOf(key, currrentRow, targetRow);
+        const newValue = existingValue + diff;
+        actorUpdate[saveKeyPath] = newValue;
+        output.push([
+            "Set " + key + " to " + newValue + " (from " + existingValue + ")",
+            ""
+        ]);
+    }
+    applyAbilityScoreDiff(actor, currrentRow, targetRow, actorUpdate, output) {
+        // Find diffs
+        let firstAbilityDiff = targetRow.abilityMods[0] - currrentRow.abilityMods[0];
+        let secondAbilityDiff = targetRow.abilityMods[1] - currrentRow.abilityMods[1];
+        let thirdAbilityDiff = targetRow.abilityMods[2] - currrentRow.abilityMods[2];
+        // Apply diffs to top three ability scores
+        //actor.data.
+        console.log("");
     }
 }
 //# sourceMappingURL=MutationAdjuster.js.map

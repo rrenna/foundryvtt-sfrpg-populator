@@ -48,90 +48,68 @@ export default class MutationAdjuster implements IApplyable {
         output.push(["Set HP to " + newHPValue, ""])
 
         // Set new KAC
-        const kacDiff = this.diffOf(
+        this.applyDiffForKey(
             "KAC",
+            actor.data.data.attributes.kac.value,
+            "data.attributes.kac.value",
             approximateCurrentMainRow,
-            targetMainRow
+            targetMainRow,
+            actorUpdate,
+            output
         )
-        const newKACValue = actor.data.data.attributes.kac.value + kacDiff
-        actorUpdate["data.attributes.kac.value"] = newKACValue
-        output.push([
-            "Set KAC to " +
-                newKACValue +
-                " (from " +
-                actor.data.data.attributes.kac.value +
-                ")",
-            ""
-        ])
 
         // Set new EAC
-        const eacDiff = this.diffOf(
+        this.applyDiffForKey(
             "EAC",
+            actor.data.data.attributes.eac.value,
+            "data.attributes.eac.value",
             approximateCurrentMainRow,
-            targetMainRow
+            targetMainRow,
+            actorUpdate,
+            output
         )
-        const newEACValue = actor.data.data.attributes.eac.value + eacDiff
-        actorUpdate["data.attributes.eac.value"] = newEACValue
-        output.push([
-            "Set EAC to " +
-                newEACValue +
-                " (from " +
-                actor.data.data.attributes.eac.value +
-                ")",
-            ""
-        ])
 
         // Fort
-        const fortDiff = this.diffOf(
+        this.applyDiffForKey(
             "fort",
+            actor.data.data.attributes.fort.bonus,
+            "data.attributes.fort.bonus",
             approximateCurrentMainRow,
-            targetMainRow
+            targetMainRow,
+            actorUpdate,
+            output
         )
-        const newFortValue = actor.data.data.attributes.fort.bonus + fortDiff
-        actorUpdate["data.attributes.fort.bonus"] = newFortValue
-        output.push([
-            "Set fort to " +
-                newFortValue +
-                " (from " +
-                actor.data.data.attributes.fort.bonus +
-                ")",
-            ""
-        ])
 
         // Reflex
-        const reflexDiff = this.diffOf(
+        this.applyDiffForKey(
             "reflex",
+            actor.data.data.attributes.reflex.bonus,
+            "data.attributes.reflex.bonus",
             approximateCurrentMainRow,
-            targetMainRow
+            targetMainRow,
+            actorUpdate,
+            output
         )
-        const newReflexValue =
-            actor.data.data.attributes.reflex.bonus + reflexDiff
-        actorUpdate["data.attributes.reflex.bonus"] = newReflexValue
-        output.push([
-            "Set reflex to " +
-                newReflexValue +
-                " (from " +
-                actor.data.data.attributes.reflex.bonus +
-                ")",
-            ""
-        ])
 
         // Will
-        const willDiff = this.diffOf(
+        this.applyDiffForKey(
             "will",
+            actor.data.data.attributes.will.bonus,
+            "data.attributes.will.bonus",
             approximateCurrentMainRow,
-            targetMainRow
+            targetMainRow,
+            actorUpdate,
+            output
         )
-        const newWillValue = actor.data.data.attributes.will.bonus + willDiff
-        actorUpdate["data.attributes.will.bonus"] = newWillValue
-        output.push([
-            "Set will to " +
-                newWillValue +
-                " (from " +
-                actor.data.data.attributes.will.bonus +
-                ")",
-            ""
-        ])
+
+        // Ability Scores
+        this.applyAbilityScoreDiff(
+            actor,
+            approximateCurrentMainRow,
+            targetMainRow,
+            actorUpdate,
+            output
+        )
 
         // Update actor
         await actor.update(actorUpdate)
@@ -145,5 +123,43 @@ export default class MutationAdjuster implements IApplyable {
         const toValue = to[key]
         const fromValue = from[key]
         return toValue - fromValue
+    }
+
+    private applyDiffForKey(
+        key: string,
+        existingValue: number,
+        saveKeyPath: string,
+        currrentRow: IMainArrayRow,
+        targetRow: IMainArrayRow,
+        actorUpdate: any,
+        output: any
+    ) {
+        const diff = this.diffOf(key, currrentRow, targetRow)
+        const newValue = existingValue + diff
+        actorUpdate[saveKeyPath] = newValue
+        output.push([
+            "Set " + key + " to " + newValue + " (from " + existingValue + ")",
+            ""
+        ])
+    }
+
+    private applyAbilityScoreDiff(
+        actor: Actor<INPCData>,
+        currrentRow: IMainArrayRow,
+        targetRow: IMainArrayRow,
+        actorUpdate: any,
+        output: any
+    ) {
+        // Find diffs
+        let firstAbilityDiff =
+            targetRow.abilityMods[0] - currrentRow.abilityMods[0]
+        let secondAbilityDiff =
+            targetRow.abilityMods[1] - currrentRow.abilityMods[1]
+        let thirdAbilityDiff =
+            targetRow.abilityMods[2] - currrentRow.abilityMods[2]
+
+        // Apply diffs to top three ability scores
+        //actor.data.
+        console.log("")
     }
 }
