@@ -1,3 +1,10 @@
+### 0.2.1
+### Added
+- Added initiative and ability score scaling to mutator
+
+### Changed
+- Tweaked mutator logic to be compatible with Foundry 0.8
+
 ### 0.2.0
 ### Added
 - (Experimental) Mutator screen, up or downscale an existing NPC
