@@ -61,8 +61,7 @@ export class NPCFactory {
     // between it's current CR and target CR
     static async mutate(actor, context) {
         // Clone existing monster
-        var newActor = await actor.clone();
-        //let newActor = (await Actor.create(actor)) as Actor<INPCData>
+        var newActor = (await Actor.create(actor.toJSON()));
         const output = await apply(newActor, context, new MutationAdjuster());
         context.log.push(...output);
         await this.setAbout(newActor, context);
