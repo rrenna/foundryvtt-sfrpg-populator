@@ -33,14 +33,3 @@ Populate your Starfinder world with life of all shapes and sizes.
 *Q: How do I setup my folder structure for dynamic token images?*
 
 **Extract `example folder structure.zip` into your data folder and fill in the appropriate folders with images (Please be aware this feature is experimental and subject to change).**
-
-*Q: This would be way better if it did this other specific thing!*
-
-**A: That's not a question. Please open an issue as I'm currently focusing on things that are useful to me personally and would love the input.**
-
-*If you'd like to support the work I do on the Starfinder system or modules please buy me a coffee*
-
- 
- [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E24AVFK)
- 
-<a href="https://www.buymeacoffee.com/rrenna" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
