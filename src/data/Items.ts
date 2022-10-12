@@ -172,7 +172,7 @@ export const backpackTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/backpack-consumer.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/backpack-consumer.webp",
     effects: [],
     storage: {
         type: "bulk",
@@ -248,7 +248,7 @@ export const canteenTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/canteen.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/canteen.webp",
     effects: []
 } as IGoods
 export const credStickTemplate = {
@@ -303,7 +303,7 @@ export const credStickTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/credstick.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/credstick.webp",
     effects: []
 } as IGoods
 export const upbTemplate = {
@@ -358,7 +358,7 @@ export const upbTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/upb.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/upb.webp",
     effects: []
 } as IGoods
 export const lighterTemplate = {
@@ -413,7 +413,7 @@ export const lighterTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/lighter.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/lighter.webp",
     effects: []
 } as IGoods
 export const purfumeTemplate = {
@@ -469,7 +469,7 @@ export const purfumeTemplate = {
     },
     flags: {},
     img:
-        "systems/sfrpg/icons/equipment/magic%20items/serum-of-appearance-change.jpg",
+        "systems/sfrpg/icons/equipment/magic%20items/serum-of-appearance-change.webp",
     effects: []
 } as IGoods
 export const intoxicantMinorTemplate = {
@@ -524,7 +524,7 @@ export const intoxicantMinorTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/intoxicant.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/intoxicant.webp",
     effects: []
 } as IGoods
 export const religiousSymbolTemplate = {
@@ -573,7 +573,7 @@ export const religiousSymbolTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/religious-symbol.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/religious-symbol.webp",
     effects: []
 } as IGoods
 export const ropeTemplate = {
@@ -622,6 +622,6 @@ export const ropeTemplate = {
         }
     },
     flags: {},
-    img: "systems/sfrpg/icons/equipment/goods/rope.jpg",
+    img: "systems/sfrpg/icons/equipment/goods/rope.webp",
     effects: []
 } as IGoods

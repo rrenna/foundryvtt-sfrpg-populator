@@ -78,7 +78,7 @@ export class Utils {
             if (!bAllTermsPresent) {
                 continue;
             }
-            entryWeWant = compendium.getEntry(entry._id);
+            entryWeWant = compendium.getDocument(entry._id);
             break;
         }
         if (entryWeWant != undefined) {

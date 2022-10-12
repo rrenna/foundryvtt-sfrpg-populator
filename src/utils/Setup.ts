@@ -27,7 +27,7 @@ Hooks.on("getActorDirectoryEntryContext", (az, items) => {
         icon: '<i class="fas fa-user-astronaut"></i>',
         condition: game.user.isGM,
         callback: (target) => {
-            const actorId = target.attr("data-entity-id")
+            const actorId = target.attr("data-document-id")
             const actor = game.actors.get(actorId) as Actor<INPCData>
 
             // We only allow populator operations on npcs
