@@ -1,3 +1,7 @@
+### 0.2.2
+### Changed
+- updated code to be compatible with Foundry v9 build 280
+
 ### 0.2.1
 ### Added
 - Added initiative and ability score scaling to mutator
