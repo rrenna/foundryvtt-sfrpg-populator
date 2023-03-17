@@ -17,7 +17,7 @@ Hooks.on("getActorDirectoryEntryContext", (az, items) => {
             const actorId = target.attr("data-document-id");
             const actor = game.actors.get(actorId);
             // We only allow populator operations on npcs
-            if (actor.data.type == "npc") {
+            if (actor.data.type == "npc" || actor.data.type == "npc2") {
                 // Open populator panel
                 let repopulatorPanel = new MutatePanelController(new MutatePanelOptions(actorId));
                 repopulatorPanel.render(true);

@@ -106,16 +106,11 @@ export class NPCFactory {
         // Grab appropriate array rows
         let monsterReferenceSymbol =
             MonsterReferenceSymbol[context.monsterReferenceSymbol]
-
-        let mainArrayRow = Object.assign(
-            {},
-            MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR]
-        )
-        let attackArrayRow = Object.assign(
-            {},
-            MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR]
-        )
-
+  
+        //DeepCopy the monster stats
+        let mainArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR]));
+        let attackArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR]));
+  
         context.mainArrayRow = mainArrayRow
         context.attackArrayRow = attackArrayRow
 
@@ -166,7 +161,9 @@ export class NPCFactory {
         }
 
         // Race item
-        await this.clean(raceData)
+        // #TODO what was the point of this? Just crashes now.
+        // await this.clean(raceData)
+
         context.itemsToAdd.push(raceData)
 
         // Update actor
@@ -618,18 +615,25 @@ export class NPCFactory {
         // Apply master / good skill mod to random skills (from an array of skills missing graft skills + perception)
         var skillIndex = 0 // Used to track progress through array of skills
         // Apply mod to master skills
-        for (let i = 0; i < array.masterSkill.count; i++) {
-            let skill = skillsToBuff[skillIndex]
-            actorUpdate["data.skills." + skill + ".mod"] = array.masterSkill.mod
-            actorUpdate["data.skills." + skill + ".enabled"] = true
-            skillIndex++
+        for (let i = 0; i < array.masterSkill.count && skillIndex < skillsToBuff.length; i++) {
+            let skill = skillsToBuff[skillIndex];
+			if (skill != undefined)
+			{
+				actorUpdate["data.skills." + skill + ".mod"] = array.masterSkill.mod;
+				actorUpdate["data.skills." + skill + ".enabled"] = true;
+			}
+            skillIndex++;
         }
+		
         // Apply mod to good skills
-        for (let i = 0; i < array.goodSkill.count; i++) {
-            let skill = skillsToBuff[skillIndex]
-            actorUpdate["data.skills." + skill + ".mod"] = array.goodSkill.mod
-            actorUpdate["data.skills." + skill + ".enabled"] = true
-            skillIndex++
+        for (let i = 0; i < array.goodSkill.count && skillIndex < skillsToBuff.length; i++) {
+            let skill = skillsToBuff[skillIndex];
+			if (skill != undefined)
+			{
+				actorUpdate["data.skills." + skill + ".mod"] = array.goodSkill.mod;
+				actorUpdate["data.skills." + skill + ".enabled"] = true;
+			}
+            skillIndex++;
         }
 
         // Update actor
@@ -726,7 +730,15 @@ export class NPCFactory {
         actorUpdate["token.disposition"] = 0 // Neutral by default
 
         // Update actor
-        await actor.update(actorUpdate)
+        await actor.update(actorUpdate);
+		let images = await actor.getTokenImages();
+		// images = images.filter(i => (images.length === 1) || !(i === this._lastWildcard));
+		const image = images[Math.floor(Math.random() * images.length)];
+		actorUpdate["token.img"] = image;
+		actorUpdate["img"] = image;
+		actorUpdate["token.randomImg"] = false;
+        await actor.update(actorUpdate);
+
     }
 
     private static async setSenses(
@@ -1488,7 +1500,7 @@ export class NPCFactory {
         ) {
             context.mainArrayRow.masterSkill.mod += 1
             context.mainArrayRow.goodSkill.mod += 1
-
+            
             logEntries.push([
                 "Applied <U>skillful</U> adjustment special ability. +1 to all master and good skills.",
                 MonsterCreation.specialAbilities.adjustment.skillful.description
