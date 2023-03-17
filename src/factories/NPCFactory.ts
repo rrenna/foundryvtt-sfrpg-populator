@@ -40,7 +40,7 @@ export class NPCFactory {
     public static async makeNonHostile(context: NPCCreationContext) {
         let actorData = {
             name: "Generated Actor",
-            type: "npc",
+            type: "npc2",
             folder: context.folderId
         }
         let actor = (await Actor.create(actorData)) as Actor<INPCData>
@@ -56,7 +56,7 @@ export class NPCFactory {
     public static async makeHostile(context: NPCCreationContext) {
         let actorData = {
             name: "Generated Actor",
-            type: "npc",
+            type: "npc2",
             folder: context.folderId
         }
         let actor = (await Actor.create(actorData)) as Actor<INPCData>
@@ -448,18 +448,23 @@ export class NPCFactory {
 
         // Set KAC
         actorUpdate["data.attributes.kac.value"] = array.KAC
+        actorUpdate["data.attributes.kac.base"] = array.KAC
 
         // Set EAC
         actorUpdate["data.attributes.eac.value"] = array.EAC
+        actorUpdate["data.attributes.eac.base"] = array.EAC
 
         // Set reflex save
         actorUpdate["data.attributes.reflex.bonus"] = array.reflex
+        actorUpdate["data.attributes.reflex.base"] = array.reflex
 
         // Set fort save
         actorUpdate["data.attributes.fort.bonus"] = array.fort
+        actorUpdate["data.attributes.fort.base"] = array.fort
 
         // Set will save
         actorUpdate["data.attributes.will.bonus"] = array.will
+        actorUpdate["data.attributes.will.base"] = array.will
 
         // Set ability modifiers
         // all abilities
@@ -471,6 +476,8 @@ export class NPCFactory {
             if (i) {
                 actorUpdate["data.abilities." + ability[0] + ".mod"] =
                     ability[1]
+                actorUpdate["data.abilities." + ability[0] + ".base"] =
+                    ability[1]                    
                 abilities.splice(i, 1)
                 logEntries.push([
                     "Increased <u>" +
@@ -492,6 +499,12 @@ export class NPCFactory {
             array.abilityMods[1]
         actorUpdate["data.abilities." + abilities[2] + ".mod"] =
             array.abilityMods[2]
+        actorUpdate["data.abilities." + abilities[0] + ".base"] =
+            array.abilityMods[0]
+        actorUpdate["data.abilities." + abilities[1] + ".base"] =
+            array.abilityMods[1]
+        actorUpdate["data.abilities." + abilities[2] + ".base"] =
+            array.abilityMods[2]            
 
         logEntries.push([
             "Increased <u>" +
@@ -520,7 +533,7 @@ export class NPCFactory {
 
         // Set initiative modifier (be dex modifier)
         let initiative = actorUpdate["data.abilities.dex.mod"] ?? 0
-        actorUpdate["data.attributes.init.total"] = initiative
+        actorUpdate["data.attributes.init.value"] = initiative
         logEntries.push([
             "Set <u>initiative</u> as " +
                 initiative +
@@ -596,6 +609,7 @@ export class NPCFactory {
 
         // Apply good skill mod to perception
         actorUpdate["data.skills.per.mod"] = array.goodSkill.mod
+        actorUpdate["data.skills.per.ranks"] = array.goodSkill.mod
         actorUpdate["data.skills.per.enabled"] = true
 
         // NOTE: We do this step after the above buff to perception as some grafts make perception a master skill and
@@ -604,10 +618,14 @@ export class NPCFactory {
         for (let masterSkill of context.masterSkills) {
             actorUpdate["data.skills." + masterSkill + ".mod"] =
                 array.masterSkill.mod
+            actorUpdate["data.skills." + masterSkill + ".ranks"] =
+                array.masterSkill.mod                
             actorUpdate["data.skills." + masterSkill + ".enabled"] = true
         }
         for (let goodSkill of context.goodSkills) {
             actorUpdate["data.skills." + goodSkill + ".mod"] =
+                array.goodSkill.mod
+            actorUpdate["data.skills." + goodSkill + ".ranks"] =
                 array.goodSkill.mod
             actorUpdate["data.skills." + goodSkill + ".enabled"] = true
         }
@@ -620,6 +638,7 @@ export class NPCFactory {
 			if (skill != undefined)
 			{
 				actorUpdate["data.skills." + skill + ".mod"] = array.masterSkill.mod;
+				actorUpdate["data.skills." + skill + ".ranks"] = array.masterSkill.mod;
 				actorUpdate["data.skills." + skill + ".enabled"] = true;
 			}
             skillIndex++;
@@ -631,6 +650,7 @@ export class NPCFactory {
 			if (skill != undefined)
 			{
 				actorUpdate["data.skills." + skill + ".mod"] = array.goodSkill.mod;
+				actorUpdate["data.skills." + skill + ".ranks"] = array.goodSkill.mod;
 				actorUpdate["data.skills." + skill + ".enabled"] = true;
 			}
             skillIndex++;

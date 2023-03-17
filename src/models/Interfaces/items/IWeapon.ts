@@ -1,5 +1,5 @@
 interface IDamage {
-    parts: [string, string][]
+    parts: [any]
 }
 
 interface IWeaponData {

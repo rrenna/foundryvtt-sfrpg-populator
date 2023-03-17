@@ -30,7 +30,7 @@ export const unarmedStrikeTemplate = {
             },
             hp: {
                 value: 6,
-                max: ""
+                max: "6"
             },
             hardness: {
                 value: ""
@@ -54,7 +54,7 @@ export const unarmedStrikeTemplate = {
         },
         area: {
             value: null,
-            units: null,
+            units: "none",
             shape: "",
             effect: ""
         },
@@ -65,12 +65,13 @@ export const unarmedStrikeTemplate = {
             per: ""
         },
         uses: {
-            value: 0,
-            max: 0,
+            value: null,
+            max: null,
             per: ""
         },
         isActive: null,
-        ability: "",
+        ability: "str",
+        actionTarget: "kac",
         actionType: "mwak",
         attackBonus: 0,
         chatFlavor: "",
@@ -79,7 +80,21 @@ export const unarmedStrikeTemplate = {
             effect: ""
         },
         damage: {
-            parts: [["1d3", "bludgeoning"]]
+            parts: [{
+                    "name": "",
+                    "formula": "1d3",
+                    "types": {
+                        "acid": false,
+                        "bludgeoning": true,
+                        "cold": false,
+                        "electricity": false,
+                        "fire": false,
+                        "healing": false,
+                        "piercing": false,
+                        "slashing": false,
+                        "sonic": false
+                    }
+                }]
         },
         formula: "",
         save: {
@@ -89,27 +104,26 @@ export const unarmedStrikeTemplate = {
         },
         descriptors: [],
         capacity: {
-            value: 0,
-            max: 0
+            value: null,
+            max: null
         },
         usage: {
-            value: 0,
+            value: null,
             per: ""
         },
         modifiers: [],
         container: {
             contents: [],
             storage: [],
-            isOpen: true
+            isOpen: true,
+            includeContentsInWealthCalculation: true
         },
         weaponType: "basicM",
-        weaponCategory: "",
+        weaponCategory: "uncategorized",
         special: "",
         properties: {
-            one: false,
-            two: false,
-            amm: false,
             aeon: false,
+            amm: false,
             analog: false,
             antibiological: false,
             archaic: true,
@@ -121,6 +135,7 @@ export const unarmedStrikeTemplate = {
             breach: false,
             breakdown: false,
             bright: false,
+            buttressing: false,
             cluster: false,
             conceal: false,
             deconstruct: false,
@@ -139,6 +154,7 @@ export const unarmedStrikeTemplate = {
             force: false,
             freeHands: false,
             fueled: false,
+            gearArray: false,
             grapple: false,
             gravitation: false,
             guided: false,
@@ -158,12 +174,14 @@ export const unarmedStrikeTemplate = {
             modal: false,
             necrotic: false,
             nonlethal: true,
+            one: false,
             operative: false,
             penetrating: false,
             polarize: false,
             polymorphic: false,
             powered: false,
             professional: false,
+            propel: false,
             punchGun: false,
             qreload: false,
             radioactive: false,
@@ -172,6 +190,7 @@ export const unarmedStrikeTemplate = {
             regrowth: false,
             relic: false,
             reposition: false,
+            scramble: false,
             shape: false,
             shatter: false,
             shells: false,
@@ -186,7 +205,9 @@ export const unarmedStrikeTemplate = {
             thought: false,
             throttle: false,
             thrown: false,
+            thruster: false,
             trip: false,
+            two: false,
             unbalancing: false,
             underwater: false,
             unwieldy: false,
@@ -199,6 +220,7 @@ export const unarmedStrikeTemplate = {
         }
     },
     flags: {},
+    img: "icons/skills/melee/unarmed-punch-fist.webp",
     effects: []
 };
 export const naturalWeaponsTemplate = {
@@ -231,14 +253,14 @@ export const naturalWeaponsTemplate = {
                 mod: ""
             },
             hp: {
-                value: 6,
-                max: ""
+                value: 15,
+                max: "15"
             },
             hardness: {
-                value: ""
+                value: "0"
             },
             ac: {
-                value: ""
+                value: "5"
             }
         },
         activation: {
@@ -256,7 +278,7 @@ export const naturalWeaponsTemplate = {
         },
         area: {
             value: null,
-            units: null,
+            units: "none",
             shape: "",
             effect: ""
         },
@@ -267,12 +289,13 @@ export const naturalWeaponsTemplate = {
             per: ""
         },
         uses: {
-            value: 0,
-            max: 0,
+            value: null,
+            max: null,
             per: ""
         },
         isActive: null,
-        ability: "",
+        ability: "str",
+        actionTarget: "kac",
         actionType: "mwak",
         attackBonus: 0,
         chatFlavor: "",
@@ -281,7 +304,21 @@ export const naturalWeaponsTemplate = {
             effect: ""
         },
         damage: {
-            parts: [["1d3", "bludgeoning"]]
+            parts: [{
+                    "name": "",
+                    "formula": "1d3",
+                    "types": {
+                        "acid": false,
+                        "bludgeoning": false,
+                        "cold": false,
+                        "electricity": false,
+                        "fire": false,
+                        "healing": false,
+                        "piercing": false,
+                        "slashing": true,
+                        "sonic": false
+                    }
+                }]
         },
         formula: "",
         save: {
@@ -291,27 +328,26 @@ export const naturalWeaponsTemplate = {
         },
         descriptors: [],
         capacity: {
-            value: 0,
-            max: 0
+            value: null,
+            max: null
         },
         usage: {
-            value: 0,
+            value: null,
             per: ""
         },
         modifiers: [],
         container: {
             contents: [],
             storage: [],
-            isOpen: true
+            isOpen: true,
+            includeContentsInWealthCalculation: true
         },
         weaponType: "basicM",
-        weaponCategory: "",
+        weaponCategory: "uncategorized",
         special: "",
         properties: {
-            one: false,
-            two: false,
-            amm: false,
             aeon: false,
+            amm: false,
             analog: false,
             antibiological: false,
             archaic: false,
@@ -323,6 +359,7 @@ export const naturalWeaponsTemplate = {
             breach: false,
             breakdown: false,
             bright: false,
+            buttressing: false,
             cluster: false,
             conceal: false,
             deconstruct: false,
@@ -341,6 +378,7 @@ export const naturalWeaponsTemplate = {
             force: false,
             freeHands: false,
             fueled: false,
+            gearArray: false,
             grapple: false,
             gravitation: false,
             guided: false,
@@ -360,12 +398,14 @@ export const naturalWeaponsTemplate = {
             modal: false,
             necrotic: false,
             nonlethal: false,
+            one: false,
             operative: false,
             penetrating: false,
             polarize: false,
             polymorphic: false,
             powered: false,
             professional: false,
+            propel: false,
             punchGun: false,
             qreload: false,
             radioactive: false,
@@ -374,6 +414,7 @@ export const naturalWeaponsTemplate = {
             regrowth: false,
             relic: false,
             reposition: false,
+            scramble: false,
             shape: false,
             shatter: false,
             shells: false,
@@ -388,7 +429,9 @@ export const naturalWeaponsTemplate = {
             thought: false,
             throttle: false,
             thrown: false,
+            thruster: false,
             trip: false,
+            two: false,
             unbalancing: false,
             underwater: false,
             unwieldy: false,
@@ -401,7 +444,7 @@ export const naturalWeaponsTemplate = {
         }
     },
     flags: {},
-    img: "icons/svg/mystery-man.svg",
+    img: "icons/skills/melee/blood-slash-foam-red.webp",
     effects: []
 };
 //# sourceMappingURL=Weapons.js.map
