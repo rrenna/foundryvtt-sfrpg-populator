@@ -1,13 +1,24 @@
 <div class="{{cssClass}} flexcol">
 
     <header class="sheet-header" align="center">
-        <i><u>Right-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC.</i>
+        <i><u>Right-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC. The NPC will use the default CR from the module settings.</i>
     </header>
 
     <div class="form-group">
+        <!-- CR -->
+        <label for="npcCRChoice"><b>CR</b></label>
+        <div class="form-fields">
+            <select id="npcCR">
+                {{#each NPCCR as |cr|}}
+                    <option value="{{ cr }}">{{ cr }}</option>
+                {{/each}}
+            </select>
+        </div>
+		<br/>
         <!-- NPCs -->
         <label for="npcGenerationButton"><b>NPC</b></label>
-        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>        
+        <br/>
         <div class="form-fields">
             <select id="npcRaceSelect">
                 {{#each NPCRaces as |race key|}}
@@ -16,9 +27,14 @@
             </select>
         </div>
         <br/>
-        <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC (expert Array)">
-            <i class="fas fa-male"></i> Generate NPCs
-        </button>
+        <div style="display: flex; justify-content: space-between;">
+            <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen Race (expert Array)" style="display: inline-block; width: 49%;">
+                <i class="fas fa-male"></i> Generate Chosen
+            </button>        
+            <button id="npcRandomGenerationButton" class="populatorButton control dialog-button npcRandomGenerationButton" type="submit" name="submitRandom" data-tippy-content="Generate an NPC with a random race (expert Array)" style="display: inline-block; width: 49%; margin-left: auto;">
+                <i class="fas fa-male"></i> Random Race
+            </button>
+        </div>
         <br/>
         <br/>
         <!-- Monsters -->
@@ -32,13 +48,13 @@
             </select>
         </div>
         <br/>
-        <button id="monsterGenerationButton" class="populatorButton control monsterGenerationButton" type="submit" name="submit" data-tippy-content="Generate a Monsters (combatant array)">
+        <button id="monsterGenerationButton" class="populatorButton control monsterGenerationButton" type="submit" name="submit" data-tippy-content="Generate a Monster (combatant array)">
             <i class="fas fa-pastafarianism"></i>Generate Monster
         </button>
 
         <footer class="sheet-footer">
             <h6 align="center">
-            For the latest development news and FAQ on Populator click <a href="https://github.com/rrenna/foundryvtt-sfrpg-populator">here</a>
+            For the latest development news and FAQ on Populator click <a href="https://github.com/danimrath/foundryvtt-sfrpg-populator">here</a>
             </h6>
         </footer>
     </div>

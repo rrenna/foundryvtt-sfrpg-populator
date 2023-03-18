@@ -1,5 +1,14 @@
 /// List of creature combat ratings
 import { Utils } from "../utils/Uils.js";
+export const npcCR = [
+    "1/3",
+    "1/2",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+];
 export const CR = [
     "1/3",
     "1/2",
