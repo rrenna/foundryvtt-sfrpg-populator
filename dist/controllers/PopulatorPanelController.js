@@ -6,6 +6,7 @@ import { CreatureTypeGenerationOptions } from "../data/Generator.js";
 import { Subtype, Type } from "../data/Types.js";
 import { npcCR } from "../data/CRs.js";
 import { Randomizer } from "../Randomizer.js";
+import { Probabilities } from "../data/Probabilities.js";
 // Options provided to the Populator panel - adds folderId to default options
 export class PopulatorPanelOptions {
     constructor(folderId) {
@@ -42,6 +43,7 @@ export default class PopulatorPanelController extends Application {
         return mergeObject(super.getData(), {
             options: options,
             isGM: game.user.isGM,
+            NPCRacesDistributions: Probabilities.raceDistributions,
             NPCCR: npcCR,
             NPCRaces: Races.nonCombatantRaces,
             supportedCreatureTypes: CreatureTypeGenerationOptions
@@ -59,45 +61,21 @@ export default class PopulatorPanelController extends Application {
             .find(".npcGenerationButton")
             .on("click", this.npcGenerationButtonClicked.bind(this));
         html
-            .find(".npcRandomGenerationButton")
-            .on("click", this.npcRandomGenerationButtonClicked.bind(this));
-        html
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this));
         tippy(".populatorInfo");
         tippy(".populatorButton");
     }
     /**
- * Click event when a users clicks on the NPC button
- * @param {Event} e The click event
- */
-    async npcRandomGenerationButtonClicked(e) {
-        let npcCRSelectValue = this.element
-            .find("#npcCR")
-            .find(":selected")
-            .val();
-        let selectedCR = npcCRSelectValue;
-        let selectedRace = Randomizer.randomRace().name;
-        const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
-        // Context
-        let context = new NPCCreationContext();
-        // CR
-        context.CR = selectedCR;
-        // Location
-        context.folderId = this.options["folderId"];
-        // Validates selected race name
-        if (Races.nonCombatantRaces[selectedRace]) {
-            context.race = selectedRace;
-        }
-        context.tokenOptions.dynamicImage = dynamicTokenImages;
-        await NPCFactory.makeNonHostile(context);
-        ui.notifications.info("NPC created.", { permanent: false });
-    }
-    /**
      * Click event when a users clicks on the NPC button
      * @param {Event} e The click event
      */
     async npcGenerationButtonClicked(e) {
+        let locationSelection = this.element
+            .find("#npcLocation")
+            .find(":selected")
+            .val();
+        let selectedLocation = locationSelection;
         let npcRaceSelectValue = this.element
             .find("#npcRaceSelect")
             .find(":selected")
@@ -108,10 +86,16 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val();
         let selectedCR = npcCRSelectValue;
+        if (selectedRace === "random") {
+            selectedRace = Randomizer.randomRace(selectedLocation).name;
+        }
         // Settings
         const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
         // Context
         let context = new NPCCreationContext();
+        if (selectedCR === "random") {
+            selectedCR = Randomizer.getRandom(npcCR);
+        }
         // CR
         context.CR = selectedCR;
         // Location
@@ -122,7 +106,7 @@ export default class PopulatorPanelController extends Application {
         }
         context.tokenOptions.dynamicImage = dynamicTokenImages;
         await NPCFactory.makeNonHostile(context);
-        ui.notifications.info("NPC created.", { permanent: false });
+        ui.notifications.info(`NPC ${context.name} created.`, { permanent: false });
     }
     /**
      * Click event when a users clicks on the Monster button

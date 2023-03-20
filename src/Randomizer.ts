@@ -5,11 +5,12 @@ import { StringFormat } from "./utils/StringFormat.js"
 import Race from "./models/Race.js"
 import NPCCreationContext from "./models/NPCCreationContext.js"
 import { Gender } from "./data/Genders.js"
+import { Utils } from "./utils/Uils.js"
 
 export class Randomizer {
-    static randomRace(): Race {
+    static randomRace(location: string = "absalom"): Race {
         let raceDistribution = Randomizer.pickWinningItem(
-            Probabilities.raceDistributions.default
+            Probabilities.raceDistributions[location]
         )
         let race = Races.nonCombatantRaces[raceDistribution.name]
         return race
@@ -93,5 +94,11 @@ export class Randomizer {
                 return data[i]
             }
         }
+    }
+
+    static getRandom(data: string[]) {
+        let shuffleArray = data.slice()
+        Utils.shuffleArray(shuffleArray)
+        return shuffleArray[0]
     }
 }

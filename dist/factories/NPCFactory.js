@@ -148,6 +148,7 @@ export class NPCFactory {
         // Name
         let randomName = Randomizer.randomName(context);
         actorUpdate["name"] = randomName;
+        context.name = randomName;
         logEntries.push([" Generated name " + randomName + " at random.", ""]);
         // Update actor
         await actor.update(actorUpdate);

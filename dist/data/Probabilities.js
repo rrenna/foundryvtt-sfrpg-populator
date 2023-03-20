@@ -5,17 +5,17 @@ export const Probabilities = {
     alignmentDistributions: {
         default: [
             // Good
-            { name: "LG", percentage: 0.17 },
-            { name: "NG", percentage: 0.17 },
+            { name: "LG", percentage: 0.20 },
+            { name: "NG", percentage: 0.20 },
             { name: "CG", percentage: 0.16 },
             // Neutral
             { name: "LN", percentage: 0.14 },
-            { name: "N", percentage: 0.13 },
-            { name: "CN", percentage: 0.13 },
+            { name: "N", percentage: 0.10 },
+            { name: "CN", percentage: 0.10 },
             // Evil
-            { name: "LE", percentage: 0.4 },
-            { name: "NE", percentage: 0.3 },
-            { name: "CE", percentage: 0.3 }
+            { name: "LE", percentage: 0.04 },
+            { name: "NE", percentage: 0.03 },
+            { name: "CE", percentage: 0.03 }
         ]
     },
     // The default distribution of races in a neutral environment when generating a humanoid
@@ -23,7 +23,7 @@ export const Probabilities = {
     // NOTE: Distribution arrays' total percentage must never exceed 1.0
     // TODO: Allow customization of these values
     raceDistributions: {
-        default: [
+        absalom: [
             { name: "android", percentage: 0.09 },
             { name: "dwarf", percentage: 0.04 },
             { name: "drow", percentage: 0.01 },
@@ -41,6 +41,25 @@ export const Probabilities = {
             { name: "skittermander", percentage: 0.01 },
             { name: "ysoki", percentage: 0.09 },
             { name: "vesk", percentage: 0.03 }
+        ],
+        locus1: [
+            { name: "android", percentage: 0.07 },
+            { name: "dwarf", percentage: 0.02 },
+            { name: "drow", percentage: 0.02 },
+            { name: "elf", percentage: 0.02 },
+            { name: "kasatha", percentage: 0.02 },
+            { name: "gnoll", percentage: 0.01 },
+            { name: "gnome", percentage: 0.04 },
+            { name: "halfElf", percentage: 0.01 },
+            { name: "halfOrc", percentage: 0.01 },
+            { name: "halfling", percentage: 0.05 },
+            { name: "human", percentage: 0.40 },
+            { name: "lashunta", percentage: 0.07 },
+            { name: "nuar", percentage: 0.01 },
+            { name: "shirren", percentage: 0.10 },
+            { name: "skittermander", percentage: 0.01 },
+            { name: "ysoki", percentage: 0.09 },
+            { name: "vesk", percentage: 0.05 }
         ]
     },
     // NOTE: Extrapolated from 2019 Canadian census: https://www12.statcan.gc.ca/census-recensement/2021/ref/98-20-0002/982000022020002-eng.cfm

@@ -81,8 +81,8 @@ export const backpackTemplate = {
         price: 3,
         level: 1,
         attuned: false,
-        equipped: false,
-        equippable: false,
+        equipped: true,
+        equippable: true,
         identified: true,
         attributes: {
             sturdy: false,
@@ -144,51 +144,13 @@ export const backpackTemplate = {
             isOpen: true
         },
         equippedBulkMultiplier: 0,
-        acceptedItemTypes: {
-            weapon: true,
-            equipment: true,
-            goods: true,
-            consumable: true,
-            container: true,
-            technological: true,
-            fusion: true,
-            upgrade: true,
-            augmentation: true
-        },
         damage: {
-            parts: []
-        },
-        critical: {
-            parts: []
-        },
-        abilityMods: {
             parts: []
         }
     },
     flags: {},
     img: "systems/sfrpg/icons/equipment/goods/backpack-consumer.webp",
-    effects: [],
-    storage: {
-        type: "bulk",
-        amount: 2,
-        affectsEncumbrance: true
-    },
-    weapon: true,
-    equipment: true,
-    consumable: true,
-    goods: true,
-    container: true,
-    hybrid: false,
-    magic: true,
-    technological: true,
-    fusion: true,
-    upgrade: true,
-    spell: false,
-    augmentation: true,
-    shield: false,
-    weaponAccessory: false,
-    vehicleAttack: false,
-    vehicleSystem: false
+    effects: []
 };
 export const canteenTemplate = {
     name: "Canteen",

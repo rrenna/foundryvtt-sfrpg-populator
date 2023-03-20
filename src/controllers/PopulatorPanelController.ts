@@ -13,6 +13,7 @@ import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 import { npcCR } from "../data/CRs.js"
 import { Randomizer } from "../Randomizer.js"
 import Race from "../models/Race.js"
+import { Probabilities } from "../data/Probabilities.js"
 
 // Options provided to the Populator panel - adds folderId to default options
 export class PopulatorPanelOptions implements Application.Options {
@@ -54,6 +55,7 @@ export default class PopulatorPanelController extends Application {
         return mergeObject(super.getData(), {
             options: options,
             isGM: game.user.isGM,
+            NPCRacesDistributions: Probabilities.raceDistributions,
             NPCCR: npcCR,
             NPCRaces: Races.nonCombatantRaces,
             supportedCreatureTypes: CreatureTypeGenerationOptions
@@ -71,56 +73,23 @@ export default class PopulatorPanelController extends Application {
             .find(".npcGenerationButton")
             .on("click", this.npcGenerationButtonClicked.bind(this))
         ;(<JQuery>html)
-            .find(".npcRandomGenerationButton")
-            .on("click", this.npcRandomGenerationButtonClicked.bind(this))
-        ;(<JQuery>html)
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this))
 
         tippy(".populatorInfo")
         tippy(".populatorButton")
     }
-        /**
-     * Click event when a users clicks on the NPC button
-     * @param {Event} e The click event
-     */
-    private async npcRandomGenerationButtonClicked(e: Event) {
-        let npcCRSelectValue = (<JQuery>this.element)
-            .find("#npcCR")
-            .find(":selected")
-            .val()            
-        let selectedCR: string = npcCRSelectValue as string
-
-        let selectedRace: string = Randomizer.randomRace().name
-
-        const dynamicTokenImages = game.settings.get(
-            "foundryvtt-sfrpg-populator",
-            "dynamicTokenImages"
-        )
-        
-        // Context
-        let context = new NPCCreationContext()
-
-        // CR
-        context.CR = selectedCR
-
-        // Location
-        context.folderId = this.options["folderId"]
-
-        // Validates selected race name
-        if (Races.nonCombatantRaces[selectedRace]) {
-            context.race = selectedRace
-        }
-        context.tokenOptions.dynamicImage = dynamicTokenImages
-
-        await NPCFactory.makeNonHostile(context)
-        ui.notifications.info("NPC created.", { permanent: false })
-    }
+ 
     /**
      * Click event when a users clicks on the NPC button
      * @param {Event} e The click event
      */
     private async npcGenerationButtonClicked(e: Event) {
+        let locationSelection = (<JQuery>this.element)
+            .find("#npcLocation")
+            .find(":selected")
+            .val()            
+        let selectedLocation: string = locationSelection as string
         let npcRaceSelectValue = (<JQuery>this.element)
             .find("#npcRaceSelect")
             .find(":selected")
@@ -131,6 +100,10 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val()            
         let selectedCR: string = npcCRSelectValue as string
+        
+        if (selectedRace === "random") {
+            selectedRace = Randomizer.randomRace(selectedLocation).name
+        }
 
         // Settings
         const dynamicTokenImages = game.settings.get(
@@ -140,6 +113,10 @@ export default class PopulatorPanelController extends Application {
 
         // Context
         let context = new NPCCreationContext()
+
+        if (selectedCR === "random") {
+            selectedCR = Randomizer.getRandom(npcCR)
+        }
 
         // CR
         context.CR = selectedCR
@@ -154,7 +131,7 @@ export default class PopulatorPanelController extends Application {
         context.tokenOptions.dynamicImage = dynamicTokenImages
 
         await NPCFactory.makeNonHostile(context)
-        ui.notifications.info("NPC created.", { permanent: false })
+        ui.notifications.info(`NPC ${context.name} created.`, { permanent: false })
     }
     /**
      * Click event when a users clicks on the Monster button

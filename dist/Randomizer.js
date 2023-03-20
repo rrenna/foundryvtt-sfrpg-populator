@@ -2,9 +2,10 @@ import { Races } from "./data/Races.js";
 import { Probabilities } from "./data/Probabilities.js";
 import { Names } from "./data/Names.js";
 import { StringFormat } from "./utils/StringFormat.js";
+import { Utils } from "./utils/Uils.js";
 export class Randomizer {
-    static randomRace() {
-        let raceDistribution = Randomizer.pickWinningItem(Probabilities.raceDistributions.default);
+    static randomRace(location = "absalom") {
+        let raceDistribution = Randomizer.pickWinningItem(Probabilities.raceDistributions[location]);
         let race = Races.nonCombatantRaces[raceDistribution.name];
         return race;
     }
@@ -70,6 +71,11 @@ export class Randomizer {
                 return data[i];
             }
         }
+    }
+    static getRandom(data) {
+        let shuffleArray = data.slice();
+        Utils.shuffleArray(shuffleArray);
+        return shuffleArray[0];
     }
 }
 //# sourceMappingURL=Randomizer.js.map

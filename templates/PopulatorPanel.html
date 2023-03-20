@@ -1,14 +1,27 @@
 <div class="{{cssClass}} flexcol">
 
     <header class="sheet-header" align="center">
-        <i><u>Right-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC. The NPC will use the default CR from the module settings.</i>
+        <i><u>Right-click</u> the <b>Populator</b> button to skip this screen and generate a random non-combatant NPC. The NPC will use the default CR from the module settings and Absalom as the location.</i>
     </header>
 
     <div class="form-group">
+		<br/>
+        <!-- Race Distribution -->
+        <label for="npcRaceDistribution"><b>Location Race Distribution</b></label>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="When generating a random NPC use the distribution percentages from the specified location."></i>        
+        <div class="form-fields">
+            <select id="npcLocation">
+                {{#each NPCRacesDistributions as |location name|}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+		<br/>
         <!-- CR -->
         <label for="npcCRChoice"><b>CR</b></label>
         <div class="form-fields">
             <select id="npcCR">
+                <option value="random">random</option>
                 {{#each NPCCR as |cr|}}
                     <option value="{{ cr }}">{{ cr }}</option>
                 {{/each}}
@@ -21,6 +34,7 @@
         <br/>
         <div class="form-fields">
             <select id="npcRaceSelect">
+                <option value="random" >random</option>
                 {{#each NPCRaces as |race key|}}
                     <option value={{ key }} >{{ race.name }}</option>
                 {{/each}}
@@ -28,12 +42,9 @@
         </div>
         <br/>
         <div style="display: flex; justify-content: space-between;">
-            <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen Race (expert Array)" style="display: inline-block; width: 49%;">
-                <i class="fas fa-male"></i> Generate Chosen
+            <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen Race (expert Array)">
+                <i class="fas fa-male"></i> Generate NPC
             </button>        
-            <button id="npcRandomGenerationButton" class="populatorButton control dialog-button npcRandomGenerationButton" type="submit" name="submitRandom" data-tippy-content="Generate an NPC with a random race (expert Array)" style="display: inline-block; width: 49%; margin-left: auto;">
-                <i class="fas fa-male"></i> Random Race
-            </button>
         </div>
         <br/>
         <br/>
