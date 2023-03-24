@@ -29,7 +29,7 @@ export default class PopulatorPanelController extends Application {
             id: "populator-panel",
             classes: ["sfrpg"],
             template:
-                "modules/foundryvtt-sfrpg-populator/templates/PopulatorPanel.html",
+                "modules/sfrpg-populator/templates/PopulatorPanel.html",
             width: 400,
             height: 450,
             minimizable: true,
@@ -107,7 +107,7 @@ export default class PopulatorPanelController extends Application {
 
         // Settings
         const dynamicTokenImages = game.settings.get(
-            "foundryvtt-sfrpg-populator",
+            "sfrpg-populator",
             "dynamicTokenImages"
         )
 
@@ -146,11 +146,11 @@ export default class PopulatorPanelController extends Application {
 
         // Settings
         const defaultCR = game.settings.get(
-            "foundryvtt-sfrpg-populator",
+            "sfrpg-populator",
             "defaultCR"
         )
         const dynamicTokenImages = game.settings.get(
-            "foundryvtt-sfrpg-populator",
+            "sfrpg-populator",
             "dynamicTokenImages"
         )
 

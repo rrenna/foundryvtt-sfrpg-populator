@@ -1,5 +1,5 @@
 {
-    "name": "foundryvtt-sfrpg-populator",
+    "name": "sfrpg-populator",
     "description": "Foundry VTT module for Starfinder which helps create aliens of all shapes and sizes.",
     "devDependencies": {
         "@types/node": "^18.11.18",

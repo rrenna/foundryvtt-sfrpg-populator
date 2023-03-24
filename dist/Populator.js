@@ -31,8 +31,8 @@ export class Populator {
     }
     static async populateRightClicked() {
         // Settings
-        const defaultCR = game.settings.get("foundryvtt-sfrpg-populator", "defaultCR");
-        const dynamicTokenImages = game.settings.get("foundryvtt-sfrpg-populator", "dynamicTokenImages");
+        const defaultCR = game.settings.get("sfrpg-populator", "defaultCR");
+        const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
         let options = {
             CR: defaultCR,
             dynamicTokenImages: dynamicTokenImages,

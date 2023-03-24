@@ -10,7 +10,7 @@ export default class MonsterWizardPanel2Controller extends FormApplication {
             id: "populator-panel",
             classes: ["sfrpg"],
             template:
-                "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_2.html",
+                "modules/sfrpg-populator/templates/MonsterWizardPanel_2.html",
             width: 300,
             height: 300,
             minimizable: true,

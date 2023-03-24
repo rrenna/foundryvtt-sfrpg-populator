@@ -18,7 +18,7 @@ export default class MutatePanelController extends Application {
             id: "repopulator-panel",
             classes: ["sfrpg"],
             template:
-                "modules/foundryvtt-sfrpg-populator/templates/MutatePanel.html",
+                "modules/sfrpg-populator/templates/MutatePanel.html",
             width: 300,
             height: 300,
             minimizable: true,

@@ -11,7 +11,7 @@ export default class MonsterWizardPanel1Controller extends FormApplication {
         return mergeObject(super.defaultOptions, {
             id: "populator-panel",
             classes: ["sfrpg"],
-            template: "modules/foundryvtt-sfrpg-populator/templates/MonsterWizardPanel_1.html",
+            template: "modules/sfrpg-populator/templates/MonsterWizardPanel_1.html",
             width: 300,
             height: 300,
             minimizable: true,
