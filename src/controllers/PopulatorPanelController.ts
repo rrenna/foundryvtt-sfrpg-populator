@@ -10,7 +10,7 @@ import CreatureTypeGraft from "../models/CreatureTypeGraft.js"
 import { CreatureTypeGenerationOptions } from "../data/Generator.js"
 import { Subtype, Type } from "../data/Types.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
-import { npcCR } from "../data/CRs.js"
+import { CR } from "../data/CRs.js"
 import { Randomizer } from "../Randomizer.js"
 import Race from "../models/Race.js"
 import { Probabilities } from "../data/Probabilities.js"
@@ -56,7 +56,7 @@ export default class PopulatorPanelController extends Application {
             options: options,
             isGM: game.user.isGM,
             NPCRacesDistributions: Probabilities.raceDistributions,
-            NPCCR: npcCR,
+            NPCCR: CR,
             NPCRaces: Races.nonCombatantRaces,
             supportedCreatureTypes: CreatureTypeGenerationOptions
         })
@@ -115,7 +115,7 @@ export default class PopulatorPanelController extends Application {
         let context = new NPCCreationContext()
 
         if (selectedCR === "random") {
-            selectedCR = Randomizer.getRandom(npcCR)
+            selectedCR = Randomizer.getRandom(CR)
         }
 
         // CR

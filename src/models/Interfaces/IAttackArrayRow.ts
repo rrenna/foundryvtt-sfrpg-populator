@@ -4,4 +4,6 @@ interface IAttackArrayRow {
     energy: string
     kinetic: string
     standard: string
+    threeAttacks: string
+    fourAttacks: string
 }

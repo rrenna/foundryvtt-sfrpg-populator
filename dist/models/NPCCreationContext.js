@@ -20,6 +20,9 @@ export default class NPCCreationContext {
         this.conditionImmunities = [];
         // Special abilities
         this.universalCreatureRules = [];
+        // Special abilities
+        this.feats = [];
+        this.rpSpecialAbility = false; // set to true if we add a special ability requiring RP
         // Item generation
         this.naturalWeapons = { enabled: false, racial: false };
         this.rangedWeapon = { enabled: false }; // NOTE: This will be fleshed out and expanded over time

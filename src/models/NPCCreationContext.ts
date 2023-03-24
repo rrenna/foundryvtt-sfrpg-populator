@@ -39,6 +39,9 @@ export default class NPCCreationContext implements IContext {
     public conditionImmunities: string[] = []
     // Special abilities
     public universalCreatureRules: any[] = []
+    // Special abilities
+    public feats: any[] = []
+    public rpSpecialAbility = false // set to true if we add a special ability requiring RP
     // Item generation
     public naturalWeapons = { enabled: false, racial: false }
     public rangedWeapon = { enabled: false } // NOTE: This will be fleshed out and expanded over time

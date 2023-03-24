@@ -118,6 +118,7 @@ export class NPCFactory {
         await this.setGenderAndName(actor, context)
         await this.setDetails(actor, context)
         await this.setGrafts(actor, context)
+        //#TODO set template grafts
         await this.setSpecialAbilities(actor, context)
         await this.setAttributes(actor, context)
         await this.setVulnerabilitiesAndImmunities(actor, context)
@@ -388,6 +389,28 @@ export class NPCFactory {
                 ])
             }
 
+            //#TODO do we want to add feats? Maybe create a list of expert vs combat feats with random chance to add one
+            var amountOfFeats = context.feats.length
+            if (
+                amountOfFeats > 0
+            ) {
+                for (var i = 0; i < amountOfFeats && i < amountOfSpecialAbilities; i++) {
+                    let feat = await Utils.fuzzyFindUniversalCreatureRule(
+                        context.feats[i]
+                    )
+                    if (feat){
+                        context.itemsToAdd.push(feat)
+
+                        // This takes up one of our special abilities, reduce by 1
+                        amountOfSpecialAbilities -= 1
+    
+                        context.log.push([
+                            "Applying <u>Feats </u> Populator applies a feat from a list of appropriate feats based on the array type</b>", context.feats[i]
+                        ])
+                    }
+                }
+            }
+
             // NOTE: Currently chooses 1+ Adjustment Special Abilities
             let adjustmentSpecialAbilities: any[] = Object.values(
                 MonsterCreation.specialAbilities.adjustment
@@ -445,6 +468,7 @@ export class NPCFactory {
         actorUpdate["data.attributes.sp.max"] = 0
 
         // Set RP (should be 0)
+        //#TODO add RP = CR /5 + 3 if NPC has RP special ability
         actorUpdate["data.attributes.rp.max"] = 0
 
         // Set KAC
@@ -470,7 +494,7 @@ export class NPCFactory {
         // Set ability modifiers
         // all abilities
         var abilities = ["cha", "con", "dex", "int", "str", "wis"]
-        // First set hard-coded ability modifiers
+        // First set hard-coded ability modifiers from grafts or special abilities
         for (let ability of context.abilities) {
             let i = abilities.indexOf(ability[0])
             // Remove from our array of abilities to randomly improve
@@ -492,6 +516,10 @@ export class NPCFactory {
         }
 
         // We randomize which abilities are buffed
+        //#TODO the abilities we buff should probably be weighted towards certain abilities determined by the array. 
+        //Combantant at least two in STR/DEX/CON
+        //Experts are mechants advisors envoys mechanics and operatives so probably at least two in INT/CHA/WIS/DEX
+        //Spellcaster obviously needs its highest in the appropriate spellcasting ability
         Utils.shuffleArray(abilities)
 
         actorUpdate["data.abilities." + abilities[0] + ".mod"] =
@@ -560,6 +588,8 @@ export class NPCFactory {
         actorUpdate["data.traits.ci.custom"] = context.conditionImmunities.join(
             ";"
         )
+
+        //#TODO vulnerabilities?
 
         // Update actor
         await actor.update(actorUpdate)
@@ -1465,6 +1495,8 @@ export class NPCFactory {
             context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic
             context.attackArrayRow.energy = attackArrayRowPlus2.energy
             context.attackArrayRow.standard = attackArrayRowPlus2.standard
+            context.attackArrayRow.threeAttacks = attackArrayRowPlus2.threeAttacks
+            context.attackArrayRow.fourAttacks = attackArrayRowPlus2.fourAttacks
 
             logEntries.push([
                 "Applied <U>brute</U> adjustment special ability. Set high attack bonus value to low attack bonus, increased damage by 2 rows in the array.",

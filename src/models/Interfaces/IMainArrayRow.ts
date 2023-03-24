@@ -6,6 +6,8 @@ interface IMainArrayRow {
     reflex: number
     will: number
     HP: number
+    abilityDC: number
+    baseSpellDC: number    
     abilityMods: number[]
     specialAbilities: number
     masterSkill: any
