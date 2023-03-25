@@ -544,30 +544,26 @@ export class NPCFactory {
                 // TODO: bite, claw, or slam
                 // TODO: Different damage types depending on slam, bite or claw
             }
-            naturalWeapons.data.attackBonus = highAttackBonus;
-            naturalWeapons.data.damage = {
-                parts: [[attackArray.standard, "bludgeoning"]]
-            };
+            naturalWeapons.system.attackBonus = highAttackBonus;
+            naturalWeapons.system.damage.parts = [{ formula: attackArray.standard, types: { bludgeoning: true } }];
             context.itemsToAdd.push(naturalWeapons);
         }
         else {
             // All NPCs have unarmed strike unless they are equipped with natural weapons
             let unarmedStrike = WeaponFactory.makeUnarmedStrike();
             // We use the low attack for built in unarmed strikes as they should never be the primary attack of a combatant
-            unarmedStrike.data.attackBonus = lowAttackBonus;
+            unarmedStrike.system.attackBonus = lowAttackBonus;
             context.itemsToAdd.push(unarmedStrike);
         }
         // Generate ranged weapons
         if (context.rangedWeapon.enabled) {
             let laserPistol = await WeaponFactory.makeLaserPistol(context.CR);
             if (laserPistol) {
-                laserPistol.data.equipped = true;
-                laserPistol.data.proficient = true; // Should always be proficient with equipped weapons
-                laserPistol.data.ability = ""; // Should not be modified by any ability
-                laserPistol.data.attackBonus = highAttackBonus;
-                laserPistol.data.damage = {
-                    parts: [[attackArray.energy, "fire"]]
-                };
+                laserPistol.system.equipped = true;
+                laserPistol.system.proficient = true; // Should always be proficient with equipped weapons
+                laserPistol.system.ability = ""; // Should not be modified by any ability
+                laserPistol.system.attackBonus = highAttackBonus;
+                laserPistol.system.damage.parts = [{ formula: attackArray.energy, types: { fire: true } }];
                 context.itemsToAdd.push(laserPistol);
             }
         }
@@ -767,14 +763,14 @@ export class NPCFactory {
         let actorUpdate = {};
         // Set as 1 per day
         function addOncePerDayInnateSpell(spell) {
-            spell.data.uses.value = 1;
-            spell.data.uses.max = 1;
-            spell.data.uses.per = "day";
-            spell.data.preparation.mode = "innate";
+            spell.system.uses.value = 1;
+            spell.system.uses.max = 1;
+            spell.system.uses.per = "day";
+            spell.system.preparation.mode = "innate";
             context.itemsToAdd.push(spell);
         }
         function addAtWillInnateSpell(spell) {
-            spell.data.preparation.mode = "innate";
+            spell.system.preparation.mode = "innate";
             context.itemsToAdd.push(spell);
         }
         if (graft === Grafts.creatureSubtype.android) {

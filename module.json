@@ -5,7 +5,7 @@
     "title": "Starfinder Populator",
     "type": "module",
     "description": "A module to create aliens of all shapes and sizes.",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "author": "rrenna",
     "authors": [
         {
@@ -19,13 +19,21 @@
             "discord": "Danimrath#9901"
         }
     ],
-    "systems": ["sfrpg"],
+    "relationships": {
+        "systems": [
+          {
+            "id": "sfrpg",
+            "type": "system",
+            "compatibility": {}
+          }
+        ]
+      },
     "esmodules": ["dist/Populator.js", "dist/utils/Setup.js"],
     "styles": [],
     "packs": [],
     "url": "https://github.com/danimrath/foundryvtt-sfrpg-populator",
     "manifest": "https://github.com/danimrath/foundryvtt-sfrpg-populator/releases/latest/download/module.json",
-    "download": "https://github.com/danimrath/foundryvtt-sfrpg-populator/releases/download/V0.2.8/sfrpg-populator-v0.2.8.zip",
+    "download": "https://github.com/danimrath/foundryvtt-sfrpg-populator/releases/download/V0.2.9/sfrpg-populator-v0.2.9.zip",
     "minimumCoreVersion": "9.280",
     "compatibleCoreVersion": "9.280",
     "compatibility": {

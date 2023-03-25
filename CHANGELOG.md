@@ -1,3 +1,21 @@
+### 0.2.9
+### Changed
+- Bugfixes for weapons to match system data format.
+- Updates to Grafts application so spells are added correctly.
+- Updated module refrence to remove warning on Foundry startup.
+
+### 0.2.8
+### Changed
+- Updated Module to work on official Foundry Bazaar
+
+### 0.2.7
+### Changed
+- Add full expert array up to CR 25
+
+### 0.2.6
+### Changed
+- Adds ability to choose a location and added Locus1
+
 ### 0.2.2
 ### Changed
 - updated code to be compatible with Foundry v9 build 280

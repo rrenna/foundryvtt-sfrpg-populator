@@ -3,7 +3,7 @@
 export const unarmedStrikeTemplate = {
     name: "Unarmed strike",
     type: "weapon",
-    data: {
+    system: {
         description: {
             chat: "",
             gmnotes: "",
@@ -71,7 +71,7 @@ export const unarmedStrikeTemplate = {
             per: ""
         },
         isActive: null,
-        ability: "str",
+        ability: "",
         actionTarget: "kac",
         actionType: "mwak",
         attackBonus: 0,
@@ -81,9 +81,11 @@ export const unarmedStrikeTemplate = {
             effect: ""
         },
         damage: {
-            parts: [{
+            parts: 
+            [{
                 "name": "",
                 "formula": "1d3",
+                "operator": "",
                 "types": {
                     "acid": false,
                     "bludgeoning": true,
@@ -227,7 +229,7 @@ export const unarmedStrikeTemplate = {
 export const naturalWeaponsTemplate = {
     name: "Unarmed strike (natural weapons)",
     type: "weapon",
-    data: {
+    system: {
         description: {
             chat: "",
             gmnotes: "",
@@ -296,7 +298,7 @@ export const naturalWeaponsTemplate = {
             per: ""
         },
         isActive: null,
-        ability: "str",
+        ability: "",
         actionTarget: "kac",
         actionType: "mwak",
         attackBonus: 0,
@@ -309,6 +311,7 @@ export const naturalWeaponsTemplate = {
             parts: [{
                 "name": "",
                 "formula": "1d3",
+                "operator": "",
                 "types": {
                     "acid": false,
                     "bludgeoning": false,

@@ -1,5 +1,14 @@
+interface IDamageParts {
+    name?: string,
+    formula: string,
+    operator?: string,
+    types: {
+        [key: string]: boolean;
+    }
+}
+
 interface IDamage {
-    parts: [any]
+    parts: [IDamageParts]
 }
 
 interface IWeaponData {
@@ -44,5 +53,5 @@ interface IWeaponData {
 }
 
 interface IWeapon extends IItem {
-    data: IWeaponData
+    system: IWeaponData
 }
