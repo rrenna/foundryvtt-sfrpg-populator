@@ -1,11 +1,7 @@
 import { NPCFactory } from "./factories/NPCFactory.js"
-import PopulatorPanelController, {
-    PopulatorPanelOptions
-} from "./controllers/PopulatorPanelController.js"
+import PopulatorPanelController from "./controllers/PopulatorPanelController.js"
 import MonsterWizardPanel1Controller from "./controllers/MonsterWizardPanel1Controller.js"
-import NPCCreationContext, {
-    TokenOptions
-} from "./models/NPCCreationContext.js"
+import NPCCreationContext from "./models/NPCCreationContext.js"
 declare var game
 
 export class Populator {
@@ -54,13 +50,6 @@ export class Populator {
             "sfrpg-populator",
             "dynamicTokenImages"
         )
-
-        let options = {
-            CR: defaultCR,
-            dynamicTokenImages: dynamicTokenImages,
-            race: null,
-            gender: null
-        }
 
         let context = new NPCCreationContext()
         context.CR = defaultCR

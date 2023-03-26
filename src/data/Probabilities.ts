@@ -68,6 +68,10 @@ export const Probabilities = {
     // NOTE: Should consider gender distributions by race, ie. Drow is a matriarchal society
     genderDistributions: {
         default: [
+            { name: Gender.male, percentage: 0.5 },
+            { name: Gender.female, percentage: 0.5 }
+        ],
+        nonBinary: [
             { name: Gender.male, percentage: 0.49 },
             { name: Gender.female, percentage: 0.5 },
             { name: Gender.nonBinary, percentage: 0.01 }

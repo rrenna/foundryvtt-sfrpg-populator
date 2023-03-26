@@ -128,7 +128,7 @@ export default class PopulatorPanelController extends Application {
         if (Races.nonCombatantRaces[selectedRace]) {
             context.race = selectedRace
         }
-        context.tokenOptions.dynamicImage = dynamicTokenImages
+        context.tokenOptions.dynamicImage = !!dynamicTokenImages
 
         await NPCFactory.makeNonHostile(context)
         ui.notifications.info(`NPC ${context.name} created.`, { permanent: false })

@@ -16,9 +16,9 @@ export class Randomizer {
         return race
     }
 
-    static randomGender(): Gender {
+    static randomGender(distribution?: string): Gender {
         let genderDistribution = Randomizer.pickWinningItem(
-            Probabilities.genderDistributions.default
+            distribution ? Probabilities.genderDistributions[distribution] : Probabilities.genderDistributions.default
         )
         let gender = genderDistribution.name
         return gender

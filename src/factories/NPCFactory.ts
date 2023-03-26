@@ -180,10 +180,12 @@ export class NPCFactory {
     ) {
         let actorUpdate = {}
         let logEntries: [string, string][] = []
+        // Settings
+        const includeNonBinary = game.settings.get("sfrpg-populator","includeNonBinary") === "true";
 
         // Gender
         if (!context.gender) {
-            let randomGender = Randomizer.randomGender()
+            let randomGender = Randomizer.randomGender(includeNonBinary ? 'nonBinary': undefined)
             context.gender = randomGender
             logEntries.push([
                 "Chose gender " + randomGender + " at random.",
@@ -753,18 +755,19 @@ export class NPCFactory {
     private static async setToken(
         actor: Actor<INPCData>,
         context: NPCCreationContext
-    ) {
+    ) {        
         let actorUpdate = {}
         actorUpdate["token.randomImg"] = false
 
         if (context.tokenOptions?.dynamicImage) {
             var path: string | undefined
             // Either set path as race + gender or creature type
-            if (context.race)
+            if (context.race){
                 path = "populator/" + context.race + "/" + context.gender + "/*"
-            else if (context.creatureTypeGraft)
+            }
+            else if (context.creatureTypeGraft){
                 path = "populator/" + context.creatureTypeGraft?.name + "/*"
-
+            }
             if (path) {
                 actorUpdate["token.img"] = path
                 actorUpdate["token.randomImg"] = true
@@ -777,14 +780,23 @@ export class NPCFactory {
 
         // Update actor
         await actor.update(actorUpdate);
-		let images = await actor.getTokenImages();
-		// images = images.filter(i => (images.length === 1) || !(i === this._lastWildcard));
-		const image = images[Math.floor(Math.random() * images.length)];
-		actorUpdate["token.img"] = image;
-		actorUpdate["img"] = image;
-		actorUpdate["token.randomImg"] = false;
-        await actor.update(actorUpdate);
 
+        // Need to update the actor settings before actor.getTokenImages will function
+        if (context.tokenOptions?.dynamicImage) {
+            let images = await actor.getTokenImages();
+            const image = images[Math.floor(Math.random() * images.length)];
+            if (image) {
+                actorUpdate["token.img"] = image;
+                actorUpdate["img"] = image;
+                actorUpdate["token.randomImg"] = false;
+                await actor.update(actorUpdate);
+            } else {
+                context.log.push([
+                    "Failed to set Image.",
+                    "<font color='red'>Exception: Likely Folder not Found for " + path + "</font>"
+                ]);
+            }
+        }
     }
 
     private static async setSenses(
@@ -1481,22 +1493,29 @@ export class NPCFactory {
             let indexOfCRPlus2 = indexOfCR + 2
             let CRPlus2 = CR[indexOfCRPlus2]
 
-            var monsterReferenceSymbol =
+            if (CRPlus2) {
+                var monsterReferenceSymbol =
                 MonsterReferenceSymbol[context.monsterReferenceSymbol]
-            let attackArrayRowPlus2 =
-                MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2]
+                let attackArrayRowPlus2 =
+                    MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2]
 
-            // Buff all damage by 2 CRs
-            context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic
-            context.attackArrayRow.energy = attackArrayRowPlus2.energy
-            context.attackArrayRow.standard = attackArrayRowPlus2.standard
-            context.attackArrayRow.threeAttacks = attackArrayRowPlus2.threeAttacks
-            context.attackArrayRow.fourAttacks = attackArrayRowPlus2.fourAttacks
+                // Buff all damage by 2 CRs
+                context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic
+                context.attackArrayRow.energy = attackArrayRowPlus2.energy
+                context.attackArrayRow.standard = attackArrayRowPlus2.standard
+                context.attackArrayRow.threeAttacks = attackArrayRowPlus2.threeAttacks
+                context.attackArrayRow.fourAttacks = attackArrayRowPlus2.fourAttacks
 
-            logEntries.push([
-                "Applied <U>brute</U> adjustment special ability. Set high attack bonus value to low attack bonus, increased damage by 2 rows in the array.",
-                MonsterCreation.specialAbilities.adjustment.brute.description
-            ])
+                logEntries.push([
+                    "Applied <U>brute</U> adjustment special ability. Set high attack bonus value to low attack bonus, increased damage by 2 rows in the array.",
+                    MonsterCreation.specialAbilities.adjustment.brute.description
+                ])              
+            } else {
+                logEntries.push([
+                    "Failed to Apply <U>brute</U> adjustment special ability as no array found two higher than CR:" + context.CR ,
+                    MonsterCreation.specialAbilities.adjustment.brute.description
+                ])  
+            }
         }
         //Increase all saving throw bonuses by 1 or one saving throw bonus by 3.
         else if (

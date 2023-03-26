@@ -1,3 +1,11 @@
+### 0.3.0
+### Changed
+- Bugfix for dynamic image setting.
+- Added configuration for non-binary gender.
+- Log message if folder not found any dynamic images enabled.
+- Bugfix for brute when CR is 24 or 25. 
+- Removed .DS_STORE files from the example folder structure since they caused issues in forge.
+
 ### 0.2.9
 ### Changed
 - Bugfixes for weapons to match system data format.

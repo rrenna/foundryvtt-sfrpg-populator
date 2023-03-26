@@ -101,5 +101,19 @@ Hooks.once("init", async function () {
             false: "No",
             true: "Yes"
         }
+    })    
+    // Use dynamic token images (requires specific folder structure in foundry data)
+    game.settings.register("sfrpg-populator", "includeNonBinary", {
+        name: "Enable Non-Binary Gender",
+        hint:
+            "This will add a small percentage of tokens be generated as non-binary and look for images if enabled in the appropriate species folder \"non-binary\".",
+        scope: "client",
+        config: true,
+        default: false,
+        type: String,
+        choices: {
+            false: "No",
+            true: "Yes"
+        }
     })
 })
