@@ -5,7 +5,10 @@ import NPCCreationContext, {
     TokenOptions
 } from "../models/NPCCreationContext.js"
 import { Grafts } from "../data/Grafts.js"
-import { MonsterCreation } from "../data/MonsterCreation.js"
+import {
+    MonsterCreation,
+    MonsterReferenceSymbol
+} from "../data/MonsterCreation.js"
 import CreatureTypeGraft from "../models/CreatureTypeGraft.js"
 import { CreatureTypeGenerationOptions } from "../data/Generator.js"
 import { Subtype, Type } from "../data/Types.js"
@@ -28,8 +31,7 @@ export default class PopulatorPanelController extends Application {
         return mergeObject(super.defaultOptions, {
             id: "populator-panel",
             classes: ["sfrpg"],
-            template:
-                "modules/sfrpg-populator/templates/PopulatorPanel.html",
+            template: "modules/sfrpg-populator/templates/PopulatorPanel.html",
             width: 400,
             height: 450,
             minimizable: true,
@@ -58,7 +60,8 @@ export default class PopulatorPanelController extends Application {
             NPCRacesDistributions: Probabilities.raceDistributions,
             NPCCR: CR,
             NPCRaces: Races.nonCombatantRaces,
-            supportedCreatureTypes: CreatureTypeGenerationOptions
+            supportedCreatureTypes: CreatureTypeGenerationOptions,
+            arrays: MonsterCreation.arrays
         })
     }
 
@@ -75,11 +78,31 @@ export default class PopulatorPanelController extends Application {
         ;(<JQuery>html)
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this))
+        ;(<JQuery>html).on(
+            "change",
+            ".npcRaceSelect",
+            this.showSpeciesLocationDistribution.bind(this)
+        )
 
         tippy(".populatorInfo")
         tippy(".populatorButton")
     }
- 
+    /**
+     * Click event when a user change the race option chosen.
+     * @param {Event} e The click event
+     */
+    private async showSpeciesLocationDistribution(e: Event) {
+        const npcRaceSelect = e.target as HTMLSelectElement
+        const distributionDiv = document.getElementById("speciesDistributionDiv")
+        if (distributionDiv) {
+            if (npcRaceSelect.value === "random") {
+                distributionDiv.style.display = "block"
+            } else {
+                distributionDiv.style.display = "none"
+            }
+        }
+    }
+
     /**
      * Click event when a users clicks on the NPC button
      * @param {Event} e The click event
@@ -88,7 +111,7 @@ export default class PopulatorPanelController extends Application {
         let locationSelection = (<JQuery>this.element)
             .find("#npcLocation")
             .find(":selected")
-            .val()            
+            .val()
         let selectedLocation: string = locationSelection as string
         let npcRaceSelectValue = (<JQuery>this.element)
             .find("#npcRaceSelect")
@@ -98,12 +121,13 @@ export default class PopulatorPanelController extends Application {
         let npcCRSelectValue = (<JQuery>this.element)
             .find("#npcCR")
             .find(":selected")
-            .val()            
+            .val()
         let selectedCR: string = npcCRSelectValue as string
-        
-        if (selectedRace === "random") {
-            selectedRace = Randomizer.randomRace(selectedLocation).name
-        }
+        let arraySelection = (<JQuery>this.element)
+            .find("#selectedArray")
+            .find(":selected")
+            .val()
+        let selectedArray: string = arraySelection as string
 
         // Settings
         const dynamicTokenImages = game.settings.get(
@@ -111,23 +135,22 @@ export default class PopulatorPanelController extends Application {
             "dynamicTokenImages"
         )
 
-        // Context
-        let context = new NPCCreationContext()
+        if (selectedArray === "random") {
+            const arrayNames = Object.keys(MonsterCreation.arrays)
+            selectedArray = Randomizer.getRandom(arrayNames)
+        }
 
         if (selectedCR === "random") {
             selectedCR = Randomizer.getRandom(CR)
         }
 
-        // CR
+        // Update Context options
+        let context = new NPCCreationContext()
+        context.npcLocation = selectedLocation
+        context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray].toString()
         context.CR = selectedCR
-
-        // Location
         context.folderId = this.options["folderId"]
-
-        // Validates selected race name
-        if (Races.nonCombatantRaces[selectedRace]) {
-            context.race = selectedRace
-        }
+        context.race = selectedRace
         context.tokenOptions.dynamicImage = !!dynamicTokenImages
 
         await NPCFactory.makeNonHostile(context)
@@ -145,10 +168,7 @@ export default class PopulatorPanelController extends Application {
         let selectedType: string = monsterTypeSelectValue as string
 
         // Settings
-        const defaultCR = game.settings.get(
-            "sfrpg-populator",
-            "defaultCR"
-        )
+        const defaultCR = game.settings.get("sfrpg-populator", "defaultCR")
         const dynamicTokenImages = game.settings.get(
             "sfrpg-populator",
             "dynamicTokenImages"

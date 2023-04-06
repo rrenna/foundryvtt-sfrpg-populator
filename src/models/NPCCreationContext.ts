@@ -21,8 +21,8 @@ export default class NPCCreationContext implements IContext {
     public CR: string = CR[0] // defaults to lowest CR
     public creatureTypeGraft: CreatureTypeGraft | undefined
     public creatureSubtypeGrafts: CreatureSubtypeGraft[] | undefined
-    public monsterReferenceSymbol: MonsterReferenceSymbol =
-        MonsterReferenceSymbol.combatant // defaults to combatant
+    public monsterReferenceSymbol: MonsterReferenceSymbol | undefined
+    public npcLocation:  string | undefined
     public tokenOptions: TokenOptions = new TokenOptions(false)
     // Array rows
     public mainArrayRow: any

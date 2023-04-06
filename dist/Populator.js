@@ -33,12 +33,6 @@ export class Populator {
         // Settings
         const defaultCR = game.settings.get("sfrpg-populator", "defaultCR");
         const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
-        let options = {
-            CR: defaultCR,
-            dynamicTokenImages: dynamicTokenImages,
-            race: null,
-            gender: null
-        };
         let context = new NPCCreationContext();
         context.CR = defaultCR;
         context.tokenOptions.dynamicImage = dynamicTokenImages;

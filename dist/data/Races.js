@@ -10,7 +10,7 @@ export const Races = {
         elf: new Race("elf", Size.medium, Grafts.creatureType.humanoid, Grafts.creatureSubtype.elf, ["elven"]),
         gnome: new Race("gnome", Size.small, Grafts.creatureType.humanoid, Grafts.creatureSubtype.gnome, ["gnome"]),
         gnoll: new Race("gnoll", Size.medium, Grafts.creatureType.humanoid, Grafts.creatureSubtype.gnoll, undefined, ["gnoll"]),
-        hobgoblin: new Race("hobgoblin", Size.medium, Grafts.creatureType.humanoid, Grafts.creatureSubtype.goblinoid, undefined, ["goblin"]),
+        hobgoblin: new Race("hobgoblin", Size.medium, Grafts.creatureType.humanoid, Grafts.creatureSubtype.goblinoid, ["goblin"]),
         human: new Race("human", Size.medium, Grafts.creatureType.humanoid, Grafts.creatureSubtype.human),
         halfOrc: new Race("half-orc", Size.medium, Grafts.creatureType.humanoid, [Grafts.creatureSubtype.human, Grafts.creatureSubtype.orc], ["orc"]),
         halfElf: new Race("half-elf", Size.medium, Grafts.creatureType.humanoid, [Grafts.creatureSubtype.human, Grafts.creatureSubtype.elf], ["elven"]),

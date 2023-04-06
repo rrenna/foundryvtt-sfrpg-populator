@@ -5,7 +5,7 @@
         "@types/node": "^18.11.18",
         "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types",
         "prettier": "2.2.1",
-        "tippy.js": "^6.2.5",
+        "tippy.js": "^6.3.7",
         "ts-node": "^9.1.1"
     }
 }

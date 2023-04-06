@@ -5,10 +5,11 @@ import CreatureSubtypeGraft from "./CreatureSubtypeGraft.js"
 export default class Race {
     name: string
     size: Size
-    arms: number = 2
+    arms: number
     creatureTypeGraft: CreatureTypeGraft
     creatureSubtypeGrafts: CreatureSubtypeGraft[] | undefined
     languages: string[] | undefined
+    customLanguages: string[] | undefined
 
     constructor(
         name: string,
@@ -19,12 +20,14 @@ export default class Race {
             | CreatureSubtypeGraft = [],
         languages?: string[],
         customLanguages?: [string],
-        arms?: number
+        arms: number = 2
     ) {
         this.name = name
         this.size = size
         this.creatureTypeGraft = creatureTypeGraft
         this.languages = languages
+        this.arms = arms
+        this.customLanguages = customLanguages //#TODO pretty sure this isn't being used
 
         // Supports arrays and non-arrays
         if (Array.isArray(creatureSubtypeGrafts)) {

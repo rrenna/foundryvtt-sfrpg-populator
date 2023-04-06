@@ -9,8 +9,8 @@ export class Randomizer {
         let race = Races.nonCombatantRaces[raceDistribution.name];
         return race;
     }
-    static randomGender() {
-        let genderDistribution = Randomizer.pickWinningItem(Probabilities.genderDistributions.default);
+    static randomGender(distribution) {
+        let genderDistribution = Randomizer.pickWinningItem(distribution ? Probabilities.genderDistributions[distribution] : Probabilities.genderDistributions.default);
         let gender = genderDistribution.name;
         return gender;
     }

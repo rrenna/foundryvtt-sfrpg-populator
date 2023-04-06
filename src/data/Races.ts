@@ -52,7 +52,6 @@ export const Races = {
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.goblinoid,
-            undefined,
             ["goblin"]
         ),
         human: new Race(

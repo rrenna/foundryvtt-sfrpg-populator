@@ -2,6 +2,7 @@ import { Races } from "../data/Races.js";
 import { NPCFactory } from "../factories/NPCFactory.js";
 import NPCCreationContext from "../models/NPCCreationContext.js";
 import { Grafts } from "../data/Grafts.js";
+import { MonsterCreation, MonsterReferenceSymbol } from "../data/MonsterCreation.js";
 import { CreatureTypeGenerationOptions } from "../data/Generator.js";
 import { Subtype, Type } from "../data/Types.js";
 import { CR } from "../data/CRs.js";
@@ -46,7 +47,8 @@ export default class PopulatorPanelController extends Application {
             NPCRacesDistributions: Probabilities.raceDistributions,
             NPCCR: CR,
             NPCRaces: Races.nonCombatantRaces,
-            supportedCreatureTypes: CreatureTypeGenerationOptions
+            supportedCreatureTypes: CreatureTypeGenerationOptions,
+            arrays: MonsterCreation.arrays
         });
     }
     /**
@@ -63,8 +65,25 @@ export default class PopulatorPanelController extends Application {
         html
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this));
+        html.on("change", ".npcRaceSelect", this.showSpeciesLocationDistribution.bind(this));
         tippy(".populatorInfo");
         tippy(".populatorButton");
+    }
+    /**
+     * Click event when a user change the race option chosen.
+     * @param {Event} e The click event
+     */
+    async showSpeciesLocationDistribution(e) {
+        const npcRaceSelect = e.target;
+        const distributionDiv = document.getElementById("speciesDistributionDiv");
+        if (distributionDiv) {
+            if (npcRaceSelect.value === "random") {
+                distributionDiv.style.display = "block";
+            }
+            else {
+                distributionDiv.style.display = "none";
+            }
+        }
     }
     /**
      * Click event when a users clicks on the NPC button
@@ -86,25 +105,28 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val();
         let selectedCR = npcCRSelectValue;
-        if (selectedRace === "random") {
-            selectedRace = Randomizer.randomRace(selectedLocation).name;
-        }
+        let arraySelection = this.element
+            .find("#selectedArray")
+            .find(":selected")
+            .val();
+        let selectedArray = arraySelection;
         // Settings
         const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
-        // Context
-        let context = new NPCCreationContext();
+        if (selectedArray === "random") {
+            const arrayNames = Object.keys(MonsterCreation.arrays);
+            selectedArray = Randomizer.getRandom(arrayNames);
+        }
         if (selectedCR === "random") {
             selectedCR = Randomizer.getRandom(CR);
         }
-        // CR
+        // Update Context options
+        let context = new NPCCreationContext();
+        context.npcLocation = selectedLocation;
+        context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray].toString();
         context.CR = selectedCR;
-        // Location
         context.folderId = this.options["folderId"];
-        // Validates selected race name
-        if (Races.nonCombatantRaces[selectedRace]) {
-            context.race = selectedRace;
-        }
-        context.tokenOptions.dynamicImage = dynamicTokenImages;
+        context.race = selectedRace;
+        context.tokenOptions.dynamicImage = !!dynamicTokenImages;
         await NPCFactory.makeNonHostile(context);
         ui.notifications.info(`NPC ${context.name} created.`, { permanent: false });
     }

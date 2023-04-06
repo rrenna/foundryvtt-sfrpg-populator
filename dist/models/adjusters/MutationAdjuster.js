@@ -7,7 +7,11 @@ export default class MutationAdjuster {
     async apply(actor, context) {
         let output = [];
         let actorUpdate = {};
-        const monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
+        // default to combatant #TODO maybe just fail instead?
+        let monsterReferenceSymbol = "combatant";
+        if (context.monsterReferenceSymbol) {
+            monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
+        }
         // Current CR (`number`, 1/3 = `0.3333~`, 1/2 = `0.5`, etc)
         const currentCRNumber = actor.data.data.details.cr;
         let currentCR = Utils.CRforNumber(currentCRNumber);

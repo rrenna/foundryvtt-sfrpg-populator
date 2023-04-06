@@ -1,3 +1,13 @@
+### 0.3.1
+### Changed
+- Added Array choice dropdown
+- Added all CR's for combatant array
+- Added ability and spell DC's to arrays for future use
+- Hide location dropdown when Creature Subtype is not randomized
+- Fixed hobgoblin language
+- Gave combatant array npc's a laser pistol
+- Fixed number of arms assigned for species like Kasatha and Skittermander
+
 ### 0.3.0
 ### Changed
 - Bugfix for dynamic image setting.

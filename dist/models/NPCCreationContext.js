@@ -1,4 +1,3 @@
-import { MonsterReferenceSymbol } from "../data/MonsterCreation.js";
 import { CR } from "../data/CRs.js";
 export function isNPCCreationContext(pet) {
     return pet.generatePersonality !== undefined;
@@ -6,7 +5,6 @@ export function isNPCCreationContext(pet) {
 export default class NPCCreationContext {
     constructor(npcCreationContext = {}) {
         this.CR = CR[0]; // defaults to lowest CR
-        this.monsterReferenceSymbol = MonsterReferenceSymbol.combatant; // defaults to combatant
         this.tokenOptions = new TokenOptions(false);
         // Skills - in addition to the array master/good skills
         this.masterSkills = [];

@@ -6,17 +6,6 @@
 
     <div class="form-group">
 		<br/>
-        <!-- Race Distribution -->
-        <label for="npcRaceDistribution"><b>Location Race Distribution</b></label>
-        <i class="populatorInfo far fa-question-circle" data-tippy-content="When generating a random NPC use the distribution percentages from the specified location."></i>        
-        <div class="form-fields">
-            <select id="npcLocation">
-                {{#each NPCRacesDistributions as |location name|}}
-                    <option value="{{name}}">{{name}}</option>
-                {{/each}}
-            </select>
-        </div>
-		<br/>
         <!-- CR -->
         <label for="npcCRChoice"><b>CR</b></label>
         <div class="form-fields">
@@ -28,22 +17,50 @@
             </select>
         </div>
 		<br/>
+        <!-- Array -->
+        <label for="arraySelect"><b>Array</b></label>
+        <div class="form-fields">
+            <select id="selectedArray">
+            <!-- selected array can be set in getDate to set a default  -->
+            {{#select selectedArray}}
+                <option value="random">random</option>
+                {{#each arrays as |array name|}}
+                    <option value="{{name}}">{{ name }}</option>
+                {{/each}}
+            {{/select}}
+            </select>
+        </div>
+        <br/>
         <!-- NPCs -->
-        <label for="npcGenerationButton"><b>NPC</b></label>
-        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality, usually used for non-combat characters or generating intelligent adversaries and enemies."></i>        
+        <label for="npcRaceSelect"><b>Creature Subtype</b></label>
+        <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality from one of the humanoid create types."></i>        
         <br/>
         <div class="form-fields">
-            <select id="npcRaceSelect">
+            <select id="npcRaceSelect" class="npcRaceSelect">
                 <option value="random" >random</option>
                 {{#each NPCRaces as |race key|}}
                     <option value={{ key }} >{{ race.name }}</option>
                 {{/each}}
             </select>
         </div>
+        <br />
+        <div id="speciesDistributionDiv">
+            <!-- Race Distribution -->
+            <label for="npcRaceDistribution"><b>Location Species Distribution</b></label>
+            <i class="populatorInfo far fa-question-circle"
+                data-tippy-content="When generating a random NPC use the distribution percentages from the specified location."></i>
+            <div class="form-fields">
+                <select id="npcLocation">
+                    {{#each NPCRacesDistributions as |location name|}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>        
         <br/>
         <div style="display: flex; justify-content: space-between;">
             <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen Race (expert Array)">
-                <i class="fas fa-male"></i> Generate NPC
+                <i class="fas fa-male"></i> Generate Humanoid NPC
             </button>        
         </div>
         <br/>
@@ -60,7 +77,7 @@
         </div>
         <br/>
         <button id="monsterGenerationButton" class="populatorButton control monsterGenerationButton" type="submit" name="submit" data-tippy-content="Generate a Monster (combatant array)">
-            <i class="fas fa-pastafarianism"></i>Generate Monster
+            <i class="fas fa-pastafarianism"></i>Generate Non Humanoid NPC
         </button>
 
         <footer class="sheet-footer">

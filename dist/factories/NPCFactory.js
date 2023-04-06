@@ -24,25 +24,10 @@ import { CR } from "../data/CRs.js";
 export class NPCFactory {
     // Produces a non-hostile NPC from a subset of races
     static async makeNonHostile(context) {
-        let actorData = {
-            name: "Generated Actor",
-            type: "npc2",
-            folder: context.folderId
-        };
-        let actor = (await Actor.create(actorData));
-        // Non-combatants are always experts
-        context.monsterReferenceSymbol = MonsterReferenceSymbol.expert;
-        await this.setRace(actor, context);
-        await this.makeNPC(actor, context);
+        await this.makeNPC(context);
     }
     // Produces a hostile NPC from a subset of creature types / subtypes
     static async makeHostile(context) {
-        let actorData = {
-            name: "Generated Actor",
-            type: "npc2",
-            folder: context.folderId
-        };
-        let actor = (await Actor.create(actorData));
         // If no type set we randomly generate
         if (!context.creatureTypeGraft) {
             // Randomizes creature type
@@ -50,12 +35,14 @@ export class NPCFactory {
             Utils.shuffleArray(supportedMonsterTypes);
             context.creatureTypeGraft = supportedMonsterTypes[0].typeGraft;
         }
+        // Default to combatant if none chosen
+        context.monsterReferenceSymbol = context.monsterReferenceSymbol ? context.monsterReferenceSymbol : MonsterReferenceSymbol.combatant;
         // TODO: Pick a random subtype (or none)
         // We don't generate "junk" items for monsters
         context.generateAdditionalItems = false;
         // Monsters generally don't have personalities
         context.generatePersonality = false;
-        await this.makeNPC(actor, context);
+        await this.makeNPC(context);
     }
     // Attempts to increase the CR of an existing NPC by applying the net new abilities and stats unlocked
     // between it's current CR and target CR
@@ -67,15 +54,17 @@ export class NPCFactory {
         await this.setAbout(newActor, context);
     }
     // Private
-    static async makeNPC(actor, context) {
-        // Grab appropriate array rows
-        let monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
-        //DeepCopy the monster stats
-        let mainArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR]));
-        let attackArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR]));
-        context.mainArrayRow = mainArrayRow;
-        context.attackArrayRow = attackArrayRow;
+    static async makeNPC(context) {
+        //Generate the actor
+        let actorData = {
+            name: "Generated Actor",
+            type: "npc2",
+            folder: context.folderId
+        };
+        let actor = (await Actor.create(actorData));
         // Fill in details
+        await this.setArray(actor, context);
+        await this.setRace(actor, context);
         await this.setGenderAndName(actor, context);
         await this.setDetails(actor, context);
         await this.setGrafts(actor, context);
@@ -90,47 +79,69 @@ export class NPCFactory {
         await this.setToken(actor, context);
         await this.setAbout(actor, context);
     }
-    static async setRace(actor, context) {
-        let actorUpdate = {};
+    static async setArray(actor, context) {
         let logEntries = [];
-        if (!context.race) {
-            let randomRace = Randomizer.randomRace();
-            context.race = randomRace.name;
-            logEntries.push([
-                "Chose race " + randomRace.name + " at random.",
-                ""
-            ]);
+        if (context.monsterReferenceSymbol) {
+            // Grab appropriate array rows
+            let monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
+            //DeepCopy the monster stats
+            let mainArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR]));
+            let attackArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR]));
+            context.mainArrayRow = mainArrayRow;
+            context.attackArrayRow = attackArrayRow;
+            logEntries.push([monsterReferenceSymbol + " Array selected with CR: " + context.CR, ""]);
         }
         else {
-            logEntries.push(["Race " + context.race + " chosen.", ""]);
+            logEntries.push(["Failed to set Array.", ""]);
         }
-        // Set grafts for race
-        let race = Races.nonCombatantRaces[context.race];
-        context.creatureTypeGraft = race.creatureTypeGraft;
-        context.creatureSubtypeGrafts = race.creatureSubtypeGrafts;
-        var raceData;
-        // We stub in gnolls until they are included in sfrpg
-        if (context.race == "gnoll") {
-            raceData = BundledRaces.gnoll;
+        // Update log
+        context.log.push(...logEntries);
+    }
+    static async setRace(actor, context) {
+        let logEntries = [];
+        if (context.race) {
+            if (context.race === "random") {
+                let randomRace = Randomizer.randomRace(context.npcLocation);
+                context.race = randomRace.name;
+                logEntries.push([
+                    "Chose race " + randomRace.name + " at random using " + context.npcLocation + " distribution",
+                    ""
+                ]);
+            }
+            else {
+                logEntries.push(["Race " + context.race + " chosen.", ""]);
+            }
+            // Set grafts for race
+            let race = Races.nonCombatantRaces[context.race];
+            context.creatureTypeGraft = race.creatureTypeGraft;
+            context.creatureSubtypeGrafts = race.creatureSubtypeGrafts;
+            var raceData;
+            // We stub in gnolls until they are included in sfrpg
+            if (context.race == "gnoll") {
+                raceData = BundledRaces.gnoll;
+            }
+            else {
+                raceData = await Utils.fuzzyFindRaceAsync(race.name);
+            }
+            // Race item
+            // #TODO what was the point of this? Just crashes now.
+            // await this.clean(raceData)
+            context.itemsToAdd.push(raceData);
         }
         else {
-            raceData = await Utils.fuzzyFindRaceAsync(race.name);
+            logEntries.push(["No Race applied.", ""]);
         }
-        // Race item
-        // #TODO what was the point of this? Just crashes now.
-        // await this.clean(raceData)
-        context.itemsToAdd.push(raceData);
-        // Update actor
-        await actor.update(actorUpdate);
         // Update log
         context.log.push(...logEntries);
     }
     static async setGenderAndName(actor, context) {
         let actorUpdate = {};
         let logEntries = [];
+        // Settings
+        const includeNonBinary = game.settings.get("sfrpg-populator", "includeNonBinary") === "true";
         // Gender
         if (!context.gender) {
-            let randomGender = Randomizer.randomGender();
+            let randomGender = Randomizer.randomGender(includeNonBinary ? 'nonBinary' : undefined);
             context.gender = randomGender;
             logEntries.push([
                 "Chose gender " + randomGender + " at random.",
@@ -532,41 +543,63 @@ export class NPCFactory {
         await actor.update(actorUpdate);
     }
     static async setWeapons(actor, context) {
-        let attackArray = MonsterCreation.arrays.expert.attack[context.CR];
-        let highAttackBonus = attackArray.high;
-        let lowAttackBonus = attackArray.low;
-        // Add natural weapons or generic unarmed strike
-        if (context.naturalWeapons.enabled === true) {
-            let naturalWeapons = WeaponFactory.makeNaturalWeapons();
-            // Unlocked by the universal creature rule rather than a racial feature
-            if (context.naturalWeapons.racial === false) {
-                naturalWeapons.name = "slam";
-                // TODO: bite, claw, or slam
-                // TODO: Different damage types depending on slam, bite or claw
+        let logEntries = [];
+        if (context.monsterReferenceSymbol) {
+            let arrays = MonsterCreation.arrays[MonsterReferenceSymbol[context.monsterReferenceSymbol]];
+            let attackArray = arrays.attack[context.CR];
+            let highAttackBonus = attackArray.high;
+            let lowAttackBonus = attackArray.low;
+            // Add natural weapons or generic unarmed strike
+            if (context.naturalWeapons.enabled === true) {
+                let naturalWeapons = WeaponFactory.makeNaturalWeapons();
+                // Unlocked by the universal creature rule rather than a racial feature
+                if (context.naturalWeapons.racial === false) {
+                    naturalWeapons.name = "slam";
+                    // TODO: bite, claw, or slam
+                    // TODO: Different damage types depending on slam, bite or claw
+                }
+                naturalWeapons.system.attackBonus = highAttackBonus;
+                naturalWeapons.system.damage.parts = [{ formula: attackArray.standard, types: { bludgeoning: true } }];
+                context.itemsToAdd.push(naturalWeapons);
             }
-            naturalWeapons.system.attackBonus = highAttackBonus;
-            naturalWeapons.system.damage.parts = [{ formula: attackArray.standard, types: { bludgeoning: true } }];
-            context.itemsToAdd.push(naturalWeapons);
+            else if (MonsterReferenceSymbol[context.monsterReferenceSymbol] === "combatant") {
+                // #TODO - add some random weapons and choose between melee and ranged depending on stats
+                let laserPistol = await WeaponFactory.makeLaserPistol(context.CR);
+                if (laserPistol) {
+                    laserPistol.system.equipped = true;
+                    laserPistol.system.proficient = true; // Should always be proficient with equipped weapons
+                    laserPistol.system.ability = ""; // Should not be modified by any ability
+                    laserPistol.system.attackBonus = highAttackBonus;
+                    laserPistol.system.damage.parts = [{ formula: attackArray.energy, types: { fire: true } }];
+                    context.itemsToAdd.push(laserPistol);
+                }
+            }
+            else {
+                // All NPCs have unarmed strike unless they are equipped with natural weapons
+                let unarmedStrike = WeaponFactory.makeUnarmedStrike();
+                // We use the low attack for built in unarmed strikes as they should never be the primary attack of a combatant
+                unarmedStrike.system.attackBonus = lowAttackBonus;
+                context.itemsToAdd.push(unarmedStrike);
+            }
+            // Generate ranged weapons
+            if (context.rangedWeapon.enabled) {
+                let laserPistol = await WeaponFactory.makeLaserPistol(context.CR);
+                if (laserPistol) {
+                    laserPistol.system.equipped = true;
+                    laserPistol.system.proficient = true; // Should always be proficient with equipped weapons
+                    laserPistol.system.ability = ""; // Should not be modified by any ability
+                    laserPistol.system.attackBonus = highAttackBonus;
+                    laserPistol.system.damage.parts = [{ formula: attackArray.energy, types: { fire: true } }];
+                    context.itemsToAdd.push(laserPistol);
+                }
+            }
+            context.log.push(["Created weapons for " + MonsterReferenceSymbol[context.monsterReferenceSymbol], ""]);
         }
         else {
-            // All NPCs have unarmed strike unless they are equipped with natural weapons
-            let unarmedStrike = WeaponFactory.makeUnarmedStrike();
-            // We use the low attack for built in unarmed strikes as they should never be the primary attack of a combatant
-            unarmedStrike.system.attackBonus = lowAttackBonus;
-            context.itemsToAdd.push(unarmedStrike);
+            context.log.push(["Failed to set Weapons.", ""]);
         }
-        // Generate ranged weapons
-        if (context.rangedWeapon.enabled) {
-            let laserPistol = await WeaponFactory.makeLaserPistol(context.CR);
-            if (laserPistol) {
-                laserPistol.system.equipped = true;
-                laserPistol.system.proficient = true; // Should always be proficient with equipped weapons
-                laserPistol.system.ability = ""; // Should not be modified by any ability
-                laserPistol.system.attackBonus = highAttackBonus;
-                laserPistol.system.damage.parts = [{ formula: attackArray.energy, types: { fire: true } }];
-                context.itemsToAdd.push(laserPistol);
-            }
-        }
+        // Update log
+        context.log.push(...logEntries);
     }
     static async setInventory(actor, context) {
         if (context.generateAdditionalItems) {
@@ -579,16 +612,18 @@ export class NPCFactory {
         await actor.update(actorUpdate);
     }
     static async setToken(actor, context) {
-        var _a, _b;
+        var _a, _b, _c;
         let actorUpdate = {};
         actorUpdate["token.randomImg"] = false;
         if ((_a = context.tokenOptions) === null || _a === void 0 ? void 0 : _a.dynamicImage) {
             var path;
             // Either set path as race + gender or creature type
-            if (context.race)
+            if (context.race) {
                 path = "populator/" + context.race + "/" + context.gender + "/*";
-            else if (context.creatureTypeGraft)
+            }
+            else if (context.creatureTypeGraft) {
                 path = "populator/" + ((_b = context.creatureTypeGraft) === null || _b === void 0 ? void 0 : _b.name) + "/*";
+            }
             if (path) {
                 actorUpdate["token.img"] = path;
                 actorUpdate["token.randomImg"] = true;
@@ -599,13 +634,23 @@ export class NPCFactory {
         actorUpdate["token.disposition"] = 0; // Neutral by default
         // Update actor
         await actor.update(actorUpdate);
-        let images = await actor.getTokenImages();
-        // images = images.filter(i => (images.length === 1) || !(i === this._lastWildcard));
-        const image = images[Math.floor(Math.random() * images.length)];
-        actorUpdate["token.img"] = image;
-        actorUpdate["img"] = image;
-        actorUpdate["token.randomImg"] = false;
-        await actor.update(actorUpdate);
+        // Need to update the actor settings before actor.getTokenImages will function
+        if ((_c = context.tokenOptions) === null || _c === void 0 ? void 0 : _c.dynamicImage) {
+            let images = await actor.getTokenImages();
+            const image = images[Math.floor(Math.random() * images.length)];
+            if (image) {
+                actorUpdate["token.img"] = image;
+                actorUpdate["img"] = image;
+                actorUpdate["token.randomImg"] = false;
+                await actor.update(actorUpdate);
+            }
+            else {
+                context.log.push([
+                    "Failed to set Image.",
+                    "<font color='red'>Exception: Likely images not Found at " + path + "</font>"
+                ]);
+            }
+        }
     }
     static async setSenses(actor, context) {
         let actorUpdate = {};
@@ -1137,18 +1182,26 @@ export class NPCFactory {
             let indexOfCR = CR.indexOf(context.CR);
             let indexOfCRPlus2 = indexOfCR + 2;
             let CRPlus2 = CR[indexOfCRPlus2];
-            var monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
-            let attackArrayRowPlus2 = MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2];
-            // Buff all damage by 2 CRs
-            context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic;
-            context.attackArrayRow.energy = attackArrayRowPlus2.energy;
-            context.attackArrayRow.standard = attackArrayRowPlus2.standard;
-            context.attackArrayRow.threeAttacks = attackArrayRowPlus2.threeAttacks;
-            context.attackArrayRow.fourAttacks = attackArrayRowPlus2.fourAttacks;
-            logEntries.push([
-                "Applied <U>brute</U> adjustment special ability. Set high attack bonus value to low attack bonus, increased damage by 2 rows in the array.",
-                MonsterCreation.specialAbilities.adjustment.brute.description
-            ]);
+            if (CRPlus2 && context.monsterReferenceSymbol) {
+                var monsterReferenceSymbol = MonsterReferenceSymbol[context.monsterReferenceSymbol];
+                let attackArrayRowPlus2 = MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2];
+                // Buff all damage by 2 CRs
+                context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic;
+                context.attackArrayRow.energy = attackArrayRowPlus2.energy;
+                context.attackArrayRow.standard = attackArrayRowPlus2.standard;
+                context.attackArrayRow.threeAttacks = attackArrayRowPlus2.threeAttacks;
+                context.attackArrayRow.fourAttacks = attackArrayRowPlus2.fourAttacks;
+                logEntries.push([
+                    "Applied <U>brute</U> adjustment special ability. Set high attack bonus value to low attack bonus, increased damage by 2 rows in the array.",
+                    MonsterCreation.specialAbilities.adjustment.brute.description
+                ]);
+            }
+            else {
+                logEntries.push([
+                    "Failed to Apply <U>brute</U> adjustment special ability.",
+                    MonsterCreation.specialAbilities.adjustment.brute.description
+                ]);
+            }
         }
         //Increase all saving throw bonuses by 1 or one saving throw bonus by 3.
         else if (adjustmentSpecialAbility ===
