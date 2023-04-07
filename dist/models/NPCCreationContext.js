@@ -5,7 +5,7 @@ export function isNPCCreationContext(pet) {
 export default class NPCCreationContext {
     constructor(npcCreationContext = {}) {
         this.CR = CR[0]; // defaults to lowest CR
-        this.tokenOptions = new TokenOptions(false);
+        this.tokenOptions = new TokenOptions(false, 'populator/');
         // Skills - in addition to the array master/good skills
         this.masterSkills = [];
         this.goodSkills = [];
@@ -34,8 +34,9 @@ export default class NPCCreationContext {
     }
 }
 export class TokenOptions {
-    constructor(dynamicImage) {
-        this.dynamicImage = dynamicImage;
+    constructor(dynamicImage, dynamicImageRootLocation) {
+        this.dynamicImage = dynamicImage,
+            this.dynamicImageRootLocation = dynamicImageRootLocation;
     }
 }
 //# sourceMappingURL=NPCCreationContext.js.map

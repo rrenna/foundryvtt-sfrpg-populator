@@ -790,10 +790,10 @@ export class NPCFactory {
             var path: string | undefined
             // Either set path as race + gender or creature type
             if (context.race){
-                path = "populator/" + context.race + "/" + context.gender + "/*"
+                path = context.tokenOptions.dynamicImageRootLocation + context.race + "/" + context.gender + "/*"
             }
             else if (context.creatureTypeGraft){
-                path = "populator/" + context.creatureTypeGraft?.name + "/*"
+                path = context.tokenOptions.dynamicImageRootLocation + context.creatureTypeGraft?.name + "/*"
             }
             if (path) {
                 actorUpdate["token.img"] = path

@@ -23,7 +23,7 @@ export default class NPCCreationContext implements IContext {
     public creatureSubtypeGrafts: CreatureSubtypeGraft[] | undefined
     public monsterReferenceSymbol: MonsterReferenceSymbol | undefined
     public npcLocation:  string | undefined
-    public tokenOptions: TokenOptions = new TokenOptions(false)
+    public tokenOptions: TokenOptions = new TokenOptions(false,'populator/')
     // Array rows
     public mainArrayRow: any
     public attackArrayRow: any
@@ -59,7 +59,9 @@ export default class NPCCreationContext implements IContext {
 
 export class TokenOptions {
     public dynamicImage: boolean
-    constructor(dynamicImage: boolean) {
-        this.dynamicImage = dynamicImage
+    public dynamicImageRootLocation: string
+    constructor(dynamicImage: boolean, dynamicImageRootLocation: string) {
+        this.dynamicImage = dynamicImage,
+        this.dynamicImageRootLocation = dynamicImageRootLocation
     }
 }

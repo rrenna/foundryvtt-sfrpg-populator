@@ -112,6 +112,7 @@ export default class PopulatorPanelController extends Application {
         let selectedArray = arraySelection;
         // Settings
         const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
+        const dynamicTokenImagesLocation = game.settings.get("sfrpg-populator", "dynamicTokenImagesLocation");
         if (selectedArray === "random") {
             const arrayNames = Object.keys(MonsterCreation.arrays);
             selectedArray = Randomizer.getRandom(arrayNames);
@@ -127,6 +128,7 @@ export default class PopulatorPanelController extends Application {
         context.folderId = this.options["folderId"];
         context.race = selectedRace;
         context.tokenOptions.dynamicImage = !!dynamicTokenImages;
+        context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation;
         await NPCFactory.makeNonHostile(context);
         ui.notifications.info(`NPC ${context.name} created.`, { permanent: false });
     }

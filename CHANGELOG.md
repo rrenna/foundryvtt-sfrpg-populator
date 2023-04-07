@@ -1,3 +1,7 @@
+### 0.3.2
+### Changed
+- Added configuration option to choose the root folder
+
 ### 0.3.1
 ### Changed
 - Added Array choice dropdown

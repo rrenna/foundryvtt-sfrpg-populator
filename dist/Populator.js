@@ -33,9 +33,11 @@ export class Populator {
         // Settings
         const defaultCR = game.settings.get("sfrpg-populator", "defaultCR");
         const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
+        const dynamicTokenImagesLocation = game.settings.get("sfrpg-populator", "dynamicTokenImagesLocation");
         let context = new NPCCreationContext();
         context.CR = defaultCR;
         context.tokenOptions.dynamicImage = dynamicTokenImages;
+        context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation;
         await NPCFactory.makeNonHostile(context);
         ui.notifications.info("NPC created.", { permanent: false });
     }

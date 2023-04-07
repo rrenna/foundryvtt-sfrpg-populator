@@ -80,6 +80,14 @@ Hooks.once("init", async function () {
             true: "Yes"
         }
     });
+    game.settings.register("sfrpg-populator", "dynamicTokenImagesLocation", {
+        name: "Root folder location for images",
+        hint: "When dynamic images are enabled this will be the root folder where we pull from.",
+        scope: "client",
+        config: true,
+        default: 'populator/',
+        type: String
+    });
     // Use dynamic token images (requires specific folder structure in foundry data)
     game.settings.register("sfrpg-populator", "includeNonBinary", {
         name: "Enable Non-Binary Gender",
