@@ -1,6 +1,6 @@
 import ISpecialAbility from "./Interfaces/ISpecialAbility.js"
 import NPCCreationContext from "./NPCCreationContext.js"
-import { Utils } from "../utils/Uils.js"
+import { Utils } from "../utils/Utils.js"
 import { ApplyOutput } from "./Interfaces/IApplyable.js"
 
 export default class UniversalCreatureRule implements ISpecialAbility {

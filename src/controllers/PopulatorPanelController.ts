@@ -1,4 +1,4 @@
-import { Races } from "../data/Races.js"
+import { SpeciesList } from "../data/Species.js"
 import { NPCFactory } from "../factories/NPCFactory.js"
 import MonsterWizardPanel1Controller from "./MonsterWizardPanel1Controller.js"
 import NPCCreationContext, {
@@ -15,8 +15,9 @@ import { Subtype, Type } from "../data/Types.js"
 import CreatureSubtypeGraft from "../models/CreatureSubtypeGraft.js"
 import { CR } from "../data/CRs.js"
 import { Randomizer } from "../Randomizer.js"
-import Race from "../models/Race.js"
+import Species from "../models/SpeciesModel.js"
 import { Probabilities } from "../data/Probabilities.js"
+import { Utils } from "../utils/Utils.js"
 
 // Options provided to the Populator panel - adds folderId to default options
 export class PopulatorPanelOptions implements Application.Options {
@@ -36,7 +37,7 @@ export default class PopulatorPanelController extends Application {
             height: 450,
             minimizable: true,
             resizable: true,
-            title: "Populator",
+            title: "SFRPG - Populator",
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
@@ -57,9 +58,9 @@ export default class PopulatorPanelController extends Application {
         return mergeObject(super.getData(), {
             options: options,
             isGM: game.user.isGM,
-            NPCRacesDistributions: Probabilities.raceDistributions,
+            NPCSpeciesDistributions: Utils.sGet("locations"),
             NPCCR: CR,
-            NPCRaces: Races.nonCombatantRaces,
+            NPCSpecies: SpeciesList.humanoidSpecies,
             supportedCreatureTypes: CreatureTypeGenerationOptions,
             arrays: MonsterCreation.arrays
         })
@@ -80,7 +81,7 @@ export default class PopulatorPanelController extends Application {
             .on("click", this.monsterGenerationButtonClicked.bind(this))
         ;(<JQuery>html).on(
             "change",
-            ".npcRaceSelect",
+            ".npcSpeciesSelect",
             this.showSpeciesLocationDistribution.bind(this)
         )
 
@@ -88,14 +89,14 @@ export default class PopulatorPanelController extends Application {
         tippy(".populatorButton")
     }
     /**
-     * Click event when a user change the race option chosen.
+     * Click event when a user change the species option chosen.
      * @param {Event} e The click event
      */
     private async showSpeciesLocationDistribution(e: Event) {
-        const npcRaceSelect = e.target as HTMLSelectElement
+        const npcSpeciesSelect = e.target as HTMLSelectElement
         const distributionDiv = document.getElementById("speciesDistributionDiv")
         if (distributionDiv) {
-            if (npcRaceSelect.value === "random") {
+            if (npcSpeciesSelect.value === "random") {
                 distributionDiv.style.display = "block"
             } else {
                 distributionDiv.style.display = "none"
@@ -113,11 +114,11 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val()
         let selectedLocation: string = locationSelection as string
-        let npcRaceSelectValue = (<JQuery>this.element)
-            .find("#npcRaceSelect")
+        let npcSpeciesSelectValue = (<JQuery>this.element)
+            .find("#npcSpeciesSelect")
             .find(":selected")
             .val()
-        let selectedRace: string = npcRaceSelectValue as string
+        let selectedSpecies: string = npcSpeciesSelectValue as string
         let npcCRSelectValue = (<JQuery>this.element)
             .find("#npcCR")
             .find(":selected")
@@ -155,7 +156,7 @@ export default class PopulatorPanelController extends Application {
         context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray].toString()
         context.CR = selectedCR
         context.folderId = this.options["folderId"]
-        context.race = selectedRace
+        context.species = selectedSpecies
         context.tokenOptions.dynamicImage = !!dynamicTokenImages
         context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation
 

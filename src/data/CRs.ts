@@ -1,5 +1,5 @@
 /// List of creature combat ratings
-import { Utils } from "../utils/Uils.js"
+import { Utils } from "../utils/Utils.js"
 
 export const CR = [
     "1/3",
@@ -32,7 +32,7 @@ export const CR = [
 ]
 
 /* CR Helpers */
-declare module "../utils/uils" {
+declare module "../utils/Utils" {
     namespace Utils {
         function CRforNumber(number: number): string
         function numberForCR(CR: string): number

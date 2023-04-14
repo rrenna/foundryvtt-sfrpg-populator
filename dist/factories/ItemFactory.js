@@ -1,6 +1,6 @@
 import { Randomizer } from "../Randomizer.js";
 import { backpackTemplate, canteenTemplate, credStickTemplate, intoxicantMinorTemplate, Items, lighterTemplate, purfumeTemplate, religiousSymbolTemplate, ropeTemplate, upbTemplate } from "../data/Items.js";
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 export class ItemFactory {
     // Default size is 3
     static makeItemCollection(size = 3) {
@@ -8,16 +8,16 @@ export class ItemFactory {
         // Every NPC has 2 random items (for now, may change)
         for (var i = 0; i < size; i++) {
             let items = [
-                { item: backpackTemplate, percentage: 0.03 },
-                { item: canteenTemplate, percentage: 0.03 },
-                { item: credStickTemplate, percentage: 0.03 },
-                { item: upbTemplate, percentage: 0.03 },
-                { item: lighterTemplate, percentage: 0.03 },
-                { item: ropeTemplate, percentage: 0.03 },
-                { item: purfumeTemplate, percentage: 0.03 },
-                { item: intoxicantMinorTemplate, percentage: 0.03 },
-                { item: ItemFactory.makeReligiousSymbol(), percentage: 0.06 },
-                { item: ItemFactory.makeJunk(), percentage: 0.7 }
+                { item: backpackTemplate, percentage: 3 },
+                { item: canteenTemplate, percentage: 3 },
+                { item: credStickTemplate, percentage: 3 },
+                { item: upbTemplate, percentage: 3 },
+                { item: lighterTemplate, percentage: 3 },
+                { item: ropeTemplate, percentage: 3 },
+                { item: purfumeTemplate, percentage: 3 },
+                { item: intoxicantMinorTemplate, percentage: 3 },
+                { item: ItemFactory.makeReligiousSymbol(), percentage: 6 },
+                { item: ItemFactory.makeJunk(), percentage: 70 }
             ];
             let winning = Randomizer.pickWinningItem(items).item;
             itemCollection.push(winning);

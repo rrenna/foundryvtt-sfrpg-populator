@@ -1,4 +1,4 @@
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 import { Biography } from "../data/Biography.js";
 export class BiographyFactory {
     // NOTE: Consider refactoring to only provide needed parameters and remove dependancy on `NPCCreationContext`
@@ -13,7 +13,7 @@ export class BiographyFactory {
                     " is a " +
                     personalityTraits[0] +
                     " " +
-                    context.race +
+                    context.species +
                     " who identifies as " +
                     context.gender +
                     ".</p>";

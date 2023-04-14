@@ -130,10 +130,10 @@ export class Utils {
         return this.fuzzyFindCompendiumAsync("equipment", itemName)
     }
 
-    static async fuzzyFindRaceAsync(raceName) {
-        raceName = raceName.replace("/ ", "/")
-        raceName = raceName.replace(" /", "/")
-        return this.fuzzyFindCompendiumAsync("races", raceName)
+    static async fuzzyFindSpeciesAsync(speciesName) {
+        speciesName = speciesName.replace("/ ", "/")
+        speciesName = speciesName.replace(" /", "/")
+        return this.fuzzyFindCompendiumAsync("races", speciesName)
     }
 
     static async fuzzyFindUniversalCreatureRule(universalCreatureRuleName) {
@@ -166,4 +166,50 @@ export class Utils {
     static log(message) {
         console.log("POPULATOR | " + message)
     }
+
+    /**
+     * Shorthand for game.i18n.localize()
+     * @param {string} key
+     * @returns {string}
+     */
+    static async t(key) {
+        return game.i18n.localize(`sfrpg-populator.${key}`);
+    }
+
+    /**
+     * Shorthand for game.settings.set
+     * @param {string} key
+     * @param value
+     */
+    static async sSet(key, value) {
+        await game.settings.set("sfrpg-populator", key, value);
+    }
+
+    /**
+     * Shorthand for game.settings.get
+     * @param {string} key
+     * @returns {any}
+     */
+    static sGet(key) {
+        return game.settings.get("sfrpg-populator", key);
+    }
+
+    /**
+     * Shorthand for game.settings.settings.get
+     * @param {string} key
+     * @returns {Object}
+     */
+    static settingData(key) {
+        return game.settings.settings.get(`sfrpg-populator.${key}`);
+    }
+
+    static deepClone<T>(obj: T): T {
+        if (obj === null || typeof obj !== "object") {
+          return obj;
+        }
+      
+        const clone = JSON.parse(JSON.stringify(obj));
+      
+        return clone as T;
+    }   
 }

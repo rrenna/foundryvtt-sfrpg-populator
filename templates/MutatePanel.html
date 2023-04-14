@@ -19,8 +19,8 @@
         <i class="populatorInfo far fa-question-circle" data-tippy-content="Upgrades an existing NPC by increasing it's CR (Experimental)."></i>
         <div class="form-fields">
             <select id="crSelect">
-                {{#each CRs as |race key|}}
-                    <option value={{ key }} >{{ race }}</option>
+                {{#each CRs as |species key|}}
+                    <option value={{ key }} >{{ species }}</option>
                 {{/each}}
             </select>
         </div>

@@ -9,6 +9,9 @@ import NPCMutationContext from "../models/NPCMutationContext.js"
 import { MonsterReferenceSymbol } from "../data/MonsterCreation.js"
 import { NPCFactory } from "../factories/NPCFactory.js"
 import { INPCData } from "../models/Interfaces/actors/INPCData.js"
+import { Probabilities } from "../data/Probabilities.js"
+import { PopulationSettings } from "../controllers/LocationPopulationsController.js"
+import { Utils } from "./Utils.js"
 
 // MARK: Hooks
 declare var Hooks
@@ -70,6 +73,26 @@ Hooks.on("getActorDirectoryFolderContext", async (html, folderOptions) => {
 
 // Adds options
 Hooks.once("init", async function () {
+    /**
+     * Shorthand for addSetting.
+     * Default data: {scope: "world", config: false}
+     * @param {string} key
+     * @param {object} data
+     */
+    function addMenuSetting(key: string, data: object): void {
+        const commonData = {
+            name: Utils.t(`${key}.name`),
+            hint: Utils.t(`${key}.hint`),
+            scope: "world",
+            config: false
+        }
+        game.settings.register(
+            "sfrpg-populator",
+            key,
+            Object.assign(commonData, data)
+        )
+    }
+
     // Default CR
     game.settings.register("sfrpg-populator", "defaultCR", {
         name: "Default CR",
@@ -92,7 +115,7 @@ Hooks.once("init", async function () {
     game.settings.register("sfrpg-populator", "dynamicTokenImages", {
         name: "Dynamic token images (Experimental)",
         hint:
-            "When enabled the token will be assigned a random image from \\populator\\<race name>\\<gender name> or \\populator\\<creature type>. See the README.md on Github for an example.",
+            "When enabled the token will be assigned a random image from \\populator\\<species name>\\<gender name> or \\populator\\<creature type>. See the README.md on Github for an example.",
         scope: "client",
         config: true,
         default: false,
@@ -101,7 +124,7 @@ Hooks.once("init", async function () {
             false: "No",
             true: "Yes"
         }
-    })    
+    })
 
     game.settings.register("sfrpg-populator", "dynamicTokenImagesLocation", {
         name: "Root folder location for images",
@@ -109,15 +132,15 @@ Hooks.once("init", async function () {
             "When dynamic images are enabled this will be the root folder where we pull from.",
         scope: "client",
         config: true,
-        default: 'populator/',
+        default: "populator/",
         type: String
-    })  
+    })
 
     // Use dynamic token images (requires specific folder structure in foundry data)
     game.settings.register("sfrpg-populator", "includeNonBinary", {
         name: "Enable Non-Binary Gender",
         hint:
-            "This will add a small percentage of tokens be generated as non-binary and look for images if enabled in the appropriate species folder \"non-binary\".",
+            'This will add a small percentage of tokens be generated as non-binary and look for images if enabled in the appropriate species folder "non-binary".',
         scope: "client",
         config: true,
         default: false,
@@ -126,5 +149,19 @@ Hooks.once("init", async function () {
             false: "No",
             true: "Yes"
         }
+    })
+
+    // register location settings
+    game.settings.registerMenu("sfrpg-populator", "locationSettings", {
+        name: "Location Populations Menu",
+        label: "Location Populations Menu",
+        icon: "fas fa-duotone fa-people",
+        type: PopulationSettings,
+        restricted: true
+    })
+
+    addMenuSetting("locations", {
+        type: Array,
+        default: Probabilities.locationPopulations
     })
 })

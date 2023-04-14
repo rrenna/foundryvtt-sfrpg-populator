@@ -1,4 +1,4 @@
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 import { naturalWeaponsTemplate, unarmedStrikeTemplate } from "../data/Weapons.js";
 export class WeaponFactory {
     static makeUnarmedStrike() {

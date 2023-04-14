@@ -1,4 +1,4 @@
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 export default class UniversalCreatureRule {
     constructor(name, description) {
         this.name = name;

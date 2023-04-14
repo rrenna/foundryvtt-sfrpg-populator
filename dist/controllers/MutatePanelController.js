@@ -55,11 +55,11 @@ export default class MutatePanelController extends Application {
      * @param {Event} e The click event
      */
     async npcMutateButtonClicked(e) {
-        let crRaceSelectValue = this.element
+        let crSpeciesSelectValue = this.element
             .find("#crSelect")
             .find(":selected")
             .val();
-        let selectedCRIndex = Number(crRaceSelectValue);
+        let selectedCRIndex = Number(crSpeciesSelectValue);
         let selectedCR = CR[selectedCRIndex];
         let actor = game.actors.get(this.options["actorId"]);
         const context = new NPCMutationContext({

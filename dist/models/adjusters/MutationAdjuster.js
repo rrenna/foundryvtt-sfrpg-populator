@@ -1,4 +1,4 @@
-import { Utils } from "../../utils/Uils.js";
+import { Utils } from "../../utils/Utils.js";
 import { MonsterCreation, MonsterReferenceSymbol } from "../../data/MonsterCreation.js";
 import { AbilityScore } from "../../data/AbilityScores.js";
 /// Used to mutate an actor by increasing or decreasing it's CR by

@@ -3,7 +3,7 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 ## Features:
 - Generates non-combatant NPCs for your world
-   - Randomizes the name, gender, race, alignment, personality trait and inventory of the NPC
+   - Randomizes the name, gender, species, alignment, personality trait and inventory of the NPC
    - Intelligently randomizes the token image of NPCs when placed in a scene (optional setting, *off* by default)
 - **experimental** Generates monsters 
 - **experimental** monster mutation
@@ -18,11 +18,11 @@ Populate your Starfinder world with life of all shapes and sizes.
 
 **A: We look up where the monster should be on the appropriate array (based on it's current CR) then calcualte the difference between each stat in that row and the target row, then apply that difference (either positive or negative). Currently we are only touching the basic stats - but this will be expanded to things like adding additional special abilities.**
 
-*Q: Does Populator just pick a random race when quickly making an NPC?*
+*Q: Does Populator just pick a random species when quickly making an NPC?*
 
-**A: No I follow the distribution of races found on Absalom Station.  As of `0.1.X` you can create an NPC of your specific desired race.
+**A: No I follow the distribution of species found on Absalom Station.  As of `0.1.X` you can create an NPC of your specific desired species.
 
-*Q: What races does populator currently support?*
+*Q: What species does populator currently support?*
 
 **A: Android, Dwarf, Drow, Gnome, Gnoll, Half-Elf, Half-Orc, Halfling, Human, Hobgoblin, Kasatha, Lashunta, Nuar, Skittermander, Shirren, Vesk, Ysoki**
 

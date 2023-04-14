@@ -222,7 +222,7 @@ export const credStickTemplate = {
             gmnotes: "",
             short: "",
             value:
-                '<p><span class="fontstyle0">Fortunately, the widespread use of the credstick circumvents<br>issues related to spending and storing currency. Flat and roughly<br>the size of a @Compendium[sfrpg.races.AMBcyDZDtJ1OOzh3]{Human} finger, ranging from cheap and disposable to<br>elaborate works of art, credsticks are a convenient way to carry<br>and spend money.</span></p>',
+                '<p><span class="fontstyle0">Fortunately, the widespread use of the credstick circumvents<br>issues related to spending and storing currency. Flat and roughly<br>the size of a @Compendium[sfrpg.species.AMBcyDZDtJ1OOzh3]{Human} finger, ranging from cheap and disposable to<br>elaborate works of art, credsticks are a convenient way to carry<br>and spend money.</span></p>',
             unidentified: ""
         },
         source: "CRB pg. 166",
@@ -387,7 +387,7 @@ export const purfumeTemplate = {
             gmnotes: "",
             short: "",
             value:
-                "<h1>Perfume</h1>\n<p>There is an immeasurable variety of perfumes and colognes in the galaxy, most tailored to the aesthetics of specific races with olfactory senses. A single dose of perfume lasts 1 hour, and a typical bottle of perfume contains 10 doses.</p>\n<p>&nbsp;</p>\n<p><strong>Standard aromas have a pleasant smell and can convey an air of hygiene, status, and wealth.</strong></p>",
+                "<h1>Perfume</h1>\n<p>There is an immeasurable variety of perfumes and colognes in the galaxy, most tailored to the aesthetics of specific species with olfactory senses. A single dose of perfume lasts 1 hour, and a typical bottle of perfume contains 10 doses.</p>\n<p>&nbsp;</p>\n<p><strong>Standard aromas have a pleasant smell and can convey an air of hygiene, status, and wealth.</strong></p>",
             unidentified: ""
         },
         source: "AR pg. 131",

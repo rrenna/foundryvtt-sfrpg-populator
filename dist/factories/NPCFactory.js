@@ -1,8 +1,8 @@
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 import { Grafts } from "../data/Grafts.js";
 import { ItemFactory } from "./ItemFactory.js";
 import { MonsterCreation, MonsterReferenceSymbol, MonsterSkillType } from "../data/MonsterCreation.js";
-import { BundledRaces, Races } from "../data/Races.js";
+import { BundledSpecies, SpeciesList } from "../data/Species.js";
 import { Randomizer } from "../Randomizer.js";
 import { WeaponFactory } from "./WeaponFactory.js";
 import { isNPCCreationContext } from "../models/NPCCreationContext.js";
@@ -22,7 +22,7 @@ import { Size } from "../data/Sizes.js";
 import { Save } from "../data/Saves.js";
 import { CR } from "../data/CRs.js";
 export class NPCFactory {
-    // Produces a non-hostile NPC from a subset of races
+    // Produces a non-hostile NPC from a subset of species
     static async makeNonHostile(context) {
         await this.makeNPC(context);
     }
@@ -64,7 +64,7 @@ export class NPCFactory {
         let actor = (await Actor.create(actorData));
         // Fill in details
         await this.setArray(actor, context);
-        await this.setRace(actor, context);
+        await this.setSpecies(actor, context);
         await this.setGenderAndName(actor, context);
         await this.setDetails(actor, context);
         await this.setGrafts(actor, context);
@@ -97,82 +97,99 @@ export class NPCFactory {
         // Update log
         context.log.push(...logEntries);
     }
-    static async setRace(actor, context) {
+    static async setSpecies(actor, context) {
         let logEntries = [];
-        if (context.race) {
-            if (context.race === "random") {
-                let randomRace = Randomizer.randomRace(context.npcLocation);
-                context.race = randomRace.name;
-                logEntries.push([
-                    "Chose race " + randomRace.name + " at random using " + context.npcLocation + " distribution",
-                    ""
-                ]);
+        try {
+            if (context.species) {
+                if (context.species === "random") {
+                    let randomSpecies = Randomizer.randomSpecies(context.npcLocation);
+                    context.species = randomSpecies.name;
+                    logEntries.push([
+                        "Chose species " + randomSpecies.name + " at random using " + context.npcLocation + " distribution",
+                        ""
+                    ]);
+                }
+                else {
+                    logEntries.push(["Species " + context.species + " chosen.", ""]);
+                }
+                // Set grafts for species
+                let species = SpeciesList.humanoidSpecies[context.species];
+                context.creatureTypeGraft = species.creatureTypeGraft;
+                context.creatureSubtypeGrafts = species.creatureSubtypeGrafts;
+                var speciesData;
+                // We stub in gnolls until they are included in sfrpg
+                if (context.species == "gnoll") {
+                    speciesData = BundledSpecies.gnoll;
+                }
+                else {
+                    speciesData = await Utils.fuzzyFindSpeciesAsync(species.name);
+                }
+                // species item
+                // #TODO what was the point of this? Just crashes now.
+                // await this.clean(speciesData)
+                context.itemsToAdd.push(speciesData);
             }
             else {
-                logEntries.push(["Race " + context.race + " chosen.", ""]);
+                logEntries.push(["No species applied.", ""]);
             }
-            // Set grafts for race
-            let race = Races.nonCombatantRaces[context.race];
-            context.creatureTypeGraft = race.creatureTypeGraft;
-            context.creatureSubtypeGrafts = race.creatureSubtypeGrafts;
-            var raceData;
-            // We stub in gnolls until they are included in sfrpg
-            if (context.race == "gnoll") {
-                raceData = BundledRaces.gnoll;
-            }
-            else {
-                raceData = await Utils.fuzzyFindRaceAsync(race.name);
-            }
-            // Race item
-            // #TODO what was the point of this? Just crashes now.
-            // await this.clean(raceData)
-            context.itemsToAdd.push(raceData);
         }
-        else {
-            logEntries.push(["No Race applied.", ""]);
+        catch (e) {
+            logEntries.push([
+                "Failed to set species.",
+                "<font color='red'>Exception:" + e + "</font>"
+            ]);
         }
         // Update log
         context.log.push(...logEntries);
     }
     static async setGenderAndName(actor, context) {
-        let actorUpdate = {};
         let logEntries = [];
-        // Settings
-        const includeNonBinary = game.settings.get("sfrpg-populator", "includeNonBinary") === "true";
-        // Gender
-        if (!context.gender) {
-            let randomGender = Randomizer.randomGender(includeNonBinary ? 'nonBinary' : undefined);
-            context.gender = randomGender;
+        try {
+            let actorUpdate = {};
+            let logEntries = [];
+            // Settings
+            const includeNonBinary = game.settings.get("sfrpg-populator", "includeNonBinary") === "true";
+            // Gender
+            if (!context.gender) {
+                let randomGender = Randomizer.randomGender(includeNonBinary ? 'nonBinary' : undefined);
+                context.gender = randomGender;
+                logEntries.push([
+                    "Chose gender " + randomGender + " at random.",
+                    ""
+                ]);
+            }
+            else {
+                logEntries.push(["Gender " + context.gender + " chosen.", ""]);
+            }
+            // species and Grafts label
+            let speciesText = context.species
+                ? " " + SpeciesList.humanoidSpecies[context.species].name
+                : "";
+            actorUpdate["data.details.raceAndGrafts"] =
+                context.gender + speciesText + ", grafts:"; // Grafts will be filled in as applied
+            // Name
+            let randomName = Randomizer.randomName(context);
+            actorUpdate["name"] = randomName;
+            context.name = randomName;
+            logEntries.push([" Generated name " + randomName + " at random.", ""]);
+            // Update actor
+            await actor.update(actorUpdate);
+        }
+        catch (e) {
             logEntries.push([
-                "Chose gender " + randomGender + " at random.",
-                ""
+                "Failed to set Gender and Name.",
+                "<font color='red'>Exception:" + e + "</font>"
             ]);
         }
-        else {
-            logEntries.push(["Gender " + context.gender + " chosen.", ""]);
-        }
-        // Race and Grafts label
-        let raceText = context.race
-            ? " " + Races.nonCombatantRaces[context.race].name
-            : "";
-        actorUpdate["data.details.raceAndGrafts"] =
-            context.gender + raceText + ", grafts:"; // Grafts will be filled in as applied
-        // Name
-        let randomName = Randomizer.randomName(context);
-        actorUpdate["name"] = randomName;
-        context.name = randomName;
-        logEntries.push([" Generated name " + randomName + " at random.", ""]);
-        // Update actor
-        await actor.update(actorUpdate);
         // Update log
         context.log.push(...logEntries);
     }
     static async setDetails(actor, context) {
         var _a;
         let logEntries = [];
-        var race;
-        if (context.race)
-            race = Races.nonCombatantRaces[context.race];
+        var species;
+        if (context.species)
+            species = SpeciesList.humanoidSpecies[context.species];
         let actorUpdate = {};
         // Source
         actorUpdate["data.details.source"] = "Populator";
@@ -199,8 +216,8 @@ export class NPCFactory {
         // NOTE: Only applies languages if this creature type has the intelligence capacity for language
         if ((_a = context.creatureTypeGraft) === null || _a === void 0 ? void 0 : _a.capicityForLanguage) {
             var languages = ["common"];
-            if (race === null || race === void 0 ? void 0 : race.languages) {
-                languages.push(...race.languages);
+            if (species === null || species === void 0 ? void 0 : species.languages) {
+                languages.push(...species.languages);
             }
             actorUpdate["data.traits.languages.value"] = languages;
         }
@@ -336,18 +353,18 @@ export class NPCFactory {
     static async setAttributes(actor, context) {
         var _a;
         let logEntries = [];
-        var race;
-        if (context.race)
-            race = Races.nonCombatantRaces[context.race];
+        var species;
+        if (context.species)
+            species = SpeciesList.humanoidSpecies[context.species];
         let array = context.mainArrayRow;
         let actorUpdate = {};
         // Size
-        actorUpdate["data.traits.size"] = (race === null || race === void 0 ? void 0 : race.size)
-            ? Size[race.size]
+        actorUpdate["data.traits.size"] = (species === null || species === void 0 ? void 0 : species.size)
+            ? Size[species.size]
             : Size[Size.medium]; // We default to medium size
         // Hands
-        if ((race === null || race === void 0 ? void 0 : race.arms) != undefined) {
-            actorUpdate["data.attributes.arms"] = race.arms;
+        if ((species === null || species === void 0 ? void 0 : species.arms) != undefined) {
+            actorUpdate["data.attributes.arms"] = species.arms;
         }
         // Reach
         // TODO: Reach should be decided by grafts
@@ -617,9 +634,9 @@ export class NPCFactory {
         actorUpdate["token.randomImg"] = false;
         if ((_a = context.tokenOptions) === null || _a === void 0 ? void 0 : _a.dynamicImage) {
             var path;
-            // Either set path as race + gender or creature type
-            if (context.race) {
-                path = context.tokenOptions.dynamicImageRootLocation + context.race + "/" + context.gender + "/*";
+            // Either set path as species + gender or creature type
+            if (context.species) {
+                path = context.tokenOptions.dynamicImageRootLocation + context.species + "/" + context.gender + "/*";
             }
             else if (context.creatureTypeGraft) {
                 path = context.tokenOptions.dynamicImageRootLocation + ((_b = context.creatureTypeGraft) === null || _b === void 0 ? void 0 : _b.name) + "/*";
@@ -835,7 +852,7 @@ export class NPCFactory {
             ]);
         }
         else if (graft === Grafts.creatureSubtype.elf) {
-            // Elves can be `drow`, `elven` or `half-elven` race
+            // Elves can be `drow`, `elven` or `half-elven` species
             // All elves:
             await new SkillAdjuster({
                 // Perception as a master skill
@@ -844,7 +861,7 @@ export class NPCFactory {
                     MonsterSkillType.master
                 ]
             }).apply(actor, context);
-            if (context.race == "elf") {
+            if (context.species == "elf") {
                 await apply(actor, context, 
                 // Senses
                 SharedAdjusters.Senses.lowLightVision, 
@@ -858,11 +875,11 @@ export class NPCFactory {
                 // Add immunities
                 SharedAdjusters.Immunities.elvenImmunities);
                 logEntries.push([
-                    "Applied <u>elf</u> subtype graft. <u>elf</u> race selected so added elven immunities, and mysticism as a master skill.",
+                    "Applied <u>elf</u> subtype graft. <u>elf</u> species selected so added elven immunities, and mysticism as a master skill.",
                     Grafts.creatureSubtype.elf.description
                 ]);
             }
-            if (context.race == "drow") {
+            if (context.species == "drow") {
                 await apply(actor, context, 
                 //Senses
                 SharedAdjusters.Senses.darkVision60ft, // Replaces low-light vision
@@ -874,16 +891,16 @@ export class NPCFactory {
                 addAtWillInnateSpell(dancingLights);
                 addAtWillInnateSpell(detectMagic);
                 logEntries.push([
-                    "Applied <u>elf</u> subtype graft. <u>drow</u> race selected so added darkvision 60ft., perception as a master skill, dacing lights and detect magic as innate spells, added drow immunities.",
+                    "Applied <u>elf</u> subtype graft. <u>drow</u> species selected so added darkvision 60ft., perception as a master skill, dacing lights and detect magic as innate spells, added drow immunities.",
                     Grafts.creatureSubtype.elf.description
                 ]);
             }
-            else if (context.race == "halfElf") {
+            else if (context.species == "halfElf") {
                 await apply(actor, context, SharedAdjusters.Senses.lowLightVision);
                 // Half-elves gain an extra good skill
                 context.mainArrayRow.goodSkill.count += 1;
                 logEntries.push([
-                    "Applied <u>elf</u> subtype graft. <u>half-elf</u> race selected so added low-light vision, perception as a master skill, and one additional good skill.",
+                    "Applied <u>elf</u> subtype graft. <u>half-elf</u> species selected so added low-light vision, perception as a master skill, and one additional good skill.",
                     Grafts.creatureSubtype.elf.description
                 ]);
             }
@@ -938,7 +955,7 @@ export class NPCFactory {
             ]);
         }
         else if (graft === Grafts.creatureSubtype.human) {
-            if (context.race == Races.nonCombatantRaces.human.name) {
+            if (context.species == SpeciesList.humanoidSpecies.human.name) {
                 context.mainArrayRow.specialAbilities += 1;
                 context.mainArrayRow.goodSkill.count += 1;
                 logEntries.push([
@@ -993,7 +1010,7 @@ export class NPCFactory {
             }));
         }
         else if (graft === Grafts.creatureSubtype.orc) {
-            // TODO: Check if race is half-orc, and only then apply
+            // TODO: Check if species is half-orc, and only then apply
             await apply(actor, context, 
             // Senses
             SharedAdjusters.Senses.darkVision60ft, 

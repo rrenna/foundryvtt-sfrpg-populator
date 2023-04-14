@@ -1,4 +1,4 @@
-import { Races } from "../data/Races.js";
+import { SpeciesList } from "../data/Species.js";
 import { NPCFactory } from "../factories/NPCFactory.js";
 import NPCCreationContext from "../models/NPCCreationContext.js";
 import { Grafts } from "../data/Grafts.js";
@@ -7,7 +7,7 @@ import { CreatureTypeGenerationOptions } from "../data/Generator.js";
 import { Subtype, Type } from "../data/Types.js";
 import { CR } from "../data/CRs.js";
 import { Randomizer } from "../Randomizer.js";
-import { Probabilities } from "../data/Probabilities.js";
+import { Utils } from "../utils/Utils.js";
 // Options provided to the Populator panel - adds folderId to default options
 export class PopulatorPanelOptions {
     constructor(folderId) {
@@ -24,7 +24,7 @@ export default class PopulatorPanelController extends Application {
             height: 450,
             minimizable: true,
             resizable: true,
-            title: "Populator",
+            title: "SFRPG - Populator",
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
@@ -44,9 +44,9 @@ export default class PopulatorPanelController extends Application {
         return mergeObject(super.getData(), {
             options: options,
             isGM: game.user.isGM,
-            NPCRacesDistributions: Probabilities.raceDistributions,
+            NPCSpeciesDistributions: Utils.sGet("locations"),
             NPCCR: CR,
-            NPCRaces: Races.nonCombatantRaces,
+            NPCSpecies: SpeciesList.humanoidSpecies,
             supportedCreatureTypes: CreatureTypeGenerationOptions,
             arrays: MonsterCreation.arrays
         });
@@ -65,19 +65,19 @@ export default class PopulatorPanelController extends Application {
         html
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this));
-        html.on("change", ".npcRaceSelect", this.showSpeciesLocationDistribution.bind(this));
+        html.on("change", ".npcSpeciesSelect", this.showSpeciesLocationDistribution.bind(this));
         tippy(".populatorInfo");
         tippy(".populatorButton");
     }
     /**
-     * Click event when a user change the race option chosen.
+     * Click event when a user change the species option chosen.
      * @param {Event} e The click event
      */
     async showSpeciesLocationDistribution(e) {
-        const npcRaceSelect = e.target;
+        const npcSpeciesSelect = e.target;
         const distributionDiv = document.getElementById("speciesDistributionDiv");
         if (distributionDiv) {
-            if (npcRaceSelect.value === "random") {
+            if (npcSpeciesSelect.value === "random") {
                 distributionDiv.style.display = "block";
             }
             else {
@@ -95,11 +95,11 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val();
         let selectedLocation = locationSelection;
-        let npcRaceSelectValue = this.element
-            .find("#npcRaceSelect")
+        let npcSpeciesSelectValue = this.element
+            .find("#npcSpeciesSelect")
             .find(":selected")
             .val();
-        let selectedRace = npcRaceSelectValue;
+        let selectedSpecies = npcSpeciesSelectValue;
         let npcCRSelectValue = this.element
             .find("#npcCR")
             .find(":selected")
@@ -126,7 +126,7 @@ export default class PopulatorPanelController extends Application {
         context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray].toString();
         context.CR = selectedCR;
         context.folderId = this.options["folderId"];
-        context.race = selectedRace;
+        context.species = selectedSpecies;
         context.tokenOptions.dynamicImage = !!dynamicTokenImages;
         context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation;
         await NPCFactory.makeNonHostile(context);

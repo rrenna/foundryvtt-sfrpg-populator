@@ -1,0 +1,118 @@
+<form autocomplete="off" onsubmit="event.preventDefault()">
+	<nav class="sheet-tabs tabs">
+		{{#each locations as |location idx|}}
+			<a class="item" data-tab="{{idx}}">
+				{{#if location.name}}{{location.name}}{{else}}{{idx}}{{/if}}				
+			</a>
+		{{/each}}
+		<a class="item lastItem" data-action="add-table">
+			<i class="far fa-plus"></i>
+			Add Table
+		</a>
+	</nav>
+
+	<section class="content">
+		{{#each locations as |location idx|}}
+			<div class="tab" data-tab="{{idx}}">
+				{{#if (eq idx 0)}}
+					<div class="form-group" style="display: none">
+						<input name="locations.{{idx}}.name" type="text" value="{{location.name}}" />
+					</div>
+				{{else}}
+					<div class="form-group">
+						<label>Location Name</label>
+						<input name="locations.{{idx}}.name" id="locations.{{idx}}.name" type="text" value="{{location.name}}" />
+					</div>
+				{{/if}}
+				<table class="location-species">
+					<tr>
+						<th>Species</th>
+						<th>{{location.totalPercentage}} %</th>
+						<th class="delete-cell"></th>
+					</tr>
+					{{#each location.population as |pop id|}}
+						<tr>
+							<td>
+								<select name="locations.{{idx}}.population.{{id}}.name">
+									<option value="android" {{#if (eq "android" pop.name)}}selected{{/if}}>android</option>
+									<option value="dwarf" {{#if (eq "dwarf" pop.name)}}selected{{/if}}>dwarf</option>
+									<option value="elf" {{#if (eq "elf" pop.name)}}selected{{/if}}>elf</option>
+									<option value="gnome" {{#if (eq "gnome" pop.name)}}selected{{/if}}>gnome</option>
+									<option value="gnoll" {{#if (eq "gnoll" pop.name)}}selected{{/if}}>gnoll</option>
+									<option value="hobgoblin" {{#if (eq "hobgoblin" pop.name)}}selected{{/if}}>hobgoblin</option>
+									<option value="human" {{#if (eq "human" pop.name)}}selected{{/if}}>human</option>
+									<option value="halfOrc" {{#if (eq "halfOrc" pop.name)}}selected{{/if}}>half-orc</option>
+									<option value="halfElf" {{#if (eq "halfElf" pop.name)}}selected{{/if}}>half-elf</option>
+									<option value="halfling" {{#if (eq "halfling" pop.name)}}selected{{/if}}>halfling</option>
+									<option value="kasatha" {{#if (eq "kasatha" pop.name)}}selected{{/if}}>kasatha</option>
+									<option value="lashunta" {{#if (eq "lashunta" pop.name)}}selected{{/if}}>lashunta</option>
+									<option value="nuar" {{#if (eq "nuar" pop.name)}}selected{{/if}}>nuar</option>
+									<option value="skittermander" {{#if (eq "skittermander" pop.name)}}selected{{/if}}>skittermander</option>
+									<option value="shirren" {{#if (eq "shirren" pop.name)}}selected{{/if}}>shirren</option>
+									<option value="vesk" {{#if (eq "vesk" pop.name)}}selected{{/if}}>vesk</option>
+									<option value="ysoki" {{#if (eq "ysoki" pop.name)}}selected{{/if}}>ysoki</option> 																																																																																
+								</select>
+							</td>
+							<td>
+								<div class="value">
+									<input name="locations.{{idx}}.population.{{id}}.percentage" type="number" min="1" max="100" value="{{pop.percentage}}" />
+								</div>
+							</td>
+							<td class="delete-cell">
+								<a class="delete-button" data-action="location-delete">
+									<i class="fas fa-times" data-table="{{idx}}" data-idx="{{id}}"></i>
+								</a>
+							</td>
+						</tr>
+					{{/each}}
+					<tr>
+						<td colspan="3" class="add-cell">
+							<a data-action="location-add"><i class="fas fa-plus" data-idx="{{idx}}"></i> Add Species</a>
+						</td>
+					</tr>
+				</table>
+				{{#if (ne idx 0)}}
+					<div class="flexrow location-buttons">
+						{{#if (eq idx 1)}}
+							<button disabled type="button"><i class="far fa-chevron-left"></i></button>
+						{{else}}
+							<button
+								type="button"
+								data-tooltip="Increase Priority"
+								data-action="change-prio"
+								data-prio="increase"
+								data-idx="{{idx}}"
+							>
+								<i class="far fa-chevron-left"></i>
+							</button>
+						{{/if}}
+						<button type="button" data-action="table-delete" data-idx="{{idx}}"><i class="fas fa-trash"></i>
+							Delete Table
+						</button>
+						{{#if @last}}
+							<button disabled type="button"><i class="far fa-chevron-right"></i></button>
+						{{else}}
+							<button
+								type="button"
+								data-tooltip="Decrease Priority"
+								data-action="change-prio"
+								data-prio="reduce"
+								data-idx="{{idx}}"
+							><i class="far fa-chevron-right"></i></button>
+						{{/if}}
+					</div>
+				{{/if}}
+			</div>
+		{{/each}}
+	</section>
+	<footer class="sheet-footer flexrow">
+		<button type="submit" name="submit">
+			<i class="far fa-save"></i>
+			{{localize "SETTINGS.Save"}}
+		</button>
+		<button type="button" name="reset" data-action="reset">
+			<i class="fas fa-undo"></i>
+			{{localize "SETTINGS.Reset"}}
+		</button>
+	</footer>
+</form>

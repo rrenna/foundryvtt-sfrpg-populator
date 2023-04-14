@@ -1,3 +1,18 @@
+### 0.4.0
+### Changed
+- Added new Location Population UI accessible in the game settings
+- Updated location dropdowns to pull from the new locations game setting
+- Renaming references of race to species
+- Added new game setting for locations to track user editable list of population locations
+- Registered new menu locationSettings
+- Updated Probabilities to use percentage values from 0-100 instead of 0.00 to 1
+- Updated random function to use numbers from 0 to 100 instead of 0 to 1
+- Updated randomSpecies function to use new location definition
+- Added new functions to Utils class to get and set game settings
+- Renamed Uils file to Utils
+- Updated definition of locations for population control of random species. 
+- Updated the example folder structure to remove images
+
 ### 0.3.2
 ### Changed
 - Added configuration option to choose the root folder

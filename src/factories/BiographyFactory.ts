@@ -1,5 +1,5 @@
 import NPCCreationContext from "../models/NPCCreationContext.js"
-import { Utils } from "../utils/Uils.js"
+import { Utils } from "../utils/Utils.js"
 import { Biography } from "../data/Biography.js"
 
 export class BiographyFactory {
@@ -17,7 +17,7 @@ export class BiographyFactory {
                 " is a " +
                 personalityTraits[0] +
                 " " +
-                context.race +
+                context.species +
                 " who identifies as " +
                 context.gender +
                 ".</p>"

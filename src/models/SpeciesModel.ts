@@ -2,7 +2,7 @@ import { Size } from "../data/Sizes.js"
 import CreatureTypeGraft from "./CreatureTypeGraft.js"
 import CreatureSubtypeGraft from "./CreatureSubtypeGraft.js"
 
-export default class Race {
+export default class Species {
     name: string
     size: Size
     arms: number

@@ -1,5 +1,5 @@
 /// List of creature combat ratings
-import { Utils } from "../utils/Uils.js";
+import { Utils } from "../utils/Utils.js";
 export const CR = [
     "1/3",
     "1/2",

@@ -32,34 +32,34 @@
         </div>
         <br/>
         <!-- NPCs -->
-        <label for="npcRaceSelect"><b>Creature Subtype</b></label>
+        <label for="npcSpeciesSelect"><b>Creature Subtype</b></label>
         <i class="populatorInfo far fa-question-circle" data-tippy-content="Generates an NPC with a personality from one of the humanoid create types."></i>        
         <br/>
         <div class="form-fields">
-            <select id="npcRaceSelect" class="npcRaceSelect">
+            <select id="npcSpeciesSelect" class="npcSpeciesSelect">
                 <option value="random" >random</option>
-                {{#each NPCRaces as |race key|}}
-                    <option value={{ key }} >{{ race.name }}</option>
+                {{#each NPCSpecies as |species key|}}
+                    <option value={{ key }} >{{ species.name }}</option>
                 {{/each}}
             </select>
         </div>
         <br />
         <div id="speciesDistributionDiv">
-            <!-- Race Distribution -->
-            <label for="npcRaceDistribution"><b>Location Species Distribution</b></label>
+            <!-- Species Distribution -->
+            <label for="npcSpeciesDistribution"><b>Location Species Distribution</b></label>
             <i class="populatorInfo far fa-question-circle"
                 data-tippy-content="When generating a random NPC use the distribution percentages from the specified location."></i>
             <div class="form-fields">
                 <select id="npcLocation">
-                    {{#each NPCRacesDistributions as |location name|}}
-                        <option value="{{name}}">{{name}}</option>
+                    {{#each NPCSpeciesDistributions as |location location|}}
+                        <option value="{{location.name}}">{{location.name}}</option>
                     {{/each}}
                 </select>
             </div>
         </div>        
         <br/>
         <div style="display: flex; justify-content: space-between;">
-            <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen Race (expert Array)">
+            <button id="npcGenerationButton" class="populatorButton control dialog-button npcGenerationButton" type="submit" name="submit" data-tippy-content="Generate an NPC of the chosen species (expert Array)">
                 <i class="fas fa-male"></i> Generate Humanoid NPC
             </button>        
         </div>

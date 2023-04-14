@@ -64,12 +64,12 @@ export default class MutatePanelController extends Application {
      * @param {Event} e The click event
      */
     private async npcMutateButtonClicked(e: Event) {
-        let crRaceSelectValue = (<JQuery>this.element)
+        let crSpeciesSelectValue = (<JQuery>this.element)
             .find("#crSelect")
             .find(":selected")
             .val()
 
-        let selectedCRIndex: number = Number(crRaceSelectValue)
+        let selectedCRIndex: number = Number(crSpeciesSelectValue)
         let selectedCR = CR[selectedCRIndex]
         let actor = game.actors.get(this.options["actorId"]) as Actor<INPCData>
 

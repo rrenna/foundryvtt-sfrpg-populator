@@ -15,7 +15,7 @@ export default class NPCCreationContext implements IContext {
     // Locations
     public folderId: string | undefined
     //
-    public race: string | undefined
+    public species: string | undefined
     public name: string | undefined
     public gender: Gender | undefined
     public CR: string = CR[0] // defaults to lowest CR

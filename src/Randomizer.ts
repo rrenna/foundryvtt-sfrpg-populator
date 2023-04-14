@@ -1,19 +1,19 @@
-import { Races } from "./data/Races.js"
+import { SpeciesList } from "./data/Species.js"
 import { Probabilities } from "./data/Probabilities.js"
 import { Names } from "./data/Names.js"
 import { StringFormat } from "./utils/StringFormat.js"
-import Race from "./models/Race.js"
+import Species from "./models/SpeciesModel.js"
 import NPCCreationContext from "./models/NPCCreationContext.js"
 import { Gender } from "./data/Genders.js"
-import { Utils } from "./utils/Uils.js"
+import { Utils } from "./utils/Utils.js"
 
 export class Randomizer {
-    static randomRace(location: string = "absalom"): Race {
-        let raceDistribution = Randomizer.pickWinningItem(
-            Probabilities.raceDistributions[location]
+    static randomSpecies(locationName: string = "Absalom"): Species {
+        const locationPopulations = Utils.sGet("locations");
+        let species = Randomizer.pickWinningItem(
+            locationPopulations.find(location => location.name === locationName)?.population
         )
-        let race = Races.nonCombatantRaces[raceDistribution.name]
-        return race
+        return species
     }
 
     static randomGender(distribution?: string): Gender {
@@ -33,16 +33,16 @@ export class Randomizer {
 
     // NOTE: For now we assume male if no gender provided
     static randomName(context: NPCCreationContext) {
-        let race: string | undefined = context.race
+        let species: string | undefined = context.species
         let creatureType = context.creatureTypeGraft?.name
         let gender: string = context.gender ?? "male"
 
         var format = Names.default.format
         var names = Names.default // Default is human sounding names
 
-        // If a race is specified and we have special names for that race
-        if (race && Names[race] != undefined) {
-            names = Names[race]
+        // If a species is specified and we have special names for that species
+        if (species && Names[species] != undefined) {
+            names = Names[species]
         }
         // Otherwise use creature type to generate name
         else if (Names[creatureType] != undefined) {
@@ -59,7 +59,7 @@ export class Randomizer {
         else if (gender == "female" && names.female != undefined) {
             first = names.female.first
         } else if (names.other != undefined) {
-            // If any other gender, and we have `other` defined for the race
+            // If any other gender, and we have `other` defined for the species
             first = names.other.first
         }
 
@@ -86,11 +86,11 @@ export class Randomizer {
     }
 
     static pickWinningItem(data) {
-        var winner = Math.random()
-        var threshold = 0
+        var winner = Math.random() * 100;
+        var threshold = 0; 
         for (let i = 0; i < data.length; i++) {
-            threshold += parseFloat(data[i].percentage)
-            if (threshold > winner) {
+            threshold += data[i].percentage
+            if (threshold >= winner) {
                 return data[i]
             }
         }

@@ -1,45 +1,45 @@
 import { Grafts } from "./Grafts.js"
-import Race from "../models/Race.js"
+import Species from "../models/SpeciesModel.js"
 import { Size } from "./Sizes.js"
 
-export const Races = {
-    // A list of humanoid type races which will randomly be generated (generally for non-combat NPCs)
-    nonCombatantRaces: {
-        android: new Race(
+export const SpeciesList = {
+    // A list of humanoid type species which will randomly be generated (generally for non-combat NPCs)
+    humanoidSpecies: {
+        android: new Species(
             "android",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.android
         ),
-        dwarf: new Race(
+        dwarf: new Species(
             "dwarf",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.dwarf,
             ["dwarven"]
         ),
-        drow: new Race(
+        drow: new Species(
             "drow",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.elf,
             ["drow"]
         ),
-        elf: new Race(
+        elf: new Species(
             "elf",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.elf,
             ["elven"]
         ),
-        gnome: new Race(
+        gnome: new Species(
             "gnome",
             Size.small,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.gnome,
             ["gnome"]
         ),
-        gnoll: new Race(
+        gnoll: new Species(
             "gnoll",
             Size.medium,
             Grafts.creatureType.humanoid,
@@ -47,41 +47,41 @@ export const Races = {
             undefined,
             ["gnoll"]
         ),
-        hobgoblin: new Race(
+        hobgoblin: new Species(
             "hobgoblin",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.goblinoid,
             ["goblin"]
         ),
-        human: new Race(
+        human: new Species(
             "human",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.human
         ),
-        halfOrc: new Race(
+        halfOrc: new Species(
             "half-orc",
             Size.medium,
             Grafts.creatureType.humanoid,
             [Grafts.creatureSubtype.human, Grafts.creatureSubtype.orc],
             ["orc"]
         ),
-        halfElf: new Race(
+        halfElf: new Species(
             "half-elf",
             Size.medium,
             Grafts.creatureType.humanoid,
             [Grafts.creatureSubtype.human, Grafts.creatureSubtype.elf],
             ["elven"]
         ),
-        halfling: new Race(
+        halfling: new Species(
             "halfling",
             Size.small,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.halfling,
             ["halfling"]
         ),
-        kasatha: new Race(
+        kasatha: new Species(
             "kasatha",
             Size.medium,
             Grafts.creatureType.humanoid,
@@ -90,19 +90,19 @@ export const Races = {
             undefined,
             4
         ),
-        lashunta: new Race(
+        lashunta: new Species(
             "lashunta",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.lashunta,
             ["castrovelian"]
         ),
-        nuar: new Race(
+        nuar: new Species(
             "nuar",
             Size.medium,
             Grafts.creatureType.monstrousHumanoid
         ),
-        skittermander: new Race(
+        skittermander: new Species(
             "skittermander",
             Size.small,
             Grafts.creatureType.humanoid,
@@ -111,21 +111,21 @@ export const Races = {
             undefined,
             6
         ),
-        shirren: new Race(
+        shirren: new Species(
             "shirren",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.shirren,
             ["shirren"]
         ),
-        vesk: new Race(
+        vesk: new Species(
             "vesk",
             Size.medium,
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.vesk,
             ["vesk"]
         ),
-        ysoki: new Race(
+        ysoki: new Species(
             "ysoki",
             Size.small,
             Grafts.creatureType.humanoid,
@@ -135,10 +135,10 @@ export const Races = {
     }
 }
 
-// The version of sfrpg the player is using may not have the new races included in the Alien Races Cards
+// The version of sfrpg the player is using may not have the new species included in the Alien species Cards
 // I've bundled them here temporarily, will be removed when this module migrates to 0.8.X as a minimum Foundry version
-// (as the version of sfrpg which is compatible with 0.8.X will have these races)
-export const BundledRaces = {
+// (as the version of sfrpg which is compatible with 0.8.X will have these species)
+export const BundledSpecies = {
     gnoll: {
         name: "Gnoll",
         type: "race",
