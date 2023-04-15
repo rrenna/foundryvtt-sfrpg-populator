@@ -2,17 +2,24 @@ import { SpeciesList } from "./data/Species.js"
 import { Probabilities } from "./data/Probabilities.js"
 import { Names } from "./data/Names.js"
 import { StringFormat } from "./utils/StringFormat.js"
-import Species from "./models/SpeciesModel.js"
 import NPCCreationContext from "./models/NPCCreationContext.js"
 import { Gender } from "./data/Genders.js"
 import { Utils } from "./utils/Utils.js"
 
 export class Randomizer {
-    static randomSpecies(locationName: string = "Absalom"): Species {
-        const locationPopulations = Utils.sGet("locations");
-        let species = Randomizer.pickWinningItem(
-            locationPopulations.find(location => location.name === locationName)?.population
-        )
+    static randomSpecies(locationName: string = "Absalom"): string {
+        const locationPopulations = Utils.sGet("locations")
+        const location = locationPopulations.find(location => location.name === locationName)
+        const population = location?.population
+        let species = Randomizer.pickWinningItem(population).name
+
+        if (species === "other") {
+            const otherPopulation = Object.keys(SpeciesList.humanoidSpecies)?.filter((key) => {
+                let match = location?.population.find((obj) => obj.name === key)
+                return !match
+            })
+            species = Randomizer.getRandom(otherPopulation)
+        }
         return species
     }
 

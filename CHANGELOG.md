@@ -1,3 +1,7 @@
+### 0.4.1
+### Changed
+- Added other category for locations
+
 ### 0.4.0
 ### Changed
 - Added new Location Population UI accessible in the game settings

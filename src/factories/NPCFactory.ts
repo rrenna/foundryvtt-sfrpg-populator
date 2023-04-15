@@ -144,10 +144,10 @@ export class NPCFactory {
         try {
             if (context.species) {
                 if (context.species === "random") {
-                    let randomSpecies = Randomizer.randomSpecies(context.npcLocation)
-                    context.species = randomSpecies.name
+                    const randomSpecies = Randomizer.randomSpecies(context.npcLocation)
+                    context.species = randomSpecies
                     logEntries.push([
-                        "Chose species " + randomSpecies.name + " at random using " + context.npcLocation + " distribution",
+                        "Chose species " + randomSpecies + " at random using " + context.npcLocation + " distribution",
                         ""
                     ])
                 } else {

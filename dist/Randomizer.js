@@ -1,3 +1,4 @@
+import { SpeciesList } from "./data/Species.js";
 import { Probabilities } from "./data/Probabilities.js";
 import { Names } from "./data/Names.js";
 import { StringFormat } from "./utils/StringFormat.js";
@@ -6,7 +7,16 @@ export class Randomizer {
     static randomSpecies(locationName = "Absalom") {
         var _a;
         const locationPopulations = Utils.sGet("locations");
-        let species = Randomizer.pickWinningItem((_a = locationPopulations.find(location => location.name === locationName)) === null || _a === void 0 ? void 0 : _a.population);
+        const location = locationPopulations.find(location => location.name === locationName);
+        const population = location === null || location === void 0 ? void 0 : location.population;
+        let species = Randomizer.pickWinningItem(population).name;
+        if (species === "other") {
+            const otherPopulation = (_a = Object.keys(SpeciesList.humanoidSpecies)) === null || _a === void 0 ? void 0 : _a.filter((key) => {
+                let match = location === null || location === void 0 ? void 0 : location.population.find((obj) => obj.name === key);
+                return !match;
+            });
+            species = Randomizer.getRandom(otherPopulation);
+        }
         return species;
     }
     static randomGender(distribution) {
