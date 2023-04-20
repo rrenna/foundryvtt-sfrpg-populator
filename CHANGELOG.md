@@ -1,3 +1,7 @@
+### 0.4.2
+### Changed
+- Added slider in populator window to choose maximum CR when using random
+
 ### 0.4.1
 ### Changed
 - Added other category for locations
