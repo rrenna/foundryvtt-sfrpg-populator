@@ -84,17 +84,64 @@ export default class PopulatorPanelController extends Application {
             ".npcSpeciesSelect",
             this.showSpeciesLocationDistribution.bind(this)
         )
+        // listener for NPCCR value change
+        ;(<JQuery>html).on(
+            "change", 
+            ".npcCR", 
+            this.npcCRChanged.bind(this)
+        )
+        // listener for npcslider value change
+        ;(<JQuery>html).on(
+            "change",
+            ".npcCRSlider",
+            this.npcCRSliderChanged.bind(this)
+        )
 
         tippy(".populatorInfo")
         tippy(".populatorButton")
     }
+
+    /**
+     * Click event when a users changes the CR slider. Updates the npcCRValue span to match the slider value.
+     * @param {Event} e The click event
+     * @returns {Promise<void>}
+     * @private
+     * @memberof PopulatorPanelController
+     *  */
+    private async npcCRSliderChanged(e: Event) {
+        const npcCRSlider = e.target as HTMLInputElement
+        const npcCRValue = document.getElementById("npcCRValue")
+        if (npcCRValue) {
+            npcCRValue.innerHTML = npcCRSlider.value
+        }
+    }
+
+    /**
+     * Click event when a users changes the CR option chosen. Hides the npcCRSlider if the user selects a value other than random.
+     * @param {Event} e The click event
+     * @returns {Promise<void>}
+     */
+    private async npcCRChanged(e: Event) {
+        const npcCRSelect = e.target as HTMLSelectElement
+        const npcCRSlider = document.getElementById("npcCRDiv")
+        if (npcCRSlider) {
+            if (npcCRSelect.value === "random") {
+                npcCRSlider.style.display = "block"
+            } else {
+                npcCRSlider.style.display = "none"
+            }
+        }
+    }
+
     /**
      * Click event when a user change the species option chosen.
      * @param {Event} e The click event
      */
     private async showSpeciesLocationDistribution(e: Event) {
         const npcSpeciesSelect = e.target as HTMLSelectElement
-        const distributionDiv = document.getElementById("speciesDistributionDiv")
+        const distributionDiv = document.getElementById(
+            "speciesDistributionDiv"
+        )
         if (distributionDiv) {
             if (npcSpeciesSelect.value === "random") {
                 distributionDiv.style.display = "block"
@@ -129,6 +176,10 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val()
         let selectedArray: string = arraySelection as string
+        let npcCRSliderValue = (<JQuery>this.element)
+            .find("#npcCRSlider")
+            .val()
+        let selectedCRSlider: string = npcCRSliderValue as string
 
         // Settings
         const dynamicTokenImages = game.settings.get(
@@ -147,22 +198,26 @@ export default class PopulatorPanelController extends Application {
         }
 
         if (selectedCR === "random") {
-            selectedCR = Randomizer.getRandom(CR)
+            let crRange = CR.slice(0, parseInt(selectedCRSlider) + 2)
+            selectedCR = Randomizer.getRandom(crRange)
         }
 
         // Update Context options
         let context = new NPCCreationContext()
         context.npcLocation = selectedLocation
-        context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray].toString()
+        context.monsterReferenceSymbol = MonsterReferenceSymbol[
+            selectedArray
+        ].toString()
         context.CR = selectedCR
         context.folderId = this.options["folderId"]
         context.species = selectedSpecies
         context.tokenOptions.dynamicImage = !!dynamicTokenImages
         context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation
 
-
         await NPCFactory.makeNonHostile(context)
-        ui.notifications.info(`NPC ${context.name} created.`, { permanent: false })
+        ui.notifications.info(`NPC ${context.name} created.`, {
+            permanent: false
+        })
     }
     /**
      * Click event when a users clicks on the Monster button

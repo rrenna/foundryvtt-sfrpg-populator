@@ -9,7 +9,7 @@
         <!-- CR -->
         <label for="npcCRChoice"><b>CR</b></label>
         <div class="form-fields">
-            <select id="npcCR">
+            <select id="npcCR" class="npcCR">
                 <option value="random">random</option>
                 {{#each NPCCR as |cr|}}
                     <option value="{{ cr }}">{{ cr }}</option>
@@ -17,6 +17,15 @@
             </select>
         </div>
 		<br/>
+        <!--slider select for NPCCR-->
+        <div id="npcCRDiv">
+            <label for="npcCRSlider"><b>CR Maximum: <span id="npcCRValue">25</span></b></label>
+            <i class="populatorInfo far fa-question-circle" data-tippy-content="Selecting a maximum will restrict the random CR within it. 0 covers 1/3 & 1/2"></i>  
+            <div class="form-fields">
+                <input type="range" class="npcCRSlider" id="npcCRSlider" min="0" max="25" value="25" step="1" class="slider"></input>
+            </div>
+            <br/>
+        </div>
         <!-- Array -->
         <label for="arraySelect"><b>Array</b></label>
         <div class="form-fields">

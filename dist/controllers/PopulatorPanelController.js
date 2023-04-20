@@ -66,8 +66,41 @@ export default class PopulatorPanelController extends Application {
             .find(".monsterGenerationButton")
             .on("click", this.monsterGenerationButtonClicked.bind(this));
         html.on("change", ".npcSpeciesSelect", this.showSpeciesLocationDistribution.bind(this));
+        html.on("change", ".npcCR", this.npcCRChanged.bind(this));
+        html.on("change", ".npcCRSlider", this.npcCRSliderChanged.bind(this));
         tippy(".populatorInfo");
         tippy(".populatorButton");
+    }
+    /**
+     * Click event when a users changes the CR slider. Updates the npcCRValue span to match the slider value.
+     * @param {Event} e The click event
+     * @returns {Promise<void>}
+     * @private
+     * @memberof PopulatorPanelController
+     *  */
+    async npcCRSliderChanged(e) {
+        const npcCRSlider = e.target;
+        const npcCRValue = document.getElementById("npcCRValue");
+        if (npcCRValue) {
+            npcCRValue.innerHTML = npcCRSlider.value;
+        }
+    }
+    /**
+     * Click event when a users changes the CR option chosen. Hides the npcCRSlider if the user selects a value other than random.
+     * @param {Event} e The click event
+     * @returns {Promise<void>}
+     */
+    async npcCRChanged(e) {
+        const npcCRSelect = e.target;
+        const npcCRSlider = document.getElementById("npcCRDiv");
+        if (npcCRSlider) {
+            if (npcCRSelect.value === "random") {
+                npcCRSlider.style.display = "block";
+            }
+            else {
+                npcCRSlider.style.display = "none";
+            }
+        }
     }
     /**
      * Click event when a user change the species option chosen.
@@ -110,6 +143,10 @@ export default class PopulatorPanelController extends Application {
             .find(":selected")
             .val();
         let selectedArray = arraySelection;
+        let npcCRSliderValue = this.element
+            .find("#npcCRSlider")
+            .val();
+        let selectedCRSlider = npcCRSliderValue;
         // Settings
         const dynamicTokenImages = game.settings.get("sfrpg-populator", "dynamicTokenImages");
         const dynamicTokenImagesLocation = game.settings.get("sfrpg-populator", "dynamicTokenImagesLocation");
@@ -118,7 +155,8 @@ export default class PopulatorPanelController extends Application {
             selectedArray = Randomizer.getRandom(arrayNames);
         }
         if (selectedCR === "random") {
-            selectedCR = Randomizer.getRandom(CR);
+            let crRange = CR.slice(0, parseInt(selectedCRSlider) + 2);
+            selectedCR = Randomizer.getRandom(crRange);
         }
         // Update Context options
         let context = new NPCCreationContext();
@@ -130,7 +168,9 @@ export default class PopulatorPanelController extends Application {
         context.tokenOptions.dynamicImage = !!dynamicTokenImages;
         context.tokenOptions.dynamicImageRootLocation = dynamicTokenImagesLocation;
         await NPCFactory.makeNonHostile(context);
-        ui.notifications.info(`NPC ${context.name} created.`, { permanent: false });
+        ui.notifications.info(`NPC ${context.name} created.`, {
+            permanent: false
+        });
     }
     /**
      * Click event when a users clicks on the Monster button
