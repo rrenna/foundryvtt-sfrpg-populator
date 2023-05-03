@@ -5,9 +5,9 @@ import { CR } from "./CRs.js";
 /// List of Monster Reference Symbols
 export var MonsterReferenceSymbol;
 (function (MonsterReferenceSymbol) {
-    MonsterReferenceSymbol[MonsterReferenceSymbol["combatant"] = 0] = "combatant";
-    MonsterReferenceSymbol[MonsterReferenceSymbol["expert"] = 1] = "expert";
-    MonsterReferenceSymbol[MonsterReferenceSymbol["spellcaster"] = 2] = "spellcaster";
+    MonsterReferenceSymbol["combatant"] = "combatant";
+    MonsterReferenceSymbol["expert"] = "expert";
+    MonsterReferenceSymbol["spellcaster"] = "spellcaster";
 })(MonsterReferenceSymbol || (MonsterReferenceSymbol = {}));
 export var MonsterSkillType;
 (function (MonsterSkillType) {

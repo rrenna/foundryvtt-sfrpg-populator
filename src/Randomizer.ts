@@ -103,9 +103,14 @@ export class Randomizer {
         }
     }
 
-    static getRandom(data: string[]) {
+    static getRandom<T, U>(data: U[]): T {
         let shuffleArray = data.slice()
         Utils.shuffleArray(shuffleArray)
-        return shuffleArray[0]
+        return shuffleArray[0] as unknown as T
+    }
+
+    //method to get a random number between min and max
+    static getRandomInt(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }

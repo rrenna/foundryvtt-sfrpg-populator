@@ -78,6 +78,29 @@ export class NPCFactory {
         await this.setSenses(actor, context);
         await this.setToken(actor, context);
         await this.setAbout(actor, context);
+        await this.cleanup(actor, context);
+    }
+    static async cleanup(actor, context) {
+        let logEntries = [];
+        let actorUpdate = {};
+        try {
+            logEntries.push([
+                "Final Cleanup.",
+                ""
+            ]);
+            // Cannot set hp value until the max is set
+            actorUpdate["data.attributes.hp.value"] = context.mainArrayRow.HP;
+            // Update actor
+            await actor.update(actorUpdate);
+        }
+        catch (e) {
+            logEntries.push([
+                "Failed cleanup.",
+                "<font color='red'>Exception:" + e + "</font>"
+            ]);
+        }
+        // Update log
+        context.log.push(...logEntries);
     }
     static async setArray(actor, context) {
         let logEntries = [];
@@ -116,14 +139,9 @@ export class NPCFactory {
                 let species = SpeciesList.humanoidSpecies[context.species];
                 context.creatureTypeGraft = species.creatureTypeGraft;
                 context.creatureSubtypeGrafts = species.creatureSubtypeGrafts;
-                var speciesData;
-                // We stub in gnolls until they are included in sfrpg
-                if (context.species == "gnoll") {
-                    speciesData = BundledSpecies.gnoll;
-                }
-                else {
-                    speciesData = await Utils.fuzzyFindSpeciesAsync(species.name);
-                }
+                // Set size
+                context.size = (species === null || species === void 0 ? void 0 : species.size) ? Randomizer.getRandom(species.size) : Size[Size.medium]; // We default to medium size
+                var speciesData = await this.getSpeciesCompendiumData(species, context);
                 // species item
                 // #TODO what was the point of this? Just crashes now.
                 // await this.clean(speciesData)
@@ -141,6 +159,26 @@ export class NPCFactory {
         }
         // Update log
         context.log.push(...logEntries);
+    }
+    static async getSpeciesCompendiumData(species, context) {
+        var speciesData;
+        var speciesName = "";
+        switch (species.name) {
+            // We stub in gnolls until they are included in sfrpg
+            case "gnoll":
+                speciesData = BundledSpecies.gnoll;
+                break;
+            case SpeciesList.humanoidSpecies.sro.name:
+                speciesName = species.name + " (" + context.size + ")";
+                break;
+            default:
+                speciesName = species.name;
+                break;
+        }
+        if (!speciesData) {
+            speciesData = await Utils.fuzzyFindSpeciesAsync(speciesName);
+        }
+        return speciesData;
     }
     static async setGenderAndName(actor, context) {
         let logEntries = [];
@@ -359,18 +397,22 @@ export class NPCFactory {
         let array = context.mainArrayRow;
         let actorUpdate = {};
         // Size
-        actorUpdate["data.traits.size"] = (species === null || species === void 0 ? void 0 : species.size)
-            ? Size[species.size]
-            : Size[Size.medium]; // We default to medium size
+        actorUpdate["data.traits.size"] = context.size;
+        logEntries.push([
+            "Set size to <u>" +
+                actorUpdate["data.traits.size"] +
+                "</u> from list " +
+                (species === null || species === void 0 ? void 0 : species.size),
+            ""
+        ]);
         // Hands
-        if ((species === null || species === void 0 ? void 0 : species.arms) != undefined) {
-            actorUpdate["data.attributes.arms"] = species.arms;
+        if (species === null || species === void 0 ? void 0 : species.arms) {
+            actorUpdate["data.attributes.arms"] = Randomizer.getRandom(species.arms);
         }
         // Reach
         // TODO: Reach should be decided by grafts
         actorUpdate["data.attributes.reach"] = 5;
         // Set HP
-        actorUpdate["data.attributes.hp.value"] = array.HP;
         actorUpdate["data.attributes.hp.max"] = array.HP;
         // Set SP (should be 0)
         actorUpdate["data.attributes.sp.max"] = 0;
@@ -392,6 +434,12 @@ export class NPCFactory {
         // Set will save
         actorUpdate["data.attributes.will.bonus"] = array.will;
         actorUpdate["data.attributes.will.base"] = array.will;
+        // Set ability DC
+        actorUpdate["data.attributes.abilityDC.base"] = array.abilityDC;
+        actorUpdate["data.attributes.abilityDC.value"] = array.abilityDC;
+        // Set spell DC        
+        actorUpdate["data.attributes.baseSpellDC.base"] = array.baseSpellDC;
+        actorUpdate["data.attributes.baseSpellDC.value"] = array.baseSpellDC;
         // Set ability modifiers
         // all abilities
         var abilities = ["cha", "con", "dex", "int", "str", "wis"];

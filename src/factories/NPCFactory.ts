@@ -111,7 +111,35 @@ export class NPCFactory {
         await this.setSenses(actor, context)
         await this.setToken(actor, context)
         await this.setAbout(actor, context)
+        await this.cleanup(actor, context)
     }
+
+    private static async cleanup(actor: Actor<INPCData, Item<{}>>, context: NPCCreationContext) {
+        let logEntries: [string, string][] = []        
+        let actorUpdate = {}
+
+        try {            
+            logEntries.push([
+                "Final Cleanup.",
+                ""
+            ])
+
+            // Cannot set hp value until the max is set
+            actorUpdate["data.attributes.hp.value"] = context.mainArrayRow.HP
+
+            // Update actor
+            await actor.update(actorUpdate)
+
+        } catch (e) {
+            logEntries.push([
+                "Failed cleanup.",
+                "<font color='red'>Exception:" + e + "</font>"
+            ])
+        }
+        // Update log
+        context.log.push(...logEntries)
+    }
+
     private static async setArray(actor: Actor<INPCData, Item<{}>>, context: NPCCreationContext) {
         let logEntries: [string, string][] = []
 
@@ -159,13 +187,10 @@ export class NPCFactory {
                 context.creatureTypeGraft = species.creatureTypeGraft
                 context.creatureSubtypeGrafts = species.creatureSubtypeGrafts
         
-                var speciesData
-                // We stub in gnolls until they are included in sfrpg
-                if (context.species == "gnoll") {
-                    speciesData = BundledSpecies.gnoll
-                } else {
-                    speciesData = await Utils.fuzzyFindSpeciesAsync(species.name)
-                }
+                // Set size
+                context.size = species?.size ? Randomizer.getRandom<Size, Size>(species.size) : Size[Size.medium] // We default to medium size
+
+                var speciesData = await this.getSpeciesCompendiumData(species,context)
         
                 // species item
                 // #TODO what was the point of this? Just crashes now.
@@ -182,6 +207,29 @@ export class NPCFactory {
         }
         // Update log
         context.log.push(...logEntries)
+    }
+
+    private static async getSpeciesCompendiumData(species: Species, context: NPCCreationContext) {
+        var speciesData
+        var speciesName = ""
+
+        switch (species.name) {
+            // We stub in gnolls until they are included in sfrpg
+            case "gnoll":
+                speciesData = BundledSpecies.gnoll
+                break;
+            case SpeciesList.humanoidSpecies.sro.name:
+                speciesName = species.name + " (" + context.size + ")"
+                break;
+            default:
+                speciesName = species.name
+                break;
+        }
+        if (!speciesData) {
+            speciesData = await Utils.fuzzyFindSpeciesAsync(speciesName)
+        }
+
+        return speciesData
     }
 
     private static async setGenderAndName(
@@ -467,13 +515,19 @@ export class NPCFactory {
         let actorUpdate = {}
 
         // Size
-        actorUpdate["data.traits.size"] = species?.size
-            ? Size[species.size]
-            : Size[Size.medium] // We default to medium size
+        actorUpdate["data.traits.size"] = context.size
+            
+        logEntries.push([
+            "Set size to <u>" +
+            actorUpdate["data.traits.size"] +
+                "</u> from list " +
+                species?.size,
+            ""
+        ])
 
         // Hands
-        if (species?.arms != undefined) {
-            actorUpdate["data.attributes.arms"] = species.arms
+        if (species?.arms) {
+            actorUpdate["data.attributes.arms"] = Randomizer.getRandom(species.arms)
         }
 
         // Reach
@@ -481,7 +535,6 @@ export class NPCFactory {
         actorUpdate["data.attributes.reach"] = 5
 
         // Set HP
-        actorUpdate["data.attributes.hp.value"] = array.HP
         actorUpdate["data.attributes.hp.max"] = array.HP
 
         // Set SP (should be 0)
@@ -510,6 +563,14 @@ export class NPCFactory {
         // Set will save
         actorUpdate["data.attributes.will.bonus"] = array.will
         actorUpdate["data.attributes.will.base"] = array.will
+
+        // Set ability DC
+        actorUpdate["data.attributes.abilityDC.base"] = array.abilityDC             
+        actorUpdate["data.attributes.abilityDC.value"] = array.abilityDC             
+
+        // Set spell DC        
+        actorUpdate["data.attributes.baseSpellDC.base"] = array.baseSpellDC             
+        actorUpdate["data.attributes.baseSpellDC.value"] = array.baseSpellDC    
 
         // Set ability modifiers
         // all abilities

@@ -205,9 +205,7 @@ export default class PopulatorPanelController extends Application {
         // Update Context options
         let context = new NPCCreationContext()
         context.npcLocation = selectedLocation
-        context.monsterReferenceSymbol = MonsterReferenceSymbol[
-            selectedArray
-        ].toString()
+        context.monsterReferenceSymbol = MonsterReferenceSymbol[selectedArray]
         context.CR = selectedCR
         context.folderId = this.options["folderId"]
         context.species = selectedSpecies

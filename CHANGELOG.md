@@ -1,3 +1,21 @@
+### 0.4.3
+### Changed
+- Fixed broken monster creation
+- Fixed bug setting current HP
+- Added integratedEquipment UniversalCreatureRule
+- Creature size being set correctly
+- Added SRO as a creature type
+- NPC ability DC now determined by Array
+- NPC spell save DC now determined by Array
+- A Creature Type Species record can have an array of numbers for how many arms it has
+- A Creature Type Species record can have an array of sizes or single size during definition
+- A Creature Type Species record can have an array of UniversalCreatureRules defined
+- Added function to get random result from an array of objects
+- Added Creature Subtypes with no base effects (chaotic,evil,extraplanar,good,lawful,magical,native) to Subtype enum
+* Known Issues
+- Creature subspecies ex. SRO (small) not selected only the first version of each ever used. 
+- Universal Creature Rules list not yet applied to NPC's
+
 ### 0.4.2
 ### Changed
 - Added slider in populator window to choose maximum CR when using random

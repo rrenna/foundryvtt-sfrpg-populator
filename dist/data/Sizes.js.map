@@ -1,1 +1,1 @@
-{"version":3,"file":"Sizes.js","sourceRoot":"","sources":["../../src/data/Sizes.ts"],"names":[],"mappings":"AAAA,0BAA0B;AAC1B,MAAM,CAAN,IAAY,IAIX;AAJD,WAAY,IAAI;IACZ,iCAAK,CAAA;IACL,mCAAM,CAAA;IACN,iCAAK,CAAA;AACT,CAAC,EAJW,IAAI,KAAJ,IAAI,QAIf"}
+{"version":3,"file":"Sizes.js","sourceRoot":"","sources":["../../src/data/Sizes.ts"],"names":[],"mappings":"AAAA,0BAA0B;AAC1B,MAAM,CAAN,IAAY,IAIX;AAJD,WAAY,IAAI;IACZ,uBAAe,CAAA;IACf,yBAAiB,CAAA;IACjB,uBAAe,CAAA;AACnB,CAAC,EAJW,IAAI,KAAJ,IAAI,QAIf"}

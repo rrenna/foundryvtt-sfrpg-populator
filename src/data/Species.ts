@@ -1,47 +1,48 @@
 import { Grafts } from "./Grafts.js"
 import Species from "../models/SpeciesModel.js"
 import { Size } from "./Sizes.js"
+import { UniversalCreatureRules } from "./universal creature rules/UniversalCreatureRules.js"
 
 export const SpeciesList = {
     // A list of humanoid type species which will randomly be generated (generally for non-combat NPCs)
     humanoidSpecies: {
         android: new Species(
             "android",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.android
         ),
         dwarf: new Species(
             "dwarf",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.dwarf,
             ["dwarven"]
         ),
         drow: new Species(
             "drow",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.elf,
             ["drow"]
         ),
         elf: new Species(
             "elf",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.elf,
             ["elven"]
         ),
         gnome: new Species(
             "gnome",
-            Size.small,
+            [Size.small],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.gnome,
             ["gnome"]
         ),
         gnoll: new Species(
             "gnoll",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.gnoll,
             undefined,
@@ -49,85 +50,95 @@ export const SpeciesList = {
         ),
         hobgoblin: new Species(
             "hobgoblin",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.goblinoid,
             ["goblin"]
         ),
         human: new Species(
             "human",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.human
         ),
         halfOrc: new Species(
             "half-orc",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             [Grafts.creatureSubtype.human, Grafts.creatureSubtype.orc],
             ["orc"]
         ),
         halfElf: new Species(
             "half-elf",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             [Grafts.creatureSubtype.human, Grafts.creatureSubtype.elf],
             ["elven"]
         ),
         halfling: new Species(
             "halfling",
-            Size.small,
+            [Size.small],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.halfling,
             ["halfling"]
         ),
         kasatha: new Species(
             "kasatha",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.kasatha,
             ["kasatha"],
             undefined,
-            4
+            [4]
         ),
         lashunta: new Species(
             "lashunta",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.lashunta,
             ["castrovelian"]
         ),
         nuar: new Species(
             "nuar",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.monstrousHumanoid
         ),
         skittermander: new Species(
             "skittermander",
-            Size.small,
+            [Size.small],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.skittermander,
             undefined,
             undefined,
-            6
+            [6]
         ),
         shirren: new Species(
             "shirren",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.shirren,
             ["shirren"]
         ),
+        sro: new Species(
+            "sro",
+            [Size.small,Size.medium],
+            Grafts.creatureType.construct,
+            Grafts.creatureSubtype.technological,
+            undefined,
+            undefined,
+            [1,2,3,4],
+            [UniversalCreatureRules.integratedEquipment]
+        ),
         vesk: new Species(
             "vesk",
-            Size.medium,
+            [Size.medium],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.vesk,
             ["vesk"]
         ),
         ysoki: new Species(
             "ysoki",
-            Size.small,
+            [Size.small],
             Grafts.creatureType.humanoid,
             Grafts.creatureSubtype.ysoki,
             ["akiton", "ysoki"]

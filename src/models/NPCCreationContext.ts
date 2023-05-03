@@ -4,6 +4,7 @@ import { MonsterReferenceSymbol } from "../data/MonsterCreation.js"
 import { IContext } from "./Interfaces/IContext.js"
 import { Gender } from "../data/Genders.js"
 import { CR } from "../data/CRs.js"
+import { Size } from "../data/Sizes.js"
 
 export function isNPCCreationContext(
     pet: NPCCreationContext | IContext
@@ -34,6 +35,8 @@ export default class NPCCreationContext implements IContext {
     public abilities: [string, number | null][] = [] // `null` refers to no ability ie. mindless (not yet implemented in SFRPG)
     // Senses
     public senses: string[] = []
+    // Size
+    public size: Size = Size.medium
     // Immunities
     public damageImmunities: string[] = []
     public conditionImmunities: string[] = []

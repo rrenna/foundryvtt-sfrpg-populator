@@ -1,6 +1,6 @@
 /// List of creature sizes
 export enum Size {
-    small,
-    medium,
-    large
+    small = "small",
+    medium = "medium",
+    large = "large"
 }

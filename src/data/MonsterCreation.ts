@@ -7,9 +7,9 @@ import { CR } from "./CRs.js"
 
 /// List of Monster Reference Symbols
 export enum MonsterReferenceSymbol {
-    combatant,
-    expert,
-    spellcaster
+    combatant = "combatant",
+    expert = "expert",
+    spellcaster = "spellcaster"
 }
 
 export enum MonsterSkillType {

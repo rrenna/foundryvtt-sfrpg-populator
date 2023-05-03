@@ -1,4 +1,5 @@
 import { CR } from "../data/CRs.js";
+import { Size } from "../data/Sizes.js";
 export function isNPCCreationContext(pet) {
     return pet.generatePersonality !== undefined;
 }
@@ -13,6 +14,8 @@ export default class NPCCreationContext {
         this.abilities = []; // `null` refers to no ability ie. mindless (not yet implemented in SFRPG)
         // Senses
         this.senses = [];
+        // Size
+        this.size = Size.medium;
         // Immunities
         this.damageImmunities = [];
         this.conditionImmunities = [];

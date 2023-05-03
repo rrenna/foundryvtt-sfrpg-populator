@@ -10,6 +10,10 @@ export const UniversalCreatureRules = {
         "integrated weapons",
         "The creature’s weapons are manufactured weapons, not natural weapons, and they are integrated into its frame. A creature can’t be disarmed of these weapons, though they can be removed and used if the creature is dead."
     ),
+    integratedEquipment: new UniversalCreatureRule(
+        "integrated equipment",
+        "An SRO has an internal, integrated Datajack, Standard and Comm Unit. If an SRO is helpless, these can be removed or destroyed without damaging the SRO. They can be replaced or upgraded for the normal price of this equipment. An SRO has an additional built-in cybernetic component with an item level no greater than half the SRO’s character level (minimum item level 1). Each time the SRO gains a level, they can swap out this piece of equipment at no additional cost to represent internal reconfigurations. These pieces of equipment don’t count against the systems in which an SRO can install cybernetics."
+    ),
     mindless: new UniversalCreatureRule(
         "mindless",
         "The creature has no Intelligence score or modifier and is immune to mind-affecting effects. Any DCs or other statistics that rely on an Intelligence score treat the creature as having a score of 10 (+0).\n" +
