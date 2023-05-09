@@ -145,15 +145,12 @@ export class NPCFactory {
 
         if (context.monsterReferenceSymbol) {
             // Grab appropriate array rows
-            let monsterReferenceSymbol =
+            const monsterReferenceSymbol =
             MonsterReferenceSymbol[context.monsterReferenceSymbol]
 
             //DeepCopy the monster stats
-            let mainArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR]));
-            let attackArrayRow = JSON.parse(JSON.stringify(MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR]));
-
-            context.mainArrayRow = mainArrayRow
-            context.attackArrayRow = attackArrayRow
+            context.mainArrayRow = Utils.deepClone(MonsterCreation.arrays[monsterReferenceSymbol].main[context.CR])
+            context.attackArrayRow = Utils.deepClone(MonsterCreation.arrays[monsterReferenceSymbol].attack[context.CR])
             
             logEntries.push([monsterReferenceSymbol + " Array selected with CR: " + context.CR, ""])
         } else {
@@ -779,10 +776,9 @@ export class NPCFactory {
         let logEntries: [string, string][] = []
 
         if (context.monsterReferenceSymbol) {
-            let arrays = MonsterCreation.arrays[MonsterReferenceSymbol[context.monsterReferenceSymbol]]
-            let attackArray = arrays.attack[context.CR]
-            let highAttackBonus = attackArray.high
-            let lowAttackBonus = attackArray.low
+            const attackArray = context.attackArrayRow
+            const highAttackBonus = attackArray.high
+            const lowAttackBonus = attackArray.low
     
             // Add natural weapons or generic unarmed strike
             if (context.naturalWeapons.enabled === true) {
@@ -1594,10 +1590,9 @@ export class NPCFactory {
             let CRPlus2 = CR[indexOfCRPlus2]
 
             if (CRPlus2 && context.monsterReferenceSymbol) {
-                var monsterReferenceSymbol =
+                const monsterReferenceSymbol =
                 MonsterReferenceSymbol[context.monsterReferenceSymbol]
-                let attackArrayRowPlus2 =
-                    MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2]
+                const attackArrayRowPlus2 = Utils.deepClone(MonsterCreation.arrays[monsterReferenceSymbol].attack[CRPlus2])
 
                 // Buff all damage by 2 CRs
                 context.attackArrayRow.kinetic = attackArrayRowPlus2.kinetic

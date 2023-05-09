@@ -1,3 +1,7 @@
+### 0.4.4
+### Changed
+- Bugfix for brute not applying correctly
+
 ### 0.4.3
 ### Changed
 - Fixed broken monster creation
