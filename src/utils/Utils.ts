@@ -92,7 +92,8 @@ export class Utils {
                 continue
             }
 
-            entryWeWant = compendium.getDocument(entry._id)
+            const document = await compendium.getDocument(entry._id);
+            entryWeWant = document;
             break
         }
 
@@ -101,7 +102,7 @@ export class Utils {
         } else {
             //PopulatorUtils.log("Item " + entryName + " not found.");
         }
-        return entryWeWant
+        return duplicate(entryWeWant);
     }
 
     static async fuzzyFindItemAsync(itemName) {

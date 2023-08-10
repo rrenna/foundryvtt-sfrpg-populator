@@ -608,9 +608,9 @@ export class NPCFactory {
     static async setWeapons(actor, context) {
         let logEntries = [];
         if (context.monsterReferenceSymbol) {
-            let attackArray = context.attackArrayRow;
-            let highAttackBonus = attackArray.high;
-            let lowAttackBonus = attackArray.low;
+            const attackArray = context.attackArrayRow;
+            const highAttackBonus = attackArray.high;
+            const lowAttackBonus = attackArray.low;
             // Add natural weapons or generic unarmed strike
             if (context.naturalWeapons.enabled === true) {
                 let naturalWeapons = WeaponFactory.makeNaturalWeapons();
@@ -669,9 +669,7 @@ export class NPCFactory {
             context.itemsToAdd.push(...items);
         }
         // Add all items
-        let actorUpdate = {};
-        actorUpdate["items"] = context.itemsToAdd;
-        await actor.update(actorUpdate);
+        await actor.createEmbeddedDocuments("Item", context.itemsToAdd);
     }
     static async setToken(actor, context) {
         var _a, _b, _c;

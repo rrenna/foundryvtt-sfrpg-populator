@@ -29,19 +29,14 @@ export const Probabilities = {
             population: [
                 { name: "android", percentage: 9 },
                 { name: "dwarf", percentage: 4 },
-                { name: "drow", percentage: 1 },
-                { name: "elf", percentage: 1 },
+                { name: "other", percentage: 6 },
                 { name: "kasatha", percentage: 4 },
-                { name: "gnoll", percentage: 1 },
                 { name: "gnome", percentage: 2 },
-                { name: "halfElf", percentage: 1 },
-                { name: "halfOrc", percentage: 1 },
                 { name: "halfling", percentage: 4 },
                 { name: "human", percentage: 46 },
                 { name: "lashunta", percentage: 7 },
                 { name: "nuar", percentage: 1 },
                 { name: "shirren", percentage: 5 },
-                { name: "skittermander", percentage: 1 },
                 { name: "ysoki", percentage: 9 },
                 { name: "vesk", percentage: 3 }
             ]
@@ -52,19 +47,14 @@ export const Probabilities = {
             population: [
                 { name: "android", percentage: 7 },
                 { name: "dwarf", percentage: 2 },
-                { name: "drow", percentage: 2 },
-                { name: "elf", percentage: 2 },
+                { name: "other", percentage: 8 },
                 { name: "kasatha", percentage: 2 },
-                { name: "gnoll", percentage: 1 },
                 { name: "gnome", percentage: 4 },
-                { name: "halfElf", percentage: 1 },
-                { name: "halfOrc", percentage: 1 },
                 { name: "halfling", percentage: 5 },
                 { name: "human", percentage: 40 },
                 { name: "lashunta", percentage: 7 },
                 { name: "nuar", percentage: 1 },
                 { name: "shirren", percentage: 10 },
-                { name: "skittermander", percentage: 1 },
                 { name: "ysoki", percentage: 9 },
                 { name: "vesk", percentage: 5 }
             ]

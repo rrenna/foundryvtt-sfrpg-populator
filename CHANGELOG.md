@@ -1,3 +1,12 @@
+### 0.4.5
+### Changed
+- V11 compatibility
+- Changed location probabilities to use 'other'
+- Changed actor update for inventory to use createEmbeddedDocuments
+- Fixed name of laser pistol weapon for high cr npcs
+- Updated compendium search
+- Bugfix for combatant generation
+
 ### 0.4.4
 ### Changed
 - Bugfix for brute not applying correctly

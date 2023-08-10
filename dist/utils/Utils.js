@@ -78,7 +78,8 @@ export class Utils {
             if (!bAllTermsPresent) {
                 continue;
             }
-            entryWeWant = compendium.getDocument(entry._id);
+            const document = await compendium.getDocument(entry._id);
+            entryWeWant = document;
             break;
         }
         if (entryWeWant != undefined) {
@@ -87,7 +88,7 @@ export class Utils {
         else {
             //PopulatorUtils.log("Item " + entryName + " not found.");
         }
-        return entryWeWant;
+        return duplicate(entryWeWant);
     }
     static async fuzzyFindItemAsync(itemName) {
         itemName = itemName.toLowerCase();

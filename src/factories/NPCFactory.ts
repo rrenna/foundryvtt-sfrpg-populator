@@ -843,9 +843,7 @@ export class NPCFactory {
         }
 
         // Add all items
-        let actorUpdate = {}
-        actorUpdate["items"] = context.itemsToAdd
-        await actor.update(actorUpdate)
+        await actor.createEmbeddedDocuments("Item", context.itemsToAdd);
     }
 
     private static async setToken(
