@@ -1,3 +1,7 @@
+### 0.4.6
+### Changed
+NPC Mutator fixes
+
 ### 0.4.5
 ### Changed
 - V11 compatibility
