@@ -1,3 +1,7 @@
+### 0.4.7
+### Changed
+Change dynamic images game setting to Boolean/Checkbox
+
 ### 0.4.6
 ### Changed
 NPC Mutator fixes

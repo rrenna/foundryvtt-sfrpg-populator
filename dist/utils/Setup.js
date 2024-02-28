@@ -92,11 +92,7 @@ Hooks.once("init", async function () {
         scope: "client",
         config: true,
         default: false,
-        type: String,
-        choices: {
-            false: "No",
-            true: "Yes"
-        }
+        type: Boolean
     });
     game.settings.register("sfrpg-populator", "dynamicTokenImagesLocation", {
         name: "Root folder location for images",
